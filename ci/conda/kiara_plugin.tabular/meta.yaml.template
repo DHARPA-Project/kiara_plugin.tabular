@@ -24,7 +24,7 @@ requirements:
   run:
     - python
     - kiara
-    - kiara_plugin.core
+    - kiara_plugin.core_types
     - pyarrow>=7.0.0
     - vaex-core>=4.9.0
 about:

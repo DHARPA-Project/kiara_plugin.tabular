@@ -11,7 +11,7 @@ from kiara.models.module.persistence import (
     BytesStructure,
     LoadConfig,
 )
-from kiara.models.values.value import Value, ValueSet
+from kiara.models.values.value import Value, ValueMap
 from kiara.modules import KiaraModule, KiaraModuleConfig, ValueSetSchema
 from kiara.modules.included_core_modules.persistence import PersistValueModule
 from pydantic import Field
@@ -59,7 +59,7 @@ class CreateTableModule(KiaraModule):
         }
         return outputs
 
-    def process(self, inputs: ValueSet, outputs: ValueSet) -> None:
+    def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
 
         source_type = self.get_config_value("source_type")
 
@@ -112,7 +112,7 @@ class LoadTableFromDiskModule(KiaraModule):
         else:
             return {"array": {"type": "array", "doc": "The array."}}
 
-    def process(self, inputs: ValueSet, outputs: ValueSet):
+    def process(self, inputs: ValueMap, outputs: ValueMap):
 
         import pyarrow as pa
 
