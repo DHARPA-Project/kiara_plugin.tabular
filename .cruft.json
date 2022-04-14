@@ -1,0 +1,21 @@
+{
+  "template": "https://github.com/DHARPA-Project/kiara_plugin.project_template.git",
+  "commit": "1593b937b78a5a8248be85cdcc062fdd48fe50ce",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "Markus Binsteiner",
+      "email": "markus@frkl.io",
+      "project_name": "tabular",
+      "project_slug": "tabular",
+      "project_short_description": "kiara data-types and modules for working with tables and databases.",
+      "github_user": "DHARPA-Project",
+      "anaconda_user": "dharpa",
+      "_extensions": [
+        "cookiecutter.extensions.JsonifyExtension"
+      ],
+      "_template": "https://github.com/DHARPA-Project/kiara_plugin.project_template.git"
+    }
+  },
+  "directory": null
+}
