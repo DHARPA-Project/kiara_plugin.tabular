@@ -21,7 +21,7 @@ repos:
     - id: isort
 
 - repo: https://github.com/psf/black
-  rev: 20.8b1
+  rev: 22.3.0
   hooks:
     - id: black
 
@@ -47,8 +47,8 @@ repos:
     additional_dependencies: [pydantic>=1.8.0, rich>=10.0.0, ruamel.yaml]
 
 
-- repo: git://github.com/pre-commit/pre-commit-hooks
-  rev: 'v4.0.1'
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: 'v4.2.0'
   hooks:
   - id: trailing-whitespace
     exclude: 'setup.cfg'

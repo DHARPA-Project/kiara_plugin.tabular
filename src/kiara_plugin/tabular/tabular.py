@@ -16,7 +16,7 @@ from kiara.modules import KiaraModule, KiaraModuleConfig, ValueSetSchema
 from kiara.modules.included_core_modules.persistence import PersistValueModule
 from pydantic import Field
 
-from kiara_plugin.tabular.data_types import KiaraArray, KiaraTable
+from kiara_plugin.tabular.models import KiaraArray, KiaraTable
 
 if TYPE_CHECKING:
     import pyarrow as pa
