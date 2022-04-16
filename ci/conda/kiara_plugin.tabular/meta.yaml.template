@@ -27,6 +27,7 @@ requirements:
     - kiara_plugin.core_types
     - pyarrow>=7.0.0
     - vaex-core>=4.9.0
+
 about:
   home: https://github.com/DHARPA-Project/kiara_plugin.tabular
   license: "Mozilla Public 2.0 (MPL 2.0)"
