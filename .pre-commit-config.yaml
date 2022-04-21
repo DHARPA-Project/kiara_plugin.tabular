@@ -44,7 +44,7 @@ repos:
     files: "^src/"
     pass_filenames: true
     args: ["--config-file", "setup.cfg", "--ignore-missing-imports", "--explicit-package-bases"]
-    additional_dependencies: [pydantic>=1.8.0, rich>=10.0.0, ruamel.yaml]
+    additional_dependencies: [pydantic>=1.8.0, rich>=10.0.0, ruamel.yaml, sqlalchemy-stubs, types-python-slugify, types-setuptools, types-python-dateutil]
 
 
 - repo: https://github.com/pre-commit/pre-commit-hooks

@@ -1,20 +1,17 @@
 # -*- coding: utf-8 -*-
-
-"""This module contains the metadata (and other) models that are used in the ``kiara_plugin.tabular`` package.
-
-Those models are convenience wrappers that make it easier for *kiara* to find, create, manage and version metadata -- but also
-other type of models -- that is attached to data, as well as *kiara* modules.
-
-Metadata models must be a sub-class of [kiara.metadata.MetadataModel][kiara.metadata.MetadataModel]. Other models usually
-sub-class a pydantic BaseModel or implement custom base classes.
-"""
 import uuid
-from typing import Any, Iterable, Optional
+from typing import TYPE_CHECKING, Any, Iterable, Optional
 
 import pyarrow as pa
 from kiara.defaults import ARRAY_MODEL_CATEOGORY_ID, TABLE_MODEL_CATEOGORY_ID
 from kiara.models import KiaraModel
+from kiara.models.values.value_metadata import ValueMetadata
 from pydantic import Field, PrivateAttr
+
+from kiara_plugin.tabular.models import TableMetadata
+
+if TYPE_CHECKING:
+    from kiara.models.values.value import Value
 
 
 class KiaraArray(KiaraModel):
@@ -172,3 +169,47 @@ class KiaraTable(KiaraModel):
 
     def to_pandas(self):
         return self.arrow_table.to_pandas()
+
+
+class KiaraTableMetadata(ValueMetadata):
+    """File stats."""
+
+    _metadata_key = "table"
+
+    @classmethod
+    def retrieve_supported_data_types(cls) -> Iterable[str]:
+        return ["table"]
+
+    @classmethod
+    def create_value_metadata(cls, value: "Value") -> "TableMetadata":
+
+        kiara_table: KiaraTable = value.data
+
+        table: pa.Table = kiara_table.arrow_table
+
+        table_schema = {}
+        for name in table.schema.names:
+            field = table.schema.field(name)
+            md = field.metadata
+            _type = field.type
+            if not md:
+                md = {
+                    "arrow_type_id": _type.id,
+                }
+            _d = {
+                "type_name": str(_type),
+                "metadata": md,
+            }
+            table_schema[name] = _d
+
+        schema = {
+            "column_names": table.column_names,
+            "column_schema": table_schema,
+            "rows": table.num_rows,
+            "size": table.nbytes,
+        }
+
+        md = TableMetadata(**schema)
+        return KiaraTableMetadata.construct(table=md)
+
+    table: TableMetadata = Field(description="The table schema.")

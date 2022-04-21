@@ -3,69 +3,65 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import TYPE_CHECKING, Any, Dict, Mapping, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Tuple
 
-from kiara.models.filesystem import FileModel
+from kiara.defaults import LOAD_CONFIG_PLACEHOLDER
+from kiara.models.filesystem import FileBundle, FileModel
 from kiara.models.module.persistence import (
     ByteProvisioningStrategy,
     BytesStructure,
     LoadConfig,
 )
 from kiara.models.values.value import Value, ValueMap
-from kiara.modules import KiaraModule, KiaraModuleConfig, ValueSetSchema
+from kiara.modules import (
+    KiaraModule,
+    KiaraModuleConfig,
+    ModuleCharacteristics,
+    ValueSetSchema,
+)
+from kiara.modules.included_core_modules.create_from import (
+    CreateFromModule,
+    CreateFromModuleConfig,
+)
 from kiara.modules.included_core_modules.persistence import PersistValueModule
 from pydantic import Field
 
-from kiara_plugin.tabular.models import KiaraArray, KiaraTable
+from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable
 
 if TYPE_CHECKING:
     import pyarrow as pa
 
+FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS = [
+    "id",
+    "rel_path",
+    "import_time",
+    "mime_type",
+    "size",
+    "content",
+    "file_name",
+]
 
-class CreateTableModuleCOnfig(KiaraModuleConfig):
 
-    source_profile: str = Field(description="The source profile name.")
-    source_type: str = Field(description="The source data type.")
+class CreateTableModuleConfig(CreateFromModuleConfig):
+
     ignore_errors: bool = Field(
         description="Whether to ignore convert errors and omit the failed items.",
         default=False,
     )
 
 
-class CreateTableModule(KiaraModule):
+class CreateTableModule(CreateFromModule):
 
-    _module_type_name = "table.import"
-    _config_cls = CreateTableModuleCOnfig
-
-    def create_inputs_schema(
-        self,
-    ) -> ValueSetSchema:
-
-        source_type = self.get_config_value("source_type")
-
-        inputs = {source_type: {"type": source_type, "doc": "The source data."}}
-
-        return inputs
-
-    def create_outputs_schema(
-        self,
-    ) -> ValueSetSchema:
-
-        outputs = {
-            "table": {
-                "type": "table",
-                "doc": "The (new) table.",
-            }
-        }
-        return outputs
+    _module_type_name = "table.create"
+    _config_cls = CreateTableModuleConfig
 
     def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
 
         source_type = self.get_config_value("source_type")
 
-        source_profile_name = self.get_config_value("source_profile")
+        target_type = self.get_config_value("target_type")
 
-        func_name = f"create_from__{source_profile_name}__{source_type}"
+        func_name = f"create__{target_type}__from__{source_type}"
         func = getattr(self, func_name)
 
         source_value = inputs.get_value_obj(source_type)
@@ -74,13 +70,44 @@ class CreateTableModule(KiaraModule):
 
         outputs.set_value("table", KiaraTable.create_table(result))
 
-    def create_from__csv__file(self, source_value: Value) -> Any:
+    def create__table__from__csv_file(self, source_value: Value) -> Any:
 
         from pyarrow import csv
 
         input_file: FileModel = source_value.data
         imported_data = csv.read_csv(input_file.path)
         return imported_data
+
+    def create__table__from__csv_file_bundle(self, source_value: Value) -> Any:
+
+        import pyarrow as pa
+
+        bundle: FileBundle = source_value.data
+
+        columns = FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS
+
+        ignore_errors = self.get_config_value("ignore_errors")
+        file_dict = bundle.read_text_file_contents(ignore_errors=ignore_errors)
+
+        # TODO: use chunks to save on memory
+        tabular: Dict[str, List[Any]] = {}
+        for column in columns:
+            for index, rel_path in enumerate(sorted(file_dict.keys())):
+
+                if column == "content":
+                    _value: Any = file_dict[rel_path]
+                elif column == "id":
+                    _value = index
+                elif column == "rel_path":
+                    _value = rel_path
+                else:
+                    file_model = bundle.included_files[rel_path]
+                    _value = getattr(file_model, column)
+
+                tabular.setdefault(column, []).append(_value)
+
+        table = pa.Table.from_pydict(tabular)
+        return table
 
 
 class LoadTableConfig(KiaraModuleConfig):
@@ -95,6 +122,9 @@ class LoadTableFromDiskModule(KiaraModule):
 
     _module_type_name = "table.load_from.disk"
     _config_cls = LoadTableConfig
+
+    def _retrieve_module_characteristics(self) -> ModuleCharacteristics:
+        return ModuleCharacteristics(is_internal=True)
 
     def create_inputs_schema(
         self,
@@ -185,7 +215,7 @@ class SaveTableToDiskModule(PersistValueModule):
         load_config_data = {
             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
             "module_type": "array.load_from.disk",
-            "inputs": {"bytes_structure": "__dummy__"},
+            "inputs": {"bytes_structure": LOAD_CONFIG_PLACEHOLDER},
             "output_name": value.value_schema.type,
         }
 
@@ -233,7 +263,7 @@ class SaveTableToDiskModule(PersistValueModule):
         load_config_data = {
             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
             "module_type": "table.load_from.disk",
-            "inputs": {"bytes_structure": "__dummy__"},
+            "inputs": {"bytes_structure": LOAD_CONFIG_PLACEHOLDER},
             "output_name": value.value_schema.type,
         }
 

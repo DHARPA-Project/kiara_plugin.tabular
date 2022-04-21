@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-
-"""This module contains the value type classes that are used in the ``kiara_plugin.tabular`` package.
-"""
 from typing import Any, Mapping, Optional, Type
 
 import pyarrow as pa
@@ -11,7 +8,7 @@ from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG, KIARA_HASH_FUNCTION
 from kiara.models.values.value import Value
 from kiara.utils.output import ArrowTabularWrap
 
-from kiara_plugin.tabular.models import KiaraArray, KiaraTable
+from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable
 
 
 class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
