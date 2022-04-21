@@ -553,8 +553,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.data_types.table.ArrayType.render_as_terminal_renderable" class="md-nav__link">
-    render_as_terminal_renderable()
+  <a href="#kiara_plugin.tabular.data_types.table.ArrayType.render_as__terminal_renderable" class="md-nav__link">
+    render_as__terminal_renderable()
   </a>
   
 </li>
@@ -723,10 +723,49 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_4" type="checkbox" id="__nav_4_1_1_4" >
+      
+      
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../tabular/__init__/">tabular</a>
+          
+            <label for="__nav_4_1_1_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="tabular" data-md-level="4">
+        <label class="md-nav__title" for="__nav_4_1_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          tabular
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../tabular/" class="md-nav__link">
-        tabular
+      <a href="../../tabular/table/" class="md-nav__link">
+        table
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -836,8 +875,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.data_types.table.ArrayType.render_as_terminal_renderable" class="md-nav__link">
-    render_as_terminal_renderable()
+  <a href="#kiara_plugin.tabular.data_types.table.ArrayType.render_as__terminal_renderable" class="md-nav__link">
+    render_as__terminal_renderable()
   </a>
   
 </li>
@@ -972,11 +1011,20 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
     <span class="k">def</span> <span class="nf">python_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">KiaraArray</span>
 
-    <span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">KIARA_HASH_FUNCTION</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">hashes</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_array</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">buf</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">buffers</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="n">hash_from_buffer</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+                <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compute_hash</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
+        <span class="c1"># return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))</span>
+
+    <span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">arrow_array</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">parse_python_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KiaraArray</span><span class="p">:</span>
 
@@ -984,18 +1032,24 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
 
     <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">ChunkedArray</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">KiaraArray</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Invalid type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;, must be an Apache Arrow Array type.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;, must be an instance of the &#39;KiaraArray&#39; class.&quot;</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">render_as_terminal_renderable</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">render_as__terminal_renderable</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">render_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
-        <span class="n">max_rows</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_no_rows&quot;</span><span class="p">)</span>
-        <span class="n">max_row_height</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_row_height&quot;</span><span class="p">)</span>
-        <span class="n">max_cell_length</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">)</span>
+        <span class="n">max_rows</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;max_no_rows&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_no_rows&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">max_row_height</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;max_row_height&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_row_height&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">max_cell_length</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
@@ -1013,6 +1067,7 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
                 <span class="n">rows_tail</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
                 <span class="n">max_row_height</span><span class="o">=</span><span class="n">max_row_height</span><span class="p">,</span>
                 <span class="n">max_cell_length</span><span class="o">=</span><span class="n">max_cell_length</span><span class="p">,</span>
+                <span class="n">show_table_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="n">result</span>
@@ -1047,8 +1102,17 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
 
         <details class="quote">
           <summary>Source code in <code>tabular/data_types/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">KIARA_HASH_FUNCTION</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">hashes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_array</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">buf</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">buffers</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">hash_from_buffer</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+            <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">compute_hash</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
+    <span class="c1"># return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))</span>
 </code></pre></div>
         </details>
     </div>
@@ -1072,8 +1136,8 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
 
         <details class="quote">
           <summary>Source code in <code>tabular/data_types/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">arrow_array</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -1179,24 +1243,30 @@ avoid adding or removing information from the data (e.g. by changing the resolut
 
 
 
-<h5 id="kiara_plugin.tabular.data_types.table.ArrayType.render_as_terminal_renderable" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">render_as_terminal_renderable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">render_config</span><span class="p">)</span></code>
+<h5 id="kiara_plugin.tabular.data_types.table.ArrayType.render_as__terminal_renderable" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">render_as__terminal_renderable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">render_config</span><span class="p">)</span></code>
 
 
-<a href="#kiara_plugin.tabular.data_types.table.ArrayType.render_as_terminal_renderable" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#kiara_plugin.tabular.data_types.table.ArrayType.render_as__terminal_renderable" class="headerlink" title="Permanent link">&para;</a></h5>
 
     <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>tabular/data_types/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">render_as_terminal_renderable</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">render_as__terminal_renderable</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">render_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
-    <span class="n">max_rows</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_no_rows&quot;</span><span class="p">)</span>
-    <span class="n">max_row_height</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_row_height&quot;</span><span class="p">)</span>
-    <span class="n">max_cell_length</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">)</span>
+    <span class="n">max_rows</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s2">&quot;max_no_rows&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_no_rows&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">max_row_height</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s2">&quot;max_row_height&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_row_height&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">max_cell_length</span> <span class="o">=</span> <span class="n">render_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
 
     <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
@@ -1214,6 +1284,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
             <span class="n">rows_tail</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
             <span class="n">max_row_height</span><span class="o">=</span><span class="n">max_row_height</span><span class="p">,</span>
             <span class="n">max_cell_length</span><span class="o">=</span><span class="n">max_cell_length</span><span class="p">,</span>
+            <span class="n">show_table_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">]</span>
     <span class="k">return</span> <span class="n">result</span>

@@ -805,10 +805,49 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_4" type="checkbox" id="__nav_4_1_1_4" >
+      
+      
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../tabular/__init__/">tabular</a>
+          
+            <label for="__nav_4_1_1_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="tabular" data-md-level="4">
+        <label class="md-nav__title" for="__nav_4_1_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          tabular
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../tabular/" class="md-nav__link">
-        tabular
+      <a href="../../tabular/table/" class="md-nav__link">
+        table
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1144,6 +1183,9 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KiaraArray&quot;</span><span class="p">:</span>
 
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">KiaraArray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">data</span>
+
         <span class="n">array_obj</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">ChunkedArray</span><span class="p">)):</span>
             <span class="n">array_obj</span> <span class="o">=</span> <span class="n">data</span>
@@ -1172,7 +1214,7 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The path to the (feather) file backing this array.&quot;</span>
     <span class="p">)</span>
 
-    <span class="n">_array_obj</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">()</span>
+    <span class="n">_array_obj</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_retrieve_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
@@ -1200,7 +1242,7 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
                 <span class="sa">f</span><span class="s2">&quot;Invalid serialized array data, only a single-column Table is allowed. This value is a table with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2"> columns.&quot;</span>
             <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_array_obj</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_array_obj</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_array_obj</span>
 
     <span class="k">def</span> <span class="nf">to_pylist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1287,6 +1329,9 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
           <summary>Source code in <code>tabular/models/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">create_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KiaraArray&quot;</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">KiaraArray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">data</span>
 
     <span class="n">array_obj</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">ChunkedArray</span><span class="p">)):</span>
