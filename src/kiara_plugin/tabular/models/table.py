@@ -33,6 +33,9 @@ class KiaraArray(KiaraModel):
     @classmethod
     def create_array(cls, data: Any) -> "KiaraArray":
 
+        if isinstance(data, KiaraArray):
+            return data
+
         array_obj = None
         if isinstance(data, (pa.Array, pa.ChunkedArray)):
             array_obj = data
@@ -61,7 +64,7 @@ class KiaraArray(KiaraModel):
         description="The path to the (feather) file backing this array."
     )
 
-    _array_obj: pa.Array = PrivateAttr()
+    _array_obj: pa.Array = PrivateAttr(default=None)
 
     def _retrieve_id(self) -> str:
         return str(uuid.uuid4())
@@ -89,7 +92,7 @@ class KiaraArray(KiaraModel):
                 f"Invalid serialized array data, only a single-column Table is allowed. This value is a table with {len(table.columns)} columns."
             )
 
-        self._array_obj = table.column[0]
+        self._array_obj = table.column(0)
         return self._array_obj
 
     def to_pylist(self):

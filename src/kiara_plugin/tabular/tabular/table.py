@@ -5,20 +5,18 @@ import shutil
 import tempfile
 from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Tuple
 
+from kiara import KiaraModule
 from kiara.defaults import LOAD_CONFIG_PLACEHOLDER
+from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import FileBundle, FileModel
+from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.persistence import (
     ByteProvisioningStrategy,
     BytesStructure,
     LoadConfig,
 )
 from kiara.models.values.value import Value, ValueMap
-from kiara.modules import (
-    KiaraModule,
-    KiaraModuleConfig,
-    ModuleCharacteristics,
-    ValueSetSchema,
-)
+from kiara.modules import ModuleCharacteristics, ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
@@ -26,7 +24,7 @@ from kiara.modules.included_core_modules.create_from import (
 from kiara.modules.included_core_modules.persistence import PersistValueModule
 from pydantic import Field
 
-from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable
+from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable, KiaraTableMetadata
 
 if TYPE_CHECKING:
     import pyarrow as pa
@@ -165,11 +163,15 @@ class LoadTableFromDiskModule(KiaraModule):
         else:
             chunks = bytes_structure.chunk_map["array.arrow"]
             assert len(chunks) == 1
-            with pa.memory_map(chunks[0], "r") as column_chunk:
-                loaded_arrays = pa.ipc.open_file(column_chunk).read_all()
-                column = loaded_arrays.column("array")
 
-            array = KiaraArray.create_array(column)
+            array_file = chunks[0]
+            # with pa.memory_map(array_file, "r") as column_chunk:
+            #     loaded_arrays = pa.ipc.open_file(column_chunk).read_all()
+            #     column = loaded_arrays.column("array")
+            #
+            # array = KiaraArray.create_array(column)
+
+            array = KiaraArray(data_path=array_file)
             outputs.set_value("array", array)
 
 
@@ -214,8 +216,11 @@ class SaveTableToDiskModule(PersistValueModule):
 
         load_config_data = {
             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
-            "module_type": "array.load_from.disk",
-            "inputs": {"bytes_structure": LOAD_CONFIG_PLACEHOLDER},
+            "module_type": "table.load_from.disk",
+            "module_config": {"only_column": "array"},
+            "inputs": {
+                "bytes_structure": LOAD_CONFIG_PLACEHOLDER,
+            },
             "output_name": value.value_schema.type,
         }
 
@@ -283,3 +288,52 @@ class SaveTableToDiskModule(PersistValueModule):
             with pa.ipc.new_file(sink, schema=schema) as writer:
                 batch = pa.record_batch(array_obj.chunks, schema=schema)
                 writer.write(batch)
+
+
+class CutColumnModule(KiaraModule):
+    """Cut off one column from a table, returning an array."""
+
+    _module_type_name = "table.cut_column"
+
+    def create_inputs_schema(
+        self,
+    ) -> ValueSetSchema:
+
+        inputs: Mapping[str, Any] = {
+            "table": {"type": "table", "doc": "A table."},
+            "column_name": {
+                "type": "string",
+                "doc": "The name of the column to extract.",
+            },
+        }
+        return inputs
+
+    def create_outputs_schema(
+        self,
+    ) -> ValueSetSchema:
+
+        outputs: Mapping[str, Any] = {"array": {"type": "array", "doc": "The column."}}
+        return outputs
+
+    def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+        import pyarrow as pa
+
+        column_name: str = inputs.get_value_data("column_name")
+
+        table_value: Value = inputs.get_value_obj("table")
+        table_metadata: KiaraTableMetadata = table_value.get_property_data(
+            "metadata.table"
+        )
+
+        available = table_metadata.table.column_names
+
+        if column_name not in available:
+            raise KiaraProcessingException(
+                f"Invalid column name '{column_name}'. Available column names: {', '.join(available)}"
+            )
+
+        table: pa.Table = table_value.data.arrow_table
+        column = table.column(column_name)
+
+        outputs.set_value("array", column)

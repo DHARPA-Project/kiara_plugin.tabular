@@ -4,9 +4,11 @@ from typing import Any, Mapping, Optional, Type
 import pyarrow as pa
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
-from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG, KIARA_HASH_FUNCTION
+from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import Value
+from kiara.utils.hashing import compute_hash
 from kiara.utils.output import ArrowTabularWrap
+from mmh3 import hash_from_buffer
 
 from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable
 
@@ -23,11 +25,20 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
     def python_class(cls) -> Type:
         return KiaraArray
 
-    def calculate_hash(self, data: pa.Array) -> int:
-        return KIARA_HASH_FUNCTION(memoryview(data))
+    def calculate_hash(self, data: KiaraArray) -> int:
+        hashes = []
 
-    def calculate_size(self, data: pa.Array) -> int:
-        return len(memoryview(data))
+        for chunk in data.arrow_array.chunks:
+            for buf in chunk.buffers():
+                if not buf:
+                    continue
+                h = hash_from_buffer(memoryview(buf))
+                hashes.append(h)
+        return compute_hash(hashes)
+        # return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))
+
+    def calculate_size(self, data: KiaraArray) -> int:
+        return len(data.arrow_array)
 
     def parse_python_obj(self, data: Any) -> KiaraArray:
 
@@ -35,18 +46,24 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
 
     def _validate(cls, value: Any) -> None:
 
-        if not isinstance(value, (pa.Array, pa.ChunkedArray)):
+        if not isinstance(value, (KiaraArray)):
             raise Exception(
-                f"Invalid type '{type(value).__name__}', must be an Apache Arrow Array type."
+                f"Invalid type '{type(value).__name__}', must be an instance of the 'KiaraArray' class."
             )
 
-    def render_as_terminal_renderable(
+    def render_as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
     ) -> Any:
 
-        max_rows = render_config.get("max_no_rows")
-        max_row_height = render_config.get("max_row_height")
-        max_cell_length = render_config.get("max_cell_length")
+        max_rows = render_config.get(
+            "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
+        )
+        max_row_height = render_config.get(
+            "max_row_height", DEFAULT_PRETTY_PRINT_CONFIG["max_row_height"]
+        )
+        max_cell_length = render_config.get(
+            "max_cell_length", DEFAULT_PRETTY_PRINT_CONFIG["max_cell_length"]
+        )
 
         half_lines: Optional[int] = None
         if max_rows:
@@ -64,6 +81,7 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
                 rows_tail=half_lines,
                 max_row_height=max_row_height,
                 max_cell_length=max_cell_length,
+                show_table_header=False,
             )
         ]
         return result
