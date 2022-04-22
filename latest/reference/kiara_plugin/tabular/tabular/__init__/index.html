@@ -681,6 +681,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.tabular.table.EMPTY_COLUMN_NAME_MARKER" class="md-nav__link">
+    EMPTY_COLUMN_NAME_MARKER
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.tabular.table.FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS" class="md-nav__link">
     FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS
   </a>
@@ -896,6 +903,24 @@
 
 
 
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="kiara_plugin.tabular.tabular.table.EMPTY_COLUMN_NAME_MARKER" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">EMPTY_COLUMN_NAME_MARKER</span></code>
+
+
+<a href="#kiara_plugin.tabular.tabular.table.EMPTY_COLUMN_NAME_MARKER" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
 
 
 
@@ -1620,7 +1645,10 @@ LoadTableFromDiskModule            (<a class="autorefs autorefs-external" title=
                 <span class="k">with</span> <span class="n">pa</span><span class="o">.</span><span class="n">memory_map</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">column_chunk</span><span class="p">:</span>
                     <span class="n">loaded_arrays</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">ipc</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">column_chunk</span><span class="p">)</span><span class="o">.</span><span class="n">read_all</span><span class="p">()</span>
                     <span class="n">column</span> <span class="o">=</span> <span class="n">loaded_arrays</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-                    <span class="n">columns</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
+                    <span class="k">if</span> <span class="n">column_name</span> <span class="o">==</span> <span class="n">EMPTY_COLUMN_NAME_MARKER</span><span class="p">:</span>
+                        <span class="n">columns</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">columns</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
 
             <span class="n">arrow_table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
 
@@ -1820,7 +1848,10 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
             <span class="k">with</span> <span class="n">pa</span><span class="o">.</span><span class="n">memory_map</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">column_chunk</span><span class="p">:</span>
                 <span class="n">loaded_arrays</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">ipc</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">column_chunk</span><span class="p">)</span><span class="o">.</span><span class="n">read_all</span><span class="p">()</span>
                 <span class="n">column</span> <span class="o">=</span> <span class="n">loaded_arrays</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-                <span class="n">columns</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
+                <span class="k">if</span> <span class="n">column_name</span> <span class="o">==</span> <span class="n">EMPTY_COLUMN_NAME_MARKER</span><span class="p">:</span>
+                    <span class="n">columns</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">columns</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
 
         <span class="n">arrow_table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
 
@@ -1951,7 +1982,10 @@ SaveTableToDiskModule            (<a class="autorefs autorefs-external" title="k
 
         <span class="k">for</span> <span class="n">column_name</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
             <span class="n">column</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="n">column_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">column_name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="n">EMPTY_COLUMN_NAME_MARKER</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="n">column_name</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_store_array</span><span class="p">(</span>
                 <span class="n">array_obj</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span> <span class="n">column_name</span><span class="o">=</span><span class="n">column_name</span>
             <span class="p">)</span>
@@ -2108,7 +2142,10 @@ SaveTableToDiskModule            (<a class="autorefs autorefs-external" title="k
 
     <span class="k">for</span> <span class="n">column_name</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
         <span class="n">column</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-        <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="n">column_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">column_name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="n">EMPTY_COLUMN_NAME_MARKER</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="n">column_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_store_array</span><span class="p">(</span>
             <span class="n">array_obj</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span> <span class="n">column_name</span><span class="o">=</span><span class="n">column_name</span>
         <span class="p">)</span>

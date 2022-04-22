@@ -917,15 +917,14 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
 
         <span class="n">temp_table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">array</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;array&quot;</span><span class="p">])</span>
         <span class="n">atw</span> <span class="o">=</span> <span class="n">ArrowTabularWrap</span><span class="p">(</span><span class="n">temp_table</span><span class="p">)</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">atw</span><span class="o">.</span><span class="n">pretty_print</span><span class="p">(</span>
-                <span class="n">rows_head</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
-                <span class="n">rows_tail</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
-                <span class="n">max_row_height</span><span class="o">=</span><span class="n">max_row_height</span><span class="p">,</span>
-                <span class="n">max_cell_length</span><span class="o">=</span><span class="n">max_cell_length</span><span class="p">,</span>
-                <span class="n">show_table_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">atw</span><span class="o">.</span><span class="n">pretty_print</span><span class="p">(</span>
+            <span class="n">rows_head</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
+            <span class="n">rows_tail</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
+            <span class="n">max_row_height</span><span class="o">=</span><span class="n">max_row_height</span><span class="p">,</span>
+            <span class="n">max_cell_length</span><span class="o">=</span><span class="n">max_cell_length</span><span class="p">,</span>
+            <span class="n">show_table_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
         <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
         </details>
@@ -1134,15 +1133,14 @@ avoid adding or removing information from the data (e.g. by changing the resolut
 
     <span class="n">temp_table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="o">=</span><span class="p">[</span><span class="n">array</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;array&quot;</span><span class="p">])</span>
     <span class="n">atw</span> <span class="o">=</span> <span class="n">ArrowTabularWrap</span><span class="p">(</span><span class="n">temp_table</span><span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">atw</span><span class="o">.</span><span class="n">pretty_print</span><span class="p">(</span>
-            <span class="n">rows_head</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
-            <span class="n">rows_tail</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
-            <span class="n">max_row_height</span><span class="o">=</span><span class="n">max_row_height</span><span class="p">,</span>
-            <span class="n">max_cell_length</span><span class="o">=</span><span class="n">max_cell_length</span><span class="p">,</span>
-            <span class="n">show_table_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">atw</span><span class="o">.</span><span class="n">pretty_print</span><span class="p">(</span>
+        <span class="n">rows_head</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
+        <span class="n">rows_tail</span><span class="o">=</span><span class="n">half_lines</span><span class="p">,</span>
+        <span class="n">max_row_height</span><span class="o">=</span><span class="n">max_row_height</span><span class="p">,</span>
+        <span class="n">max_cell_length</span><span class="o">=</span><span class="n">max_cell_length</span><span class="p">,</span>
+        <span class="n">show_table_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
     <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
         </details>
@@ -1198,6 +1196,23 @@ TableType            (<a class="autorefs autorefs-external" title="kiara.data_ty
 
         <span class="k">return</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">hashes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">column_name</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
+            <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">column</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">buf</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">buffers</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">h</span> <span class="o">=</span> <span class="n">hash_from_buffer</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+                    <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compute_hash</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
+        <span class="c1"># return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))</span>
+
+    <span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="k">pass</span>
@@ -1247,6 +1262,68 @@ TableType            (<a class="autorefs autorefs-external" title="kiara.data_ty
 
 
 <h6 id="kiara_plugin.tabular.data_types.table.TableType-methods">Methods<a href="#kiara_plugin.tabular.data_types.table.TableType-methods" class="headerlink" title="Permanent link">&para;</a></h6>
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.data_types.table.TableType.calculate_hash" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.data_types.table.TableType.calculate_hash" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculate the hash of the value.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/data_types/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">hashes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">column_name</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
+        <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">column</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">buf</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">buffers</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="n">hash_from_buffer</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+                <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">compute_hash</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
+    <span class="c1"># return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.data_types.table.TableType.calculate_size" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.data_types.table.TableType.calculate_size" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/data_types/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
 
   <div class="doc doc-object doc-method">
 
