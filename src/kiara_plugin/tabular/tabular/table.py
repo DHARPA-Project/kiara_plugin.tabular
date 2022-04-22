@@ -39,6 +39,8 @@ FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS = [
     "file_name",
 ]
 
+EMPTY_COLUMN_NAME_MARKER = "__no_column_name__"
+
 
 class CreateTableModuleConfig(CreateFromModuleConfig):
 
@@ -154,7 +156,10 @@ class LoadTableFromDiskModule(KiaraModule):
                 with pa.memory_map(chunks[0], "r") as column_chunk:
                     loaded_arrays: pa.Table = pa.ipc.open_file(column_chunk).read_all()
                     column = loaded_arrays.column(column_name)
-                    columns[column_name] = column
+                    if column_name == EMPTY_COLUMN_NAME_MARKER:
+                        columns[""] = column
+                    else:
+                        columns[column_name] = column
 
             arrow_table = pa.table(columns)
 
@@ -251,7 +256,10 @@ class SaveTableToDiskModule(PersistValueModule):
 
         for column_name in table.arrow_table.column_names:
             column: pa.Array = table.arrow_table.column(column_name)
-            file_name = os.path.join(temp_f, column_name)
+            if column_name == "":
+                file_name = os.path.join(temp_f, EMPTY_COLUMN_NAME_MARKER)
+            else:
+                file_name = os.path.join(temp_f, column_name)
             self._store_array(
                 array_obj=column, file_name=file_name, column_name=column_name
             )
