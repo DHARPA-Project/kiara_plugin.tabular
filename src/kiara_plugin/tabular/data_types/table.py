@@ -86,7 +86,7 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
         return result
 
 
-class TableType(AnyType):
+class TableType(AnyType[KiaraTable, DataTypeConfig]):
     """Tabular data (table, spreadsheet, data_frame, what have you).
 
     Internally, this is backed by the [Apache Arrow](https://arrow.apache.org) [``Table``](https://arrow.apache.org/docs/python/generated/pyarrow.Table.html) class.

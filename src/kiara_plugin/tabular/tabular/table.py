@@ -8,7 +8,11 @@ from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Tuple
 from kiara import KiaraModule
 from kiara.defaults import LOAD_CONFIG_PLACEHOLDER
 from kiara.exceptions import KiaraProcessingException
-from kiara.models.filesystem import FileBundle, FileModel
+from kiara.models.filesystem import (
+    FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS,
+    FileBundle,
+    FileModel,
+)
 from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.persistence import (
     ByteProvisioningStrategy,
@@ -29,16 +33,6 @@ from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable, KiaraTable
 if TYPE_CHECKING:
     import pyarrow as pa
 
-FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS = [
-    "id",
-    "rel_path",
-    "import_time",
-    "mime_type",
-    "size",
-    "content",
-    "file_name",
-]
-
 EMPTY_COLUMN_NAME_MARKER = "__no_column_name__"
 
 
@@ -54,21 +48,6 @@ class CreateTableModule(CreateFromModule):
 
     _module_type_name = "table.create"
     _config_cls = CreateTableModuleConfig
-
-    def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
-
-        source_type = self.get_config_value("source_type")
-
-        target_type = self.get_config_value("target_type")
-
-        func_name = f"create__{target_type}__from__{source_type}"
-        func = getattr(self, func_name)
-
-        source_value = inputs.get_value_obj(source_type)
-
-        result = func(source_value=source_value)
-
-        outputs.set_value("table", KiaraTable.create_table(result))
 
     def create__table__from__csv_file(self, source_value: Value) -> Any:
 
@@ -107,7 +86,7 @@ class CreateTableModule(CreateFromModule):
                 tabular.setdefault(column, []).append(_value)
 
         table = pa.Table.from_pydict(tabular)
-        return table
+        return KiaraTable.create_table(table)
 
 
 class LoadTableConfig(KiaraModuleConfig):
