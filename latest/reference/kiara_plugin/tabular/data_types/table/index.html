@@ -784,6 +784,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../tabular/db/" class="md-nav__link">
+        db
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tabular/table/" class="md-nav__link">
         table
       </a>
@@ -794,6 +808,20 @@
           
         </ul>
       </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/" class="md-nav__link">
+        utils
+      </a>
     </li>
   
 
@@ -1366,7 +1394,7 @@ TableType            (<a class="autorefs autorefs-external" title="kiara.data_ty
 
         <details class="quote">
           <summary>Source code in <code>tabular/data_types/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TableType</span><span class="p">(</span><span class="n">AnyType</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TableType</span><span class="p">(</span><span class="n">AnyType</span><span class="p">[</span><span class="n">KiaraTable</span><span class="p">,</span> <span class="n">DataTypeConfig</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;Tabular data (table, spreadsheet, data_frame, what have you).</span>
 
 <span class="sd">    Internally, this is backed by the [Apache Arrow](https://arrow.apache.org) [``Table``](https://arrow.apache.org/docs/python/generated/pyarrow.Table.html) class.</span>

@@ -693,6 +693,20 @@
   
   
     <li class="md-nav__item">
+      <a href="reference/kiara_plugin/tabular/tabular/db/" class="md-nav__link">
+        db
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="reference/kiara_plugin/tabular/tabular/table/" class="md-nav__link">
         table
       </a>
@@ -703,6 +717,20 @@
           
         </ul>
       </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/kiara_plugin/tabular/utils/" class="md-nav__link">
+        utils
+      </a>
     </li>
   
 
@@ -835,6 +863,9 @@
 <h3 id="data_types">data_types<a class="headerlink" href="#data_types" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
+<p><a class="autorefs autorefs-internal" href="info/data_types/#kiara_info.data_types.database"><code>database</code></a>: A database, containing one or several tables.</p>
+</li>
+<li>
 <p><a class="autorefs autorefs-internal" href="info/data_types/#kiara_info.data_types.array"><code>array</code></a>: An array, in most cases used as a column within a table.</p>
 </li>
 <li>
@@ -844,10 +875,19 @@
 <h3 id="module_types">module_types<a class="headerlink" href="#module_types" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
+<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.database.save_to.disk"><code>database.save_to.disk</code></a>: -- n/a --</p>
+</li>
+<li>
 <p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.table.save_to.disk.as.feather"><code>table.save_to.disk.as.feather</code></a>: -- n/a --</p>
 </li>
 <li>
+<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.database.create"><code>database.create</code></a>: -- n/a --</p>
+</li>
+<li>
 <p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.table.create"><code>table.create</code></a>: -- n/a --</p>
+</li>
+<li>
+<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.database.load_from.disk"><code>database.load_from.disk</code></a>: -- n/a --</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.table.load_from.disk"><code>table.load_from.disk</code></a>: -- n/a --</p>
@@ -866,7 +906,16 @@
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.array.from.table"><code>create.array.from.table</code></a>: Cut off one column from a table, returning an array.</p>
 </li>
 <li>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.database.from.csv_file"><code>create.database.from.csv_file</code></a>: -- n/a --</p>
+</li>
+<li>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.database.from.csv_file_bundle"><code>create.database.from.csv_file_bundle</code></a>: -- n/a --</p>
+</li>
+<li>
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.load_config.from.array"><code>create.load_config.from.array</code></a>: -- n/a --</p>
+</li>
+<li>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.load_config.from.database"><code>create.load_config.from.database</code></a>: -- n/a --</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.load_config.from.table"><code>create.load_config.from.table</code></a>: Store the table as Apache Arrow feather file</p>
@@ -878,7 +927,13 @@
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.table.from.csv_file_bundle"><code>create.table.from.csv_file_bundle</code></a>: -- n/a --</p>
 </li>
 <li>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.database.load_from.disk"><code>database.load_from.disk</code></a>: -- n/a --</p>
+</li>
+<li>
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.save.array.to.disk.as.arrays"><code>save.array.to.disk.as.arrays</code></a>: -- n/a --</p>
+</li>
+<li>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.save.database.to.disk.as.arrays"><code>save.database.to.disk.as.arrays</code></a>: -- n/a --</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.save.table.to.disk.as.arrays"><code>save.table.to.disk.as.arrays</code></a>: Store the table as Apache Arrow feather file</p>

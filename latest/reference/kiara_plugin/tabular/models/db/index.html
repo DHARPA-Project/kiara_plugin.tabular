@@ -606,6 +606,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_hash" class="md-nav__link">
+    file_hash
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.table_names" class="md-nav__link">
     table_names
   </a>
@@ -656,20 +663,6 @@
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.execute_sql" class="md-nav__link">
     execute_sql()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_category_alias" class="md-nav__link">
-    get_category_alias()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_id" class="md-nav__link">
-    get_id()
   </a>
   
 </li>
@@ -792,6 +785,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../tabular/db/" class="md-nav__link">
+        db
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tabular/table/" class="md-nav__link">
         table
       </a>
@@ -802,6 +809,20 @@
           
         </ul>
       </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/" class="md-nav__link">
+        utils
+      </a>
     </li>
   
 
@@ -897,6 +918,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_hash" class="md-nav__link">
+    file_hash
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.table_names" class="md-nav__link">
     table_names
   </a>
@@ -947,20 +975,6 @@
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.execute_sql" class="md-nav__link">
     execute_sql()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_category_alias" class="md-nav__link">
-    get_category_alias()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_id" class="md-nav__link">
-    get_id()
   </a>
   
 </li>
@@ -1060,7 +1074,11 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
           <summary>Source code in <code>tabular/models/db.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraDatabase</span><span class="p">(</span><span class="n">KiaraModel</span><span class="p">):</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create_in_temp_dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">init_sql</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_in_temp_dir</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">init_statement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;TextClause&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">init_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 
         <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
         <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
@@ -1073,22 +1091,33 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="n">db</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_path</span><span class="p">)</span>
         <span class="n">db</span><span class="o">.</span><span class="n">create_if_not_exists</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">init_sql</span><span class="p">:</span>
-            <span class="n">db</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">sql_script</span><span class="o">=</span><span class="n">init_sql</span><span class="p">,</span> <span class="n">invalidate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">init_statement</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">statement</span><span class="o">=</span><span class="n">init_statement</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">init_data</span><span class="p">,</span> <span class="n">invalidate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">db</span>
 
     <span class="n">db_file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The path to the sqlite database file.&quot;</span><span class="p">)</span>
+
     <span class="n">_cached_engine</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_cached_inspector</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_table_names</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_table_schemas</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_file_hash</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">_immutable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span>
+    <span class="k">def</span> <span class="nf">_retrieve_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_hash</span>
 
-    <span class="k">def</span> <span class="nf">get_category_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;instance.metadata.database&quot;</span>
+    <span class="k">def</span> <span class="nf">_retrieve_category_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;instance.database&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_retrieve_data_to_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;file_hash&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_hash</span><span class="p">,</span>
+        <span class="p">}</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;db_file_path&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">ensure_absolute_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -1102,6 +1131,21 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="k">def</span> <span class="nf">db_url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;sqlite:///</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="si">}</span><span class="s2">&quot;</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">file_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
+
+        <span class="n">sha256_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha3_256</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># Read and update hash string value in blocks of 4K</span>
+            <span class="k">for</span> <span class="n">byte_block</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4096</span><span class="p">),</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+                <span class="n">sha256_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">byte_block</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="n">sha256_hash</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
+
     <span class="k">def</span> <span class="nf">get_sqlalchemy_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Engine&quot;</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1109,11 +1153,27 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
         <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
 
+        <span class="k">def</span> <span class="nf">_pragma_on_connect</span><span class="p">(</span><span class="n">dbapi_con</span><span class="p">,</span> <span class="n">con_record</span><span class="p">):</span>
+            <span class="n">dbapi_con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;PRAGMA query_only = ON&quot;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="c1"># with self._cached_engine.connect() as con:</span>
-        <span class="c1">#     con.execute(text(&quot;PRAGMA query_only = ON&quot;))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">event</span>
+
+            <span class="n">event</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">,</span> <span class="n">_pragma_on_connect</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span>
+
+    <span class="k">def</span> <span class="nf">_lock_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_invalidate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_unlock_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_immutable</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Can&#39;t unlock db, it&#39;s immutable.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_invalidate</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">create_if_not_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -1122,25 +1182,44 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="k">if</span> <span class="ow">not</span> <span class="n">database_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">):</span>
             <span class="n">create_database</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_script</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">invalidate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">statement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;TextClause&quot;</span><span class="p">],</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">invalidate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute an sql script.</span>
 
 <span class="sd">        Arguments:</span>
-<span class="sd">          sql_script: the sql script</span>
+<span class="sd">          statement: the sql statement</span>
+<span class="sd">          data: (optional) data, to be bound to the statement</span>
 <span class="sd">          invalidate: whether to invalidate cached values within this object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">text</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">statement</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">statement</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">statement</span><span class="o">.</span><span class="n">bindparams</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">create_if_not_exists</span><span class="p">()</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">raw_connection</span><span class="p">()</span>
-        <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-        <span class="n">cursor</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">sql_script</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+
         <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">invalidate</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table_names</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_invalidate</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_invalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_names</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">copy_database_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -1149,6 +1228,8 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
         <span class="n">new_db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span><span class="p">:</span>
+            <span class="n">new_db</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
         <span class="k">return</span> <span class="n">new_db</span>
 
     <span class="k">def</span> <span class="nf">get_sqlalchemy_inspector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Inspector&quot;</span><span class="p">:</span>
@@ -1254,6 +1335,28 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
 
 
+<h5 id="kiara_plugin.tabular.models.db.KiaraDatabase.file_hash" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">file_hash</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_hash" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
 <h5 id="kiara_plugin.tabular.models.db.KiaraDatabase.table_names" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">table_names</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
@@ -1297,6 +1400,8 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
     <span class="n">new_db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span><span class="p">:</span>
+        <span class="n">new_db</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
     <span class="k">return</span> <span class="n">new_db</span>
 </code></pre></div>
         </details>
@@ -1340,7 +1445,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
 
 <h5 id="kiara_plugin.tabular.models.db.KiaraDatabase.create_in_temp_dir" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_in_temp_dir</span><span class="p">(</span><span class="n">init_sql</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">create_in_temp_dir</span><span class="p">(</span><span class="n">init_statement</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
@@ -1354,7 +1459,11 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <details class="quote">
           <summary>Source code in <code>tabular/models/db.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">create_in_temp_dir</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">init_sql</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">create_in_temp_dir</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span>
+    <span class="n">init_statement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;TextClause&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">init_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
 
     <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
     <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
@@ -1367,8 +1476,10 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="n">db</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_path</span><span class="p">)</span>
     <span class="n">db</span><span class="o">.</span><span class="n">create_if_not_exists</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">init_sql</span><span class="p">:</span>
-        <span class="n">db</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">sql_script</span><span class="o">=</span><span class="n">init_sql</span><span class="p">,</span> <span class="n">invalidate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">init_statement</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">statement</span><span class="o">=</span><span class="n">init_statement</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">init_data</span><span class="p">,</span> <span class="n">invalidate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">db</span>
 </code></pre></div>
@@ -1417,7 +1528,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
 
 <h5 id="kiara_plugin.tabular.models.db.KiaraDatabase.execute_sql" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_script</span><span class="p">,</span> <span class="n">invalidate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">statement</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">invalidate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
 <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.execute_sql" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1438,10 +1549,16 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
   </thead>
   <tbody>
       <tr>
-        <td><code>sql_script</code></td>
-        <td><code>str</code></td>
-        <td><p>the sql script</p></td>
+        <td><code>statement</code></td>
+        <td><code>Union[str, TextClause]</code></td>
+        <td><p>the sql statement</p></td>
         <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>Optional[Mapping[str, Any]]</code></td>
+        <td><p>(optional) data, to be bound to the statement</p></td>
+        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>invalidate</code></td>
@@ -1453,75 +1570,37 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 </table>
         <details class="quote">
           <summary>Source code in <code>tabular/models/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_script</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">invalidate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">statement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;TextClause&quot;</span><span class="p">],</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">invalidate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Execute an sql script.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">      sql_script: the sql script</span>
+<span class="sd">      statement: the sql statement</span>
+<span class="sd">      data: (optional) data, to be bound to the statement</span>
 <span class="sd">      invalidate: whether to invalidate cached values within this object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">text</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">statement</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">statement</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">statement</span><span class="o">.</span><span class="n">bindparams</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+
     <span class="bp">self</span><span class="o">.</span><span class="n">create_if_not_exists</span><span class="p">()</span>
     <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">raw_connection</span><span class="p">()</span>
-    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">executescript</span><span class="p">(</span><span class="n">sql_script</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+
     <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
     <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">invalidate</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table_names</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="o">=</span> <span class="kc">None</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h5 id="kiara_plugin.tabular.models.db.KiaraDatabase.get_category_alias" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_category_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_category_alias" class="headerlink" title="Permanent link">&para;</a></h5>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/models/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_category_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="s2">&quot;instance.metadata.database&quot;</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h5 id="kiara_plugin.tabular.models.db.KiaraDatabase.get_id" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_id" class="headerlink" title="Permanent link">&para;</a></h5>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/models/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_invalidate</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
@@ -1599,9 +1678,15 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
     <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
 
+    <span class="k">def</span> <span class="nf">_pragma_on_connect</span><span class="p">(</span><span class="n">dbapi_con</span><span class="p">,</span> <span class="n">con_record</span><span class="p">):</span>
+        <span class="n">dbapi_con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;PRAGMA query_only = ON&quot;</span><span class="p">)</span>
+
     <span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_url</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="c1"># with self._cached_engine.connect() as con:</span>
-    <span class="c1">#     con.execute(text(&quot;PRAGMA query_only = ON&quot;))</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">event</span>
+
+        <span class="n">event</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">,</span> <span class="n">_pragma_on_connect</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span>
 </code></pre></div>
