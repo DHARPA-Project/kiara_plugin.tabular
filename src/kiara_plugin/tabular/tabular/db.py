@@ -3,24 +3,18 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, Dict, List, Mapping
+from typing import Any, List
 
 from kiara import KiaraModule
-from kiara.defaults import LOAD_CONFIG_PLACEHOLDER
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import FileBundle, FileModel
-from kiara.models.module.persistence import (
-    ByteProvisioningStrategy,
-    BytesStructure,
-    LoadConfig,
-)
+from kiara.models.module.persistence import BytesStructure
 from kiara.models.values.value import Value, ValueMap
 from kiara.modules import ModuleCharacteristics, ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
 )
-from kiara.modules.included_core_modules.persistence import PersistValueModule
 from kiara.utils import find_free_id, log_message
 from pydantic import Field
 
@@ -120,43 +114,43 @@ class CreateDatabaseModule(CreateFromModule):
         return db_path
 
 
-class SaveDatabaseModule(PersistValueModule):
-
-    _module_type_name = "database.save_to.disk"
-
-    def get_persistence_target_name(self) -> str:
-        return "disk"
-
-    def get_persistence_format_name(self) -> str:
-        return "arrays"
-
-    def data_type__database(self, value: Value, persistence_config: Mapping[str, Any]):
-
-        db: KiaraDatabase = value.data  # type: ignore
-        db._lock_db()
-
-        # TODO: assert type inherits from database?
-        chunk_map = {}
-        chunk_map["db.sqlite"] = [db.db_file_path]
-
-        bytes_structure_data: Dict[str, Any] = {
-            "data_type": value.value_schema.type,
-            "data_type_config": value.value_schema.type_config,
-            "chunk_map": chunk_map,
-        }
-        bytes_structure = BytesStructure.construct(**bytes_structure_data)
-
-        load_config_data = {
-            "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
-            "module_type": "database.load_from.disk",
-            "inputs": {
-                "bytes_structure": LOAD_CONFIG_PLACEHOLDER,
-            },
-            "output_name": value.value_schema.type,
-        }
-
-        load_config = LoadConfig.construct(**load_config_data)
-        return load_config, bytes_structure
+# class SaveDatabaseModule(PersistValueModule):
+#
+#     _module_type_name = "database.save_to.disk"
+#
+#     def get_persistence_target_name(self) -> str:
+#         return "disk"
+#
+#     def get_persistence_format_name(self) -> str:
+#         return "arrays"
+#
+#     def data_type__database(self, value: Value, persistence_config: Mapping[str, Any]):
+#
+#         db: KiaraDatabase = value.data  # type: ignore
+#         db._lock_db()
+#
+#         # TODO: assert type inherits from database?
+#         chunk_map = {}
+#         chunk_map["db.sqlite"] = [db.db_file_path]
+#
+#         bytes_structure_data: Dict[str, Any] = {
+#             "data_type": value.value_schema.type,
+#             "data_type_config": value.value_schema.type_config,
+#             "chunk_map": chunk_map,
+#         }
+#         bytes_structure = BytesStructure.construct(**bytes_structure_data)
+#
+#         load_config_data = {
+#             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
+#             "module_type": "database.load_from.disk",
+#             "inputs": {
+#                 "bytes_structure": LOAD_CONFIG_PLACEHOLDER,
+#             },
+#             "output_name": value.value_schema.type,
+#         }
+#
+#         load_config = LoadConfig.construct(**load_config_data)
+#         return load_config, bytes_structure
 
 
 class LoadDatabaseFromDiskModule(KiaraModule):

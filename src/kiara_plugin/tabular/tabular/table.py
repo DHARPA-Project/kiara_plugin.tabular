@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
-import atexit
-import os
-import shutil
-import tempfile
-from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Tuple
+from typing import Any, Dict, List, Mapping, Optional, TYPE_CHECKING, Type
 
 from kiara import KiaraModule
-from kiara.defaults import LOAD_CONFIG_PLACEHOLDER
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import (
     FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS,
@@ -14,24 +9,20 @@ from kiara.models.filesystem import (
     FileModel,
 )
 from kiara.models.module import KiaraModuleConfig
-from kiara.models.module.persistence import (
-    ByteProvisioningStrategy,
-    BytesStructure,
-    LoadConfig,
-)
-from kiara.models.values.value import Value, ValueMap
+from kiara.models.module.persistence import BytesStructure
+from kiara.models.values.value import SerializedData, Value, ValueMap
 from kiara.modules import ModuleCharacteristics, ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
 )
-from kiara.modules.included_core_modules.persistence import PersistValueModule
+from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from pydantic import Field
 
 from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable, KiaraTableMetadata
 
 if TYPE_CHECKING:
-    import pyarrow as pa
+    pass
 
 EMPTY_COLUMN_NAME_MARKER = "__no_column_name__"
 
@@ -87,6 +78,85 @@ class CreateTableModule(CreateFromModule):
 
         table = pa.Table.from_pydict(tabular)
         return KiaraTable.create_table(table)
+
+
+class DeserializeArrayModule(DeserializeValueModule):
+
+    _module_type_name = "deserialize.array"
+
+    @classmethod
+    def retrieve_supported_target_profiles(cls) -> Mapping[str, Type]:
+        return {"array": KiaraArray}
+
+    @classmethod
+    def retrieve_source_value_type(cls) -> str:
+        return "array"
+
+    @classmethod
+    def retrieve_supported_serialization_profile(cls) -> str:
+        return "feather"
+
+    def to__array(self, data: SerializedData, **config: Any):
+
+        assert "array" in data.get_keys() and len(data.get_keys()) == 1
+
+        chunks = data.get_serialized_data("array")
+
+        # TODO: support multiple chunks
+        assert chunks.get_number_of_chunks() == 1
+        files = list(chunks.get_chunks(as_files=True, symlink_ok=True))
+        assert len(files) == 1
+
+        array_file = chunks[0]
+
+        array = KiaraArray(data_path=array_file)
+        return array
+
+
+class DeserializeTableModule(DeserializeValueModule):
+
+    _module_type_name = "deserialize.table"
+
+    @classmethod
+    def retrieve_supported_target_profiles(cls) -> Mapping[str, Type]:
+        return {"table": KiaraTable}
+
+    @classmethod
+    def retrieve_source_value_type(cls) -> str:
+        return "table"
+
+    @classmethod
+    def retrieve_supported_serialization_profile(cls) -> str:
+        return "feather"
+
+    def to__table(self, data: SerializedData, **config: Any):
+
+        import pyarrow as pa
+
+        columns = {}
+
+        for column_name in data.get_keys():
+
+            chunks = data.get_serialized_data(column_name)
+
+            # TODO: support multiple chunks
+            assert chunks.get_number_of_chunks() == 1
+            files = list(chunks.get_chunks(as_files=True, symlink_ok=True))
+            assert len(files) == 1
+
+            file = files[0]
+            with pa.memory_map(file, "r") as column_chunk:
+                loaded_arrays: pa.Table = pa.ipc.open_file(column_chunk).read_all()
+                column = loaded_arrays.column(column_name)
+                if column_name == EMPTY_COLUMN_NAME_MARKER:
+                    columns[""] = column
+                else:
+                    columns[column_name] = column
+
+        arrow_table = pa.table(columns)
+
+        table = KiaraTable.create_table(arrow_table)
+        return table
 
 
 class LoadTableConfig(KiaraModuleConfig):
@@ -159,122 +229,122 @@ class LoadTableFromDiskModule(KiaraModule):
             outputs.set_value("array", array)
 
 
-class SaveTableToDiskModule(PersistValueModule):
-
-    _module_type_name = "table.save_to.disk.as.feather"
-
-    def get_persistence_target_name(self) -> str:
-        return "disk"
-
-    def get_persistence_format_name(self) -> str:
-        return "arrays"
-
-    def data_type__array(self, value: Value, persistence_config: Mapping[str, Any]):
-
-        import pyarrow as pa
-
-        kiara_array: KiaraArray = value.data
-
-        chunk_map = {}
-
-        # TODO: make sure temp dir is in the same partition as file store
-        temp_f = tempfile.mkdtemp()
-
-        def cleanup():
-            shutil.rmtree(temp_f, ignore_errors=True)
-
-        atexit.register(cleanup)
-
-        column: pa.Array = kiara_array.arrow_array
-        file_name = os.path.join(temp_f, "array.arrow")
-        self._store_array(array_obj=column, file_name=file_name, column_name="array")
-        chunk_map["array.arrow"] = [file_name]
-
-        bytes_structure_data: Dict[str, Any] = {
-            "data_type": value.value_schema.type,
-            "data_type_config": value.value_schema.type_config,
-            "chunk_map": chunk_map,
-        }
-
-        bytes_structure = BytesStructure.construct(**bytes_structure_data)
-
-        load_config_data = {
-            "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
-            "module_type": "table.load_from.disk",
-            "module_config": {"only_column": "array"},
-            "inputs": {
-                "bytes_structure": LOAD_CONFIG_PLACEHOLDER,
-            },
-            "output_name": value.value_schema.type,
-        }
-
-        load_config = LoadConfig(**load_config_data)
-        return load_config, bytes_structure
-
-    def data_type__table(
-        self, value: Value, persistence_config: Mapping[str, Any]
-    ) -> Tuple[LoadConfig, Optional[BytesStructure]]:
-        """Store the table as Apache Arrow feather file
-
-        The table will be store with one feather file per column, to support de-duplicated storage of re-arranged tables.
-        """
-
-        import pyarrow as pa
-
-        table: KiaraTable = value.data
-
-        chunk_map = {}
-
-        # TODO: make sure temp dir is in the same partition as file store
-        temp_f = tempfile.mkdtemp()
-
-        def cleanup():
-            shutil.rmtree(temp_f, ignore_errors=True)
-
-        atexit.register(cleanup)
-
-        for column_name in table.arrow_table.column_names:
-            column: pa.Array = table.arrow_table.column(column_name)
-            if column_name == "":
-                file_name = os.path.join(temp_f, EMPTY_COLUMN_NAME_MARKER)
-            else:
-                file_name = os.path.join(temp_f, column_name)
-            self._store_array(
-                array_obj=column, file_name=file_name, column_name=column_name
-            )
-            chunk_map[column_name] = [file_name]
-
-        bytes_structure_data: Dict[str, Any] = {
-            "data_type": value.value_schema.type,
-            "data_type_config": value.value_schema.type_config,
-            "chunk_map": chunk_map,
-        }
-
-        bytes_structure = BytesStructure.construct(**bytes_structure_data)
-
-        load_config_data = {
-            "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
-            "module_type": "table.load_from.disk",
-            "inputs": {"bytes_structure": LOAD_CONFIG_PLACEHOLDER},
-            "output_name": value.value_schema.type,
-        }
-
-        load_config = LoadConfig(**load_config_data)
-        return load_config, bytes_structure
-
-    def _store_array(
-        self, array_obj: "pa.Array", file_name: str, column_name: "str" = "array"
-    ):
-
-        import pyarrow as pa
-
-        schema = pa.schema([pa.field(column_name, array_obj.type)])
-
-        # TODO: support non-single chunk columns
-        with pa.OSFile(file_name, "wb") as sink:
-            with pa.ipc.new_file(sink, schema=schema) as writer:
-                batch = pa.record_batch(array_obj.chunks, schema=schema)
-                writer.write(batch)
+# class SaveTableToDiskModule(PersistValueModule):
+#
+#     _module_type_name = "table.save_to.disk.as.feather"
+#
+#     def get_persistence_target_name(self) -> str:
+#         return "disk"
+#
+#     def get_persistence_format_name(self) -> str:
+#         return "arrays"
+#
+#     def data_type__array(self, value: Value, persistence_config: Mapping[str, Any]):
+#
+#         import pyarrow as pa
+#
+#         kiara_array: KiaraArray = value.data
+#
+#         chunk_map = {}
+#
+#         # TODO: make sure temp dir is in the same partition as file store
+#         temp_f = tempfile.mkdtemp()
+#
+#         def cleanup():
+#             shutil.rmtree(temp_f, ignore_errors=True)
+#
+#         atexit.register(cleanup)
+#
+#         column: pa.Array = kiara_array.arrow_array
+#         file_name = os.path.join(temp_f, "array.arrow")
+#         self._store_array(array_obj=column, file_name=file_name, column_name="array")
+#         chunk_map["array.arrow"] = [file_name]
+#
+#         bytes_structure_data: Dict[str, Any] = {
+#             "data_type": value.value_schema.type,
+#             "data_type_config": value.value_schema.type_config,
+#             "chunk_map": chunk_map,
+#         }
+#
+#         bytes_structure = BytesStructure.construct(**bytes_structure_data)
+#
+#         load_config_data = {
+#             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
+#             "module_type": "table.load_from.disk",
+#             "module_config": {"only_column": "array"},
+#             "inputs": {
+#                 "bytes_structure": LOAD_CONFIG_PLACEHOLDER,
+#             },
+#             "output_name": value.value_schema.type,
+#         }
+#
+#         load_config = LoadConfig(**load_config_data)
+#         return load_config, bytes_structure
+#
+#     def data_type__table(
+#         self, value: Value, persistence_config: Mapping[str, Any]
+#     ) -> Tuple[LoadConfig, Optional[BytesStructure]]:
+#         """Store the table as Apache Arrow feather file
+#
+#         The table will be store with one feather file per column, to support de-duplicated storage of re-arranged tables.
+#         """
+#
+#         import pyarrow as pa
+#
+#         table: KiaraTable = value.data
+#
+#         chunk_map = {}
+#
+#         # TODO: make sure temp dir is in the same partition as file store
+#         temp_f = tempfile.mkdtemp()
+#
+#         def cleanup():
+#             shutil.rmtree(temp_f, ignore_errors=True)
+#
+#         atexit.register(cleanup)
+#
+#         for column_name in table.arrow_table.column_names:
+#             column: pa.Array = table.arrow_table.column(column_name)
+#             if column_name == "":
+#                 file_name = os.path.join(temp_f, EMPTY_COLUMN_NAME_MARKER)
+#             else:
+#                 file_name = os.path.join(temp_f, column_name)
+#             self._store_array(
+#                 array_obj=column, file_name=file_name, column_name=column_name
+#             )
+#             chunk_map[column_name] = [file_name]
+#
+#         bytes_structure_data: Dict[str, Any] = {
+#             "data_type": value.value_schema.type,
+#             "data_type_config": value.value_schema.type_config,
+#             "chunk_map": chunk_map,
+#         }
+#
+#         bytes_structure = BytesStructure.construct(**bytes_structure_data)
+#
+#         load_config_data = {
+#             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
+#             "module_type": "table.load_from.disk",
+#             "inputs": {"bytes_structure": LOAD_CONFIG_PLACEHOLDER},
+#             "output_name": value.value_schema.type,
+#         }
+#
+#         load_config = LoadConfig(**load_config_data)
+#         return load_config, bytes_structure
+#
+#     def _store_array(
+#         self, array_obj: "pa.Array", file_name: str, column_name: "str" = "array"
+#     ):
+#
+#         import pyarrow as pa
+#
+#         schema = pa.schema([pa.field(column_name, array_obj.type)])
+#
+#         # TODO: support non-single chunk columns
+#         with pa.OSFile(file_name, "wb") as sink:
+#             with pa.ipc.new_file(sink, schema=schema) as writer:
+#                 batch = pa.record_batch(array_obj.chunks, schema=schema)
+#                 writer.write(batch)
 
 
 class CutColumnModule(KiaraModule):

@@ -1,16 +1,37 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Mapping, Optional, Type
+import atexit
+import os
+import shutil
+import tempfile
+from typing import TYPE_CHECKING, Any, Mapping, Optional, Type
 
-import pyarrow as pa
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
-from kiara.models.values.value import Value
+from kiara.models.values.value import SerializationResult, SerializedData, Value
 from kiara.utils.hashing import compute_hash
 from kiara.utils.output import ArrowTabularWrap
 from mmh3 import hash_from_buffer
 
 from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable
+from kiara_plugin.tabular.tabular.table import EMPTY_COLUMN_NAME_MARKER
+
+if TYPE_CHECKING:
+    import pyarrow as pa
+
+
+def store_array(array_obj: "pa.Array", file_name: str, column_name: "str" = "array"):
+    """Utility methdo to stora an array to a file."""
+
+    import pyarrow as pa
+
+    schema = pa.schema([pa.field(column_name, array_obj.type)])
+
+    # TODO: support non-single chunk columns
+    with pa.OSFile(file_name, "wb") as sink:
+        with pa.ipc.new_file(sink, schema=schema) as writer:
+            batch = pa.record_batch(array_obj.chunks, schema=schema)
+            writer.write(batch)
 
 
 class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
@@ -50,6 +71,49 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
             raise Exception(
                 f"Invalid type '{type(value).__name__}', must be an instance of the 'KiaraArray' class."
             )
+
+    def serialize(self, data: KiaraArray) -> SerializedData:
+
+        import pyarrow as pa
+
+        chunk_map = {}
+
+        # TODO: make sure temp dir is in the same partition as file store
+        temp_f = tempfile.mkdtemp()
+
+        def cleanup():
+            shutil.rmtree(temp_f, ignore_errors=True)
+
+        atexit.register(cleanup)
+
+        column: pa.Array = data.arrow_array
+        file_name = os.path.join(temp_f, "array.arrow")
+
+        store_array(array_obj=column, file_name=file_name, column_name="array")
+
+        chunks = {"array.arrow": {"type": "file", "codec": "raw", "file": file_name}}
+
+        serialized_data = {
+            "data_type": self.data_type_name,
+            "data_type_config": self.type_config.dict(),
+            "data": chunks,
+            "serialization_profile": "feather",
+            "serialization_metadata": {
+                "environment": {},
+                "deserialize": {
+                    "file_model": {
+                        "module_type": "deserialize.array",
+                        "module_config": {
+                            "value_type": "array",
+                            "target_profile": "array",
+                        },
+                    }
+                },
+            },
+        }
+
+        serialized = SerializationResult(**serialized_data)
+        return serialized
 
     def render_as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
@@ -127,6 +191,51 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
             raise Exception(
                 f"invalid type '{type(value).__name__}', must be 'KiaraTable'."
             )
+
+    def serialize(self, data: KiaraTable) -> SerializedData:
+
+        import pyarrow as pa
+
+        chunk_map = {}
+
+        # TODO: make sure temp dir is in the same partition as file store
+        temp_f = tempfile.mkdtemp()
+
+        def cleanup():
+            shutil.rmtree(temp_f, ignore_errors=True)
+
+        atexit.register(cleanup)
+
+        for column_name in data.arrow_table.column_names:
+            column: pa.Array = data.arrow_table.column(column_name)
+            if column_name == "":
+                file_name = os.path.join(temp_f, EMPTY_COLUMN_NAME_MARKER)
+            else:
+                file_name = os.path.join(temp_f, column_name)
+            store_array(array_obj=column, file_name=file_name, column_name=column_name)
+            chunk_map[column_name] = {"type": "file", "file": file_name, "codec": "raw"}
+
+        serialized_data = {
+            "data_type": self.data_type_name,
+            "data_type_config": self.type_config.dict(),
+            "data": chunk_map,
+            "serialization_profile": "feather",
+            "serialization_metadata": {
+                "environment": {},
+                "deserialize": {
+                    "file_model": {
+                        "module_type": "deserialize.table",
+                        "module_config": {
+                            "value_type": "table",
+                            "target_profile": "table",
+                        },
+                    }
+                },
+            },
+        }
+
+        serialized = SerializationResult(**serialized_data)
+        return serialized
 
     def render_as__terminal_renderable(
         self, value: "Value", render_config: Mapping[str, Any]
