@@ -1069,14 +1069,7 @@
     ignore_errors
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule._config_cls.only_column" class="md-nav__link">
-    only_column
-  </a>
-  
-    <nav class="md-nav" aria-label="only_column">
+    <nav class="md-nav" aria-label="ignore_errors">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1405,6 +1398,35 @@ DatabaseType            (<a class="autorefs autorefs-external" title="kiara.data
                 <span class="sa">f</span><span class="s2">&quot;Invalid type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;, must be an instance of the &#39;KiaraDatabase&#39; class.&quot;</span>
             <span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SerializedData</span><span class="p">:</span>
+
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;db.sqlite&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;codec&quot;</span><span class="p">:</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">serialized_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type_name</span><span class="p">,</span>
+            <span class="s2">&quot;data_type_config&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_config</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">chunks</span><span class="p">,</span>
+            <span class="s2">&quot;serialization_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;feather&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
+                <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.database&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;serialization_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
+                        <span class="p">},</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+
+        <span class="n">serialized</span> <span class="o">=</span> <span class="n">SerializationResult</span><span class="p">(</span><span class="o">**</span><span class="n">serialized_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">serialized</span>
+
     <span class="k">def</span> <span class="nf">render_as__terminal_renderable</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">render_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -1672,6 +1694,57 @@ avoid adding or removing information from the data (e.g. by changing the resolut
 
 
 
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.data_types.db.DatabaseType.serialize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.data_types.db.DatabaseType.serialize" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/data_types/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SerializedData</span><span class="p">:</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;db.sqlite&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;codec&quot;</span><span class="p">:</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">serialized_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type_name</span><span class="p">,</span>
+        <span class="s2">&quot;data_type_config&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_config</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">chunks</span><span class="p">,</span>
+        <span class="s2">&quot;serialization_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;feather&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.database&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;serialization_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="n">serialized</span> <span class="o">=</span> <span class="n">SerializationResult</span><span class="p">(</span><span class="o">**</span><span class="n">serialized_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">serialized</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
 
 
   </div>
@@ -1804,7 +1877,7 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
                 <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
                 <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deserialize.array&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.array&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
                             <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
                             <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
@@ -2119,7 +2192,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
             <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
             <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deserialize.array&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.array&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
@@ -2246,7 +2319,7 @@ TableType            (<a class="autorefs autorefs-external" title="kiara.data_ty
                 <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
                 <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deserialize.table&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.table&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
                             <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span>
                             <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
@@ -2555,7 +2628,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
             <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
             <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deserialize.table&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.table&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
@@ -4615,17 +4688,12 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
           <summary>Source code in <code>tabular/tabular/db.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CreateDatabaseModule</span><span class="p">(</span><span class="n">CreateFromModule</span><span class="p">):</span>
 
-    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;database.create&quot;</span>
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;create.database&quot;</span>
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CreateDatabaseModuleConfig</span>
 
     <span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-        <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
-
-        <span class="n">input_file</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
-        <span class="n">imported_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">imported_data</span>
 
     <span class="k">def</span> <span class="nf">create__database__from__csv_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
@@ -4866,11 +4934,6 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-    <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
-
-    <span class="n">input_file</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
-    <span class="n">imported_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">imported_data</span>
 </code></pre></div>
         </details>
     </div>
@@ -5123,7 +5186,7 @@ CreateDatabaseModuleConfig            (<a class="autorefs autorefs-external" tit
 
 <h7 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule" class="doc doc-heading">
         <code>
-LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" title="kiara.modules.KiaraModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/__init__/#kiara.modules.KiaraModule">KiaraModule</a>)
+LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" title="kiara.modules.included_core_modules.serialization.DeserializeValueModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/included_core_modules/serialization/#kiara.modules.included_core_modules.serialization.DeserializeValueModule">DeserializeValueModule</a>)
         </code>
 
 
@@ -5135,36 +5198,37 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
         <details class="quote">
           <summary>Source code in <code>tabular/tabular/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LoadDatabaseFromDiskModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LoadDatabaseFromDiskModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
 
-    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;database.load_from.disk&quot;</span>
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.database&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_retrieve_module_characteristics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleCharacteristics</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ModuleCharacteristics</span><span class="p">(</span><span class="n">is_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_serialized_value_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;database&quot;</span>
 
-        <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bytes_structure&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;any&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The bytes.&quot;</span><span class="p">}}</span>
-        <span class="k">return</span> <span class="n">inputs</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_supported_serialization_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;copy&quot;</span>
 
-    <span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The database.&quot;</span><span class="p">}}</span>
+        <span class="k">assert</span> <span class="s2">&quot;db.sqlite&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
 
-        <span class="n">bytes_structure</span><span class="p">:</span> <span class="n">BytesStructure</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;bytes_structure&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO: support multiple chunks</span>
+        <span class="k">assert</span> <span class="n">chunks</span><span class="o">.</span><span class="n">get_number_of_chunks</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">get_chunks</span><span class="p">(</span><span class="n">as_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symlink_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
 
-        <span class="n">db_file</span> <span class="o">=</span> <span class="n">bytes_structure</span><span class="o">.</span><span class="n">chunk_map</span><span class="p">[</span><span class="s2">&quot;db.sqlite&quot;</span><span class="p">]</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db_file</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_file</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">db</span><span class="o">.</span><span class="n">_immutable</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">db_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">db</span>
 </code></pre></div>
         </details>
 
@@ -5178,30 +5242,29 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
 
 
-<h8 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule-methods">Methods<a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule-methods" class="headerlink" title="Permanent link">&para;</a></h8>
+
 
   <div class="doc doc-object doc-method">
 
 
 
-<h9 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.create_inputs_schema" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_inputs_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<h9 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.retrieve_serialized_value_type" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve_serialized_value_type</span><span class="p">()</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
 
-<a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.create_inputs_schema" class="headerlink" title="Permanent link">&para;</a></h9>
+<a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.retrieve_serialized_value_type" class="headerlink" title="Permanent link">&para;</a></h9>
 
     <div class="doc doc-contents ">
 
-      <p>Return the schema for this types' inputs.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/tabular/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
-
-    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bytes_structure&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;any&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The bytes.&quot;</span><span class="p">}}</span>
-    <span class="k">return</span> <span class="n">inputs</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">retrieve_serialized_value_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;database&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -5214,23 +5277,23 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
 
 
-<h9 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.create_outputs_schema" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_outputs_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<h9 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.retrieve_supported_serialization_profile" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve_supported_serialization_profile</span><span class="p">()</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
 
-<a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.create_outputs_schema" class="headerlink" title="Permanent link">&para;</a></h9>
+<a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.retrieve_supported_serialization_profile" class="headerlink" title="Permanent link">&para;</a></h9>
 
     <div class="doc doc-contents ">
 
-      <p>Return the schema for this types' outputs.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/tabular/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
-
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The database.&quot;</span><span class="p">}}</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">retrieve_supported_serialization_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;copy&quot;</span>
 </code></pre></div>
         </details>
     </div>
@@ -5243,27 +5306,61 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
 
 
-<h9 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.process" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span></code>
+<h9 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.retrieve_supported_target_profiles" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve_supported_target_profiles</span><span class="p">()</span></code>
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
 
-<a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.process" class="headerlink" title="Permanent link">&para;</a></h9>
+<a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.retrieve_supported_target_profiles" class="headerlink" title="Permanent link">&para;</a></h9>
 
     <div class="doc doc-contents ">
 
 
         <details class="quote">
           <summary>Source code in <code>tabular/tabular/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">}</span>
+</code></pre></div>
+        </details>
+    </div>
 
-    <span class="n">bytes_structure</span><span class="p">:</span> <span class="n">BytesStructure</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;bytes_structure&quot;</span><span class="p">)</span>
+  </div>
 
-    <span class="n">db_file</span> <span class="o">=</span> <span class="n">bytes_structure</span><span class="o">.</span><span class="n">chunk_map</span><span class="p">[</span><span class="s2">&quot;db.sqlite&quot;</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">db_file</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_file</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">db</span><span class="o">.</span><span class="n">_immutable</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span>
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.to__python_object" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule.to__python_object" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="s2">&quot;db.sqlite&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
+
+    <span class="c1"># TODO: support multiple chunks</span>
+    <span class="k">assert</span> <span class="n">chunks</span><span class="o">.</span><span class="n">get_number_of_chunks</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">get_chunks</span><span class="p">(</span><span class="n">as_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symlink_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">db_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">db</span>
 </code></pre></div>
         </details>
     </div>
@@ -5356,7 +5453,7 @@ CreateTableModule            (<a class="autorefs autorefs-external" title="kiara
           <summary>Source code in <code>tabular/tabular/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CreateTableModule</span><span class="p">(</span><span class="n">CreateFromModule</span><span class="p">):</span>
 
-    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;table.create&quot;</span>
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;create.table&quot;</span>
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CreateTableModuleConfig</span>
 
     <span class="k">def</span> <span class="nf">create__table__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -5876,7 +5973,7 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
           <summary>Source code in <code>tabular/tabular/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DeserializeArrayModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
 
-    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;deserialize.array&quot;</span>
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.array&quot;</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
@@ -5892,7 +5989,7 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
 
     <span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="s2">&quot;array&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="s2">&quot;array&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
 
         <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
 
@@ -5901,7 +5998,7 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
         <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">get_chunks</span><span class="p">(</span><span class="n">as_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symlink_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
 
-        <span class="n">array_file</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">array_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="n">array</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">array_file</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">array</span>
@@ -6024,7 +6121,7 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
           <summary>Source code in <code>tabular/tabular/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;array&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="s2">&quot;array&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
 
     <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
 
@@ -6033,7 +6130,7 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
     <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">get_chunks</span><span class="p">(</span><span class="n">as_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symlink_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
 
-    <span class="n">array_file</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">array_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="n">array</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">array_file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">array</span>
@@ -6075,7 +6172,7 @@ DeserializeTableModule            (<a class="autorefs autorefs-external" title="
           <summary>Source code in <code>tabular/tabular/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DeserializeTableModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
 
-    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;deserialize.table&quot;</span>
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.table&quot;</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
@@ -6262,379 +6359,6 @@ DeserializeTableModule            (<a class="autorefs autorefs-external" title="
 
     <span class="n">table</span> <span class="o">=</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">arrow_table</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">table</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h7 id="kiara_plugin.tabular.tabular.table.LoadTableConfig" class="doc doc-heading">
-        <code>
-LoadTableConfig            (<a class="autorefs autorefs-external" title="kiara.models.module.KiaraModuleConfig" href="https://dharpa.org/kiara/latest/reference/kiara/models/module/__init__/#kiara.models.module.KiaraModuleConfig">KiaraModuleConfig</a>)
-        </code>
-
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
-
-<a href="#kiara_plugin.tabular.tabular.table.LoadTableConfig" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/tabular/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LoadTableConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
-
-    <span class="n">only_column</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to only load a single column instead of the whole table.&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span>
-</code></pre></div>
-        </details>
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-<h8 id="kiara_plugin.tabular.tabular.table.LoadTableConfig-attributes">Attributes<a href="#kiara_plugin.tabular.tabular.table.LoadTableConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h8>
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h9 id="kiara_plugin.tabular.tabular.table.LoadTableConfig.only_column" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">only_column</span><span class="p">:</span> <span class="nb">str</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-  </span>
-
-<a href="#kiara_plugin.tabular.tabular.table.LoadTableConfig.only_column" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-      <p>Whether to only load a single column instead of the whole table.</p>
-    </div>
-
-  </div>
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h7 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule" class="doc doc-heading">
-        <code>
-LoadTableFromDiskModule            (<a class="autorefs autorefs-external" title="kiara.modules.KiaraModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/__init__/#kiara.modules.KiaraModule">KiaraModule</a>)
-        </code>
-
-
-
-<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/tabular/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LoadTableFromDiskModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
-
-    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;table.load_from.disk&quot;</span>
-    <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">LoadTableConfig</span>
-
-    <span class="k">def</span> <span class="nf">_retrieve_module_characteristics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModuleCharacteristics</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ModuleCharacteristics</span><span class="p">(</span><span class="n">is_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
-
-        <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bytes_structure&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;any&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The bytes.&quot;</span><span class="p">}}</span>
-        <span class="k">return</span> <span class="n">inputs</span>
-
-    <span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;only_column&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The table.&quot;</span><span class="p">}}</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;array&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The array.&quot;</span><span class="p">}}</span>
-
-    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
-
-        <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
-
-        <span class="n">bytes_structure</span><span class="p">:</span> <span class="n">BytesStructure</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;bytes_structure&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;only_column&quot;</span><span class="p">):</span>
-            <span class="n">columns</span> <span class="o">=</span> <span class="p">{}</span>
-
-            <span class="k">for</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">chunks</span> <span class="ow">in</span> <span class="n">bytes_structure</span><span class="o">.</span><span class="n">chunk_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-                <span class="k">with</span> <span class="n">pa</span><span class="o">.</span><span class="n">memory_map</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">column_chunk</span><span class="p">:</span>
-                    <span class="n">loaded_arrays</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">ipc</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">column_chunk</span><span class="p">)</span><span class="o">.</span><span class="n">read_all</span><span class="p">()</span>
-                    <span class="n">column</span> <span class="o">=</span> <span class="n">loaded_arrays</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">column_name</span> <span class="o">==</span> <span class="n">EMPTY_COLUMN_NAME_MARKER</span><span class="p">:</span>
-                        <span class="n">columns</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">columns</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
-
-            <span class="n">arrow_table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
-
-            <span class="n">table</span> <span class="o">=</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">arrow_table</span><span class="p">)</span>
-            <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">chunks</span> <span class="o">=</span> <span class="n">bytes_structure</span><span class="o">.</span><span class="n">chunk_map</span><span class="p">[</span><span class="s2">&quot;array.arrow&quot;</span><span class="p">]</span>
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-            <span class="n">array_file</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="c1"># with pa.memory_map(array_file, &quot;r&quot;) as column_chunk:</span>
-            <span class="c1">#     loaded_arrays = pa.ipc.open_file(column_chunk).read_all()</span>
-            <span class="c1">#     column = loaded_arrays.column(&quot;array&quot;)</span>
-            <span class="c1">#</span>
-            <span class="c1"># array = KiaraArray.create_array(column)</span>
-
-            <span class="n">array</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">array_file</span><span class="p">)</span>
-            <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-<h8 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule-classes">Classes<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule-classes" class="headerlink" title="Permanent link">&para;</a></h8>
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h9 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule._config_cls" class="doc doc-heading">
-        <code>
-_config_cls            (<a class="autorefs autorefs-external" title="kiara.models.module.KiaraModuleConfig" href="https://dharpa.org/kiara/latest/reference/kiara/models/module/__init__/#kiara.models.module.KiaraModuleConfig">KiaraModuleConfig</a>)
-        </code>
-
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
-      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
-  </span>
-
-<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule._config_cls" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/tabular/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LoadTableConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
-
-    <span class="n">only_column</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to only load a single column instead of the whole table.&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span>
-</code></pre></div>
-        </details>
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-<h10 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule._config_cls-attributes">Attributes<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule._config_cls-attributes" class="headerlink" title="Permanent link">&para;</a></h10>
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h11 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule._config_cls.only_column" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">only_column</span><span class="p">:</span> <span class="nb">str</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
-  </span>
-
-<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule._config_cls.only_column" class="headerlink" title="Permanent link">&para;</a></h11>
-
-    <div class="doc doc-contents ">
-
-      <p>Whether to only load a single column instead of the whole table.</p>
-    </div>
-
-  </div>
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-<h8 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule-methods">Methods<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule-methods" class="headerlink" title="Permanent link">&para;</a></h8>
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule.create_inputs_schema" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_inputs_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule.create_inputs_schema" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-      <p>Return the schema for this types' inputs.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/tabular/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
-
-    <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bytes_structure&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;any&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The bytes.&quot;</span><span class="p">}}</span>
-    <span class="k">return</span> <span class="n">inputs</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule.create_outputs_schema" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_outputs_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule.create_outputs_schema" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-      <p>Return the schema for this types' outputs.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/tabular/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;only_column&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;table&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The table.&quot;</span><span class="p">}}</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;array&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The array.&quot;</span><span class="p">}}</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule.process" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.tabular.table.LoadTableFromDiskModule.process" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/tabular/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
-
-    <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
-
-    <span class="n">bytes_structure</span><span class="p">:</span> <span class="n">BytesStructure</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;bytes_structure&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;only_column&quot;</span><span class="p">):</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">for</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">chunks</span> <span class="ow">in</span> <span class="n">bytes_structure</span><span class="o">.</span><span class="n">chunk_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-            <span class="k">with</span> <span class="n">pa</span><span class="o">.</span><span class="n">memory_map</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">column_chunk</span><span class="p">:</span>
-                <span class="n">loaded_arrays</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">ipc</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">column_chunk</span><span class="p">)</span><span class="o">.</span><span class="n">read_all</span><span class="p">()</span>
-                <span class="n">column</span> <span class="o">=</span> <span class="n">loaded_arrays</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">column_name</span> <span class="o">==</span> <span class="n">EMPTY_COLUMN_NAME_MARKER</span><span class="p">:</span>
-                    <span class="n">columns</span><span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">columns</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
-
-        <span class="n">arrow_table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
-
-        <span class="n">table</span> <span class="o">=</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">arrow_table</span><span class="p">)</span>
-        <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">chunks</span> <span class="o">=</span> <span class="n">bytes_structure</span><span class="o">.</span><span class="n">chunk_map</span><span class="p">[</span><span class="s2">&quot;array.arrow&quot;</span><span class="p">]</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-        <span class="n">array_file</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># with pa.memory_map(array_file, &quot;r&quot;) as column_chunk:</span>
-        <span class="c1">#     loaded_arrays = pa.ipc.open_file(column_chunk).read_all()</span>
-        <span class="c1">#     column = loaded_arrays.column(&quot;array&quot;)</span>
-        <span class="c1">#</span>
-        <span class="c1"># array = KiaraArray.create_array(column)</span>
-
-        <span class="n">array</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">array_file</span><span class="p">)</span>
-        <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>

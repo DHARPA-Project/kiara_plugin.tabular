@@ -978,6 +978,35 @@ DatabaseType            (<a class="autorefs autorefs-external" title="kiara.data
                 <span class="sa">f</span><span class="s2">&quot;Invalid type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;, must be an instance of the &#39;KiaraDatabase&#39; class.&quot;</span>
             <span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SerializedData</span><span class="p">:</span>
+
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;db.sqlite&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;codec&quot;</span><span class="p">:</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">serialized_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type_name</span><span class="p">,</span>
+            <span class="s2">&quot;data_type_config&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_config</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">chunks</span><span class="p">,</span>
+            <span class="s2">&quot;serialization_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;feather&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
+                <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.database&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;serialization_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
+                        <span class="p">},</span>
+                    <span class="p">}</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+
+        <span class="n">serialized</span> <span class="o">=</span> <span class="n">SerializationResult</span><span class="p">(</span><span class="o">**</span><span class="n">serialized_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">serialized</span>
+
     <span class="k">def</span> <span class="nf">render_as__terminal_renderable</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">render_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -1245,6 +1274,57 @@ avoid adding or removing information from the data (e.g. by changing the resolut
 
 
 
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.data_types.db.DatabaseType.serialize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.data_types.db.DatabaseType.serialize" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/data_types/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SerializedData</span><span class="p">:</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;db.sqlite&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;codec&quot;</span><span class="p">:</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">serialized_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type_name</span><span class="p">,</span>
+        <span class="s2">&quot;data_type_config&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_config</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">chunks</span><span class="p">,</span>
+        <span class="s2">&quot;serialization_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;feather&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.database&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;serialization_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="n">serialized</span> <span class="o">=</span> <span class="n">SerializationResult</span><span class="p">(</span><span class="o">**</span><span class="n">serialized_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">serialized</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
 
 
   </div>
@@ -1377,7 +1457,7 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
                 <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
                 <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deserialize.array&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.array&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
                             <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
                             <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
@@ -1692,7 +1772,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
             <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
             <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deserialize.array&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.array&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
@@ -1819,7 +1899,7 @@ TableType            (<a class="autorefs autorefs-external" title="kiara.data_ty
                 <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
                 <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deserialize.table&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.table&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
                             <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span>
                             <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
@@ -2128,7 +2208,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
             <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="p">{},</span>
             <span class="s2">&quot;deserialize&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;deserialize.table&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;module_type&quot;</span><span class="p">:</span> <span class="s2">&quot;load.table&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;module_config&quot;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;target_profile&quot;</span><span class="p">:</span> <span class="s2">&quot;python_object&quot;</span><span class="p">,</span>
