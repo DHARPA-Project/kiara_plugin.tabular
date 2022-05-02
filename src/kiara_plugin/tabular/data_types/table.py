@@ -76,8 +76,6 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
 
         import pyarrow as pa
 
-        chunk_map = {}
-
         # TODO: make sure temp dir is in the same partition as file store
         temp_f = tempfile.mkdtemp()
 
@@ -98,14 +96,15 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
             "data_type_config": self.type_config.dict(),
             "data": chunks,
             "serialization_profile": "feather",
-            "serialization_metadata": {
+            "metadata": {
                 "environment": {},
                 "deserialize": {
-                    "file_model": {
+                    "python_object": {
                         "module_type": "deserialize.array",
                         "module_config": {
                             "value_type": "array",
-                            "target_profile": "array",
+                            "target_profile": "python_object",
+                            "serialization_profile": "feather",
                         },
                     }
                 },
@@ -160,6 +159,8 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
 
     @classmethod
     def python_class(cls) -> Type:
+        import pyarrow as pa
+
         return pa.Table
 
     def parse_python_obj(self, data: Any) -> KiaraTable:
@@ -220,14 +221,15 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
             "data_type_config": self.type_config.dict(),
             "data": chunk_map,
             "serialization_profile": "feather",
-            "serialization_metadata": {
+            "metadata": {
                 "environment": {},
                 "deserialize": {
-                    "file_model": {
+                    "python_object": {
                         "module_type": "deserialize.table",
                         "module_config": {
                             "value_type": "table",
-                            "target_profile": "table",
+                            "target_profile": "python_object",
+                            "serialization_profile": "feather",
                         },
                     }
                 },

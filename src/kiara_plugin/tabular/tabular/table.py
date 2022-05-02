@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Dict, List, Mapping, Optional, TYPE_CHECKING, Type
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Type
 
 from kiara import KiaraModule
 from kiara.exceptions import KiaraProcessingException
@@ -86,17 +86,17 @@ class DeserializeArrayModule(DeserializeValueModule):
 
     @classmethod
     def retrieve_supported_target_profiles(cls) -> Mapping[str, Type]:
-        return {"array": KiaraArray}
+        return {"python_object": KiaraArray}
 
     @classmethod
-    def retrieve_source_value_type(cls) -> str:
+    def retrieve_serialized_value_type(cls) -> str:
         return "array"
 
     @classmethod
     def retrieve_supported_serialization_profile(cls) -> str:
         return "feather"
 
-    def to__array(self, data: SerializedData, **config: Any):
+    def to__python_object(self, data: SerializedData, **config: Any):
 
         assert "array" in data.get_keys() and len(data.get_keys()) == 1
 
@@ -119,17 +119,17 @@ class DeserializeTableModule(DeserializeValueModule):
 
     @classmethod
     def retrieve_supported_target_profiles(cls) -> Mapping[str, Type]:
-        return {"table": KiaraTable}
+        return {"python_object": KiaraTable}
 
     @classmethod
-    def retrieve_source_value_type(cls) -> str:
+    def retrieve_serialized_value_type(cls) -> str:
         return "table"
 
     @classmethod
     def retrieve_supported_serialization_profile(cls) -> str:
         return "feather"
 
-    def to__table(self, data: SerializedData, **config: Any):
+    def to__python_object(self, data: SerializedData, **config: Any):
 
         import pyarrow as pa
 
