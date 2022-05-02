@@ -6,7 +6,7 @@ from typing import Any, List, Mapping, Optional, Type
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG, KIARA_HASH_FUNCTION
-from kiara.models.values.value import Value
+from kiara.models.values.value import SerializationResult, SerializedData, Value
 from kiara.utils.output import SqliteTabularWrap
 from rich.console import Group
 
@@ -55,6 +55,35 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
             raise ValueError(
                 f"Invalid type '{type(value).__name__}', must be an instance of the 'KiaraDatabase' class."
             )
+
+    def serialize(self, data: KiaraDatabase) -> SerializedData:
+
+        chunks = {
+            "db.sqlite": {"type": "file", "codec": "raw", "file": data.db_file_path}
+        }
+
+        serialized_data = {
+            "data_type": self.data_type_name,
+            "data_type_config": self.type_config.dict(),
+            "data": chunks,
+            "serialization_profile": "feather",
+            "metadata": {
+                "environment": {},
+                "deserialize": {
+                    "python_object": {
+                        "module_type": "load.database",
+                        "module_config": {
+                            "value_type": "database",
+                            "target_profile": "python_object",
+                            "serialization_profile": "copy",
+                        },
+                    }
+                },
+            },
+        }
+
+        serialized = SerializationResult(**serialized_data)
+        return serialized
 
     def render_as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]

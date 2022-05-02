@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Type
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Type
 
 from kiara import KiaraModule
 from kiara.exceptions import KiaraProcessingException
@@ -8,10 +8,8 @@ from kiara.models.filesystem import (
     FileBundle,
     FileModel,
 )
-from kiara.models.module import KiaraModuleConfig
-from kiara.models.module.persistence import BytesStructure
 from kiara.models.values.value import SerializedData, Value, ValueMap
-from kiara.modules import ModuleCharacteristics, ValueSetSchema
+from kiara.modules import ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
@@ -37,7 +35,7 @@ class CreateTableModuleConfig(CreateFromModuleConfig):
 
 class CreateTableModule(CreateFromModule):
 
-    _module_type_name = "table.create"
+    _module_type_name = "create.table"
     _config_cls = CreateTableModuleConfig
 
     def create__table__from__csv_file(self, source_value: Value) -> Any:
@@ -82,7 +80,7 @@ class CreateTableModule(CreateFromModule):
 
 class DeserializeArrayModule(DeserializeValueModule):
 
-    _module_type_name = "deserialize.array"
+    _module_type_name = "load.array"
 
     @classmethod
     def retrieve_supported_target_profiles(cls) -> Mapping[str, Type]:
@@ -98,7 +96,7 @@ class DeserializeArrayModule(DeserializeValueModule):
 
     def to__python_object(self, data: SerializedData, **config: Any):
 
-        assert "array" in data.get_keys() and len(data.get_keys()) == 1
+        assert "array" in data.get_keys() and len(list(data.get_keys())) == 1
 
         chunks = data.get_serialized_data("array")
 
@@ -107,7 +105,7 @@ class DeserializeArrayModule(DeserializeValueModule):
         files = list(chunks.get_chunks(as_files=True, symlink_ok=True))
         assert len(files) == 1
 
-        array_file = chunks[0]
+        array_file = files[0]
 
         array = KiaraArray(data_path=array_file)
         return array
@@ -115,7 +113,7 @@ class DeserializeArrayModule(DeserializeValueModule):
 
 class DeserializeTableModule(DeserializeValueModule):
 
-    _module_type_name = "deserialize.table"
+    _module_type_name = "load.table"
 
     @classmethod
     def retrieve_supported_target_profiles(cls) -> Mapping[str, Type]:
@@ -159,74 +157,74 @@ class DeserializeTableModule(DeserializeValueModule):
         return table
 
 
-class LoadTableConfig(KiaraModuleConfig):
-
-    only_column: Optional[str] = Field(
-        description="Whether to only load a single column instead of the whole table.",
-        default=None,
-    )
-
-
-class LoadTableFromDiskModule(KiaraModule):
-
-    _module_type_name = "table.load_from.disk"
-    _config_cls = LoadTableConfig
-
-    def _retrieve_module_characteristics(self) -> ModuleCharacteristics:
-        return ModuleCharacteristics(is_internal=True)
-
-    def create_inputs_schema(
-        self,
-    ) -> ValueSetSchema:
-
-        inputs = {"bytes_structure": {"type": "any", "doc": "The bytes."}}
-        return inputs
-
-    def create_outputs_schema(
-        self,
-    ) -> ValueSetSchema:
-
-        if not self.get_config_value("only_column"):
-            return {"table": {"type": "table", "doc": "The table."}}
-        else:
-            return {"array": {"type": "array", "doc": "The array."}}
-
-    def process(self, inputs: ValueMap, outputs: ValueMap):
-
-        import pyarrow as pa
-
-        bytes_structure: BytesStructure = inputs.get_value_data("bytes_structure")
-
-        if not self.get_config_value("only_column"):
-            columns = {}
-
-            for column_name, chunks in bytes_structure.chunk_map.items():
-                assert len(chunks) == 1
-                with pa.memory_map(chunks[0], "r") as column_chunk:
-                    loaded_arrays: pa.Table = pa.ipc.open_file(column_chunk).read_all()
-                    column = loaded_arrays.column(column_name)
-                    if column_name == EMPTY_COLUMN_NAME_MARKER:
-                        columns[""] = column
-                    else:
-                        columns[column_name] = column
-
-            arrow_table = pa.table(columns)
-
-            table = KiaraTable.create_table(arrow_table)
-            outputs.set_value("table", table)
-        else:
-            chunks = bytes_structure.chunk_map["array.arrow"]
-            assert len(chunks) == 1
-
-            array_file = chunks[0]
-            # with pa.memory_map(array_file, "r") as column_chunk:
-            #     loaded_arrays = pa.ipc.open_file(column_chunk).read_all()
-            #     column = loaded_arrays.column("array")
-            #
-            # array = KiaraArray.create_array(column)
-
-            array = KiaraArray(data_path=array_file)
-            outputs.set_value("array", array)
+# class LoadTableConfig(KiaraModuleConfig):
+#
+#     only_column: Optional[str] = Field(
+#         description="Whether to only load a single column instead of the whole table.",
+#         default=None,
+#     )
+#
+#
+# class LoadTableFromDiskModule(KiaraModule):
+#
+#     _module_type_name = "load.table"
+#     _config_cls = LoadTableConfig
+#
+#     def _retrieve_module_characteristics(self) -> ModuleCharacteristics:
+#         return ModuleCharacteristics(is_internal=True)
+#
+#     def create_inputs_schema(
+#         self,
+#     ) -> ValueSetSchema:
+#
+#         inputs = {"bytes_structure": {"type": "any", "doc": "The bytes."}}
+#         return inputs
+#
+#     def create_outputs_schema(
+#         self,
+#     ) -> ValueSetSchema:
+#
+#         if not self.get_config_value("only_column"):
+#             return {"table": {"type": "table", "doc": "The table."}}
+#         else:
+#             return {"array": {"type": "array", "doc": "The array."}}
+#
+#     def process(self, inputs: ValueMap, outputs: ValueMap):
+#
+#         import pyarrow as pa
+#
+#         bytes_structure: BytesStructure = inputs.get_value_data("bytes_structure")
+#
+#         if not self.get_config_value("only_column"):
+#             columns = {}
+#
+#             for column_name, chunks in bytes_structure.chunk_map.items():
+#                 assert len(chunks) == 1
+#                 with pa.memory_map(chunks[0], "r") as column_chunk:
+#                     loaded_arrays: pa.Table = pa.ipc.open_file(column_chunk).read_all()
+#                     column = loaded_arrays.column(column_name)
+#                     if column_name == EMPTY_COLUMN_NAME_MARKER:
+#                         columns[""] = column
+#                     else:
+#                         columns[column_name] = column
+#
+#             arrow_table = pa.table(columns)
+#
+#             table = KiaraTable.create_table(arrow_table)
+#             outputs.set_value("table", table)
+#         else:
+#             chunks = bytes_structure.chunk_map["array.arrow"]
+#             assert len(chunks) == 1
+#
+#             array_file = chunks[0]
+#             # with pa.memory_map(array_file, "r") as column_chunk:
+#             #     loaded_arrays = pa.ipc.open_file(column_chunk).read_all()
+#             #     column = loaded_arrays.column("array")
+#             #
+#             # array = KiaraArray.create_array(column)
+#
+#             array = KiaraArray(data_path=array_file)
+#             outputs.set_value("array", array)
 
 
 # class SaveTableToDiskModule(PersistValueModule):

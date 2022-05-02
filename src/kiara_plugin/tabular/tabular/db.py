@@ -3,18 +3,16 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, List
+from typing import Any, List, Mapping, Type
 
-from kiara import KiaraModule
 from kiara.exceptions import KiaraProcessingException
-from kiara.models.filesystem import FileBundle, FileModel
-from kiara.models.module.persistence import BytesStructure
-from kiara.models.values.value import Value, ValueMap
-from kiara.modules import ModuleCharacteristics, ValueSetSchema
+from kiara.models.filesystem import FileBundle
+from kiara.models.values.value import SerializedData, Value
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
 )
+from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils import find_free_id, log_message
 from pydantic import Field
 
@@ -46,17 +44,12 @@ class CreateDatabaseModuleConfig(CreateFromModuleConfig):
 
 class CreateDatabaseModule(CreateFromModule):
 
-    _module_type_name = "database.create"
+    _module_type_name = "create.database"
     _config_cls = CreateDatabaseModuleConfig
 
     def create__database__from__csv_file(self, source_value: Value) -> Any:
 
         raise NotImplementedError()
-        from pyarrow import csv
-
-        input_file: FileModel = source_value.data
-        imported_data = csv.read_csv(input_file.path)
-        return imported_data
 
     def create__database__from__csv_file_bundle(self, source_value: Value) -> Any:
 
@@ -114,72 +107,34 @@ class CreateDatabaseModule(CreateFromModule):
         return db_path
 
 
-# class SaveDatabaseModule(PersistValueModule):
-#
-#     _module_type_name = "database.save_to.disk"
-#
-#     def get_persistence_target_name(self) -> str:
-#         return "disk"
-#
-#     def get_persistence_format_name(self) -> str:
-#         return "arrays"
-#
-#     def data_type__database(self, value: Value, persistence_config: Mapping[str, Any]):
-#
-#         db: KiaraDatabase = value.data  # type: ignore
-#         db._lock_db()
-#
-#         # TODO: assert type inherits from database?
-#         chunk_map = {}
-#         chunk_map["db.sqlite"] = [db.db_file_path]
-#
-#         bytes_structure_data: Dict[str, Any] = {
-#             "data_type": value.value_schema.type,
-#             "data_type_config": value.value_schema.type_config,
-#             "chunk_map": chunk_map,
-#         }
-#         bytes_structure = BytesStructure.construct(**bytes_structure_data)
-#
-#         load_config_data = {
-#             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
-#             "module_type": "database.load_from.disk",
-#             "inputs": {
-#                 "bytes_structure": LOAD_CONFIG_PLACEHOLDER,
-#             },
-#             "output_name": value.value_schema.type,
-#         }
-#
-#         load_config = LoadConfig.construct(**load_config_data)
-#         return load_config, bytes_structure
+class LoadDatabaseFromDiskModule(DeserializeValueModule):
 
+    _module_type_name = "load.database"
 
-class LoadDatabaseFromDiskModule(KiaraModule):
+    @classmethod
+    def retrieve_supported_target_profiles(cls) -> Mapping[str, Type]:
+        return {"python_object": KiaraDatabase}
 
-    _module_type_name = "database.load_from.disk"
+    @classmethod
+    def retrieve_serialized_value_type(cls) -> str:
+        return "database"
 
-    def _retrieve_module_characteristics(self) -> ModuleCharacteristics:
-        return ModuleCharacteristics(is_internal=True)
+    @classmethod
+    def retrieve_supported_serialization_profile(cls) -> str:
+        return "copy"
 
-    def create_inputs_schema(
-        self,
-    ) -> ValueSetSchema:
+    def to__python_object(self, data: SerializedData, **config: Any):
 
-        inputs = {"bytes_structure": {"type": "any", "doc": "The bytes."}}
-        return inputs
+        assert "db.sqlite" in data.get_keys() and len(list(data.get_keys())) == 1
 
-    def create_outputs_schema(
-        self,
-    ) -> ValueSetSchema:
+        chunks = data.get_serialized_data("db.sqlite")
 
-        return {"database": {"type": "database", "doc": "The database."}}
+        # TODO: support multiple chunks
+        assert chunks.get_number_of_chunks() == 1
+        files = list(chunks.get_chunks(as_files=True, symlink_ok=True))
+        assert len(files) == 1
 
-    def process(self, inputs: ValueMap, outputs: ValueMap):
+        db_file = files[0]
 
-        bytes_structure: BytesStructure = inputs.get_value_data("bytes_structure")
-
-        db_file = bytes_structure.chunk_map["db.sqlite"]
-        assert len(db_file) == 1
-        db = KiaraDatabase(db_file_path=db_file[0])
-        db._immutable = True
-
-        outputs.set_value("database", db)
+        db = KiaraDatabase(db_file_path=db_file)
+        return db

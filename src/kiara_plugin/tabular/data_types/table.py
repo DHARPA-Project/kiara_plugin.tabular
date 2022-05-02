@@ -100,7 +100,7 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
                 "environment": {},
                 "deserialize": {
                     "python_object": {
-                        "module_type": "deserialize.array",
+                        "module_type": "load.array",
                         "module_config": {
                             "value_type": "array",
                             "target_profile": "python_object",
@@ -225,7 +225,7 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
                 "environment": {},
                 "deserialize": {
                     "python_object": {
-                        "module_type": "deserialize.table",
+                        "module_type": "load.table",
                         "module_config": {
                             "value_type": "table",
                             "target_profile": "python_object",
