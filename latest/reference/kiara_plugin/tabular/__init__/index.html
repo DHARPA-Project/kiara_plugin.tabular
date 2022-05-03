@@ -5989,9 +5989,9 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
 
     <span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="s2">&quot;array&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="s2">&quot;array.arrow&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
 
-        <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array.arrow&quot;</span><span class="p">)</span>
 
         <span class="c1"># TODO: support multiple chunks</span>
         <span class="k">assert</span> <span class="n">chunks</span><span class="o">.</span><span class="n">get_number_of_chunks</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
@@ -6121,9 +6121,9 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
           <summary>Source code in <code>tabular/tabular/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 
-    <span class="k">assert</span> <span class="s2">&quot;array&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="s2">&quot;array.arrow&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
 
-    <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array.arrow&quot;</span><span class="p">)</span>
 
     <span class="c1"># TODO: support multiple chunks</span>
     <span class="k">assert</span> <span class="n">chunks</span><span class="o">.</span><span class="n">get_number_of_chunks</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
