@@ -24,9 +24,8 @@ requirements:
   run:
     - python
     - kiara>=0.4.0
-    - kiara_plugin.core_types
     - pyarrow>=7.0.0
-    - vaex-core>=4.9.0
+    - sqlite-utlis>=3.20
 
 about:
   home: https://github.com/DHARPA-Project/kiara_plugin.tabular
