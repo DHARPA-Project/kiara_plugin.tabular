@@ -96,9 +96,9 @@ class DeserializeArrayModule(DeserializeValueModule):
 
     def to__python_object(self, data: SerializedData, **config: Any):
 
-        assert "array" in data.get_keys() and len(list(data.get_keys())) == 1
+        assert "array.arrow" in data.get_keys() and len(list(data.get_keys())) == 1
 
-        chunks = data.get_serialized_data("array")
+        chunks = data.get_serialized_data("array.arrow")
 
         # TODO: support multiple chunks
         assert chunks.get_number_of_chunks() == 1

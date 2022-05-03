@@ -1,0 +1,23 @@
+{
+  "pipeline_name": "import.table.from.csv_file",
+  "doc": "Load a table from a csv file.",
+  "steps": [
+    {
+      "module_type": "import.file",
+      "step_id": "import_file"
+    },
+    {
+      "module_type": "create.table.from.csv_file",
+      "step_id": "create_table_from_files",
+      "input_links": {
+        "csv_file": "import_file.file"
+      }
+    }],
+  "input_aliases": {
+    "import_file.path": "path"
+  },
+  "output_aliases": {
+    "import_file.file": "imported_file",
+    "create_table_from_files.table": "table"
+  }
+}
