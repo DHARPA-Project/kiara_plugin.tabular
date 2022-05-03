@@ -25,7 +25,7 @@ requirements:
     - python
     - kiara>=0.4.0
     - pyarrow>=7.0.0
-    - sqlite-utlis>=3.20
+    - sqlite-utils>=3.20
 
 about:
   home: https://github.com/DHARPA-Project/kiara_plugin.tabular
