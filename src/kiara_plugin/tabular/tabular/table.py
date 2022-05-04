@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Type
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Type
 
 from kiara import KiaraModule
 from kiara.exceptions import KiaraProcessingException
@@ -8,6 +8,7 @@ from kiara.models.filesystem import (
     FileBundle,
     FileModel,
 )
+from kiara.models.module import KiaraModuleConfig
 from kiara.models.values.value import SerializedData, Value, ValueMap
 from kiara.modules import ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
@@ -17,6 +18,7 @@ from kiara.modules.included_core_modules.create_from import (
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from pydantic import Field
 
+from kiara_plugin.tabular.defaults import RESERVED_SQL_KEYWORDS
 from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable, KiaraTableMetadata
 
 if TYPE_CHECKING:
@@ -157,194 +159,6 @@ class DeserializeTableModule(DeserializeValueModule):
         return table
 
 
-# class LoadTableConfig(KiaraModuleConfig):
-#
-#     only_column: Optional[str] = Field(
-#         description="Whether to only load a single column instead of the whole table.",
-#         default=None,
-#     )
-#
-#
-# class LoadTableFromDiskModule(KiaraModule):
-#
-#     _module_type_name = "load.table"
-#     _config_cls = LoadTableConfig
-#
-#     def _retrieve_module_characteristics(self) -> ModuleCharacteristics:
-#         return ModuleCharacteristics(is_internal=True)
-#
-#     def create_inputs_schema(
-#         self,
-#     ) -> ValueSetSchema:
-#
-#         inputs = {"bytes_structure": {"type": "any", "doc": "The bytes."}}
-#         return inputs
-#
-#     def create_outputs_schema(
-#         self,
-#     ) -> ValueSetSchema:
-#
-#         if not self.get_config_value("only_column"):
-#             return {"table": {"type": "table", "doc": "The table."}}
-#         else:
-#             return {"array": {"type": "array", "doc": "The array."}}
-#
-#     def process(self, inputs: ValueMap, outputs: ValueMap):
-#
-#         import pyarrow as pa
-#
-#         bytes_structure: BytesStructure = inputs.get_value_data("bytes_structure")
-#
-#         if not self.get_config_value("only_column"):
-#             columns = {}
-#
-#             for column_name, chunks in bytes_structure.chunk_map.items():
-#                 assert len(chunks) == 1
-#                 with pa.memory_map(chunks[0], "r") as column_chunk:
-#                     loaded_arrays: pa.Table = pa.ipc.open_file(column_chunk).read_all()
-#                     column = loaded_arrays.column(column_name)
-#                     if column_name == EMPTY_COLUMN_NAME_MARKER:
-#                         columns[""] = column
-#                     else:
-#                         columns[column_name] = column
-#
-#             arrow_table = pa.table(columns)
-#
-#             table = KiaraTable.create_table(arrow_table)
-#             outputs.set_value("table", table)
-#         else:
-#             chunks = bytes_structure.chunk_map["array.arrow"]
-#             assert len(chunks) == 1
-#
-#             array_file = chunks[0]
-#             # with pa.memory_map(array_file, "r") as column_chunk:
-#             #     loaded_arrays = pa.ipc.open_file(column_chunk).read_all()
-#             #     column = loaded_arrays.column("array")
-#             #
-#             # array = KiaraArray.create_array(column)
-#
-#             array = KiaraArray(data_path=array_file)
-#             outputs.set_value("array", array)
-
-
-# class SaveTableToDiskModule(PersistValueModule):
-#
-#     _module_type_name = "table.save_to.disk.as.feather"
-#
-#     def get_persistence_target_name(self) -> str:
-#         return "disk"
-#
-#     def get_persistence_format_name(self) -> str:
-#         return "arrays"
-#
-#     def data_type__array(self, value: Value, persistence_config: Mapping[str, Any]):
-#
-#         import pyarrow as pa
-#
-#         kiara_array: KiaraArray = value.data
-#
-#         chunk_map = {}
-#
-#         # TODO: make sure temp dir is in the same partition as file store
-#         temp_f = tempfile.mkdtemp()
-#
-#         def cleanup():
-#             shutil.rmtree(temp_f, ignore_errors=True)
-#
-#         atexit.register(cleanup)
-#
-#         column: pa.Array = kiara_array.arrow_array
-#         file_name = os.path.join(temp_f, "array.arrow")
-#         self._store_array(array_obj=column, file_name=file_name, column_name="array")
-#         chunk_map["array.arrow"] = [file_name]
-#
-#         bytes_structure_data: Dict[str, Any] = {
-#             "data_type": value.value_schema.type,
-#             "data_type_config": value.value_schema.type_config,
-#             "chunk_map": chunk_map,
-#         }
-#
-#         bytes_structure = BytesStructure.construct(**bytes_structure_data)
-#
-#         load_config_data = {
-#             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
-#             "module_type": "table.load_from.disk",
-#             "module_config": {"only_column": "array"},
-#             "inputs": {
-#                 "bytes_structure": LOAD_CONFIG_PLACEHOLDER,
-#             },
-#             "output_name": value.value_schema.type,
-#         }
-#
-#         load_config = LoadConfig(**load_config_data)
-#         return load_config, bytes_structure
-#
-#     def data_type__table(
-#         self, value: Value, persistence_config: Mapping[str, Any]
-#     ) -> Tuple[LoadConfig, Optional[BytesStructure]]:
-#         """Store the table as Apache Arrow feather file
-#
-#         The table will be store with one feather file per column, to support de-duplicated storage of re-arranged tables.
-#         """
-#
-#         import pyarrow as pa
-#
-#         table: KiaraTable = value.data
-#
-#         chunk_map = {}
-#
-#         # TODO: make sure temp dir is in the same partition as file store
-#         temp_f = tempfile.mkdtemp()
-#
-#         def cleanup():
-#             shutil.rmtree(temp_f, ignore_errors=True)
-#
-#         atexit.register(cleanup)
-#
-#         for column_name in table.arrow_table.column_names:
-#             column: pa.Array = table.arrow_table.column(column_name)
-#             if column_name == "":
-#                 file_name = os.path.join(temp_f, EMPTY_COLUMN_NAME_MARKER)
-#             else:
-#                 file_name = os.path.join(temp_f, column_name)
-#             self._store_array(
-#                 array_obj=column, file_name=file_name, column_name=column_name
-#             )
-#             chunk_map[column_name] = [file_name]
-#
-#         bytes_structure_data: Dict[str, Any] = {
-#             "data_type": value.value_schema.type,
-#             "data_type_config": value.value_schema.type_config,
-#             "chunk_map": chunk_map,
-#         }
-#
-#         bytes_structure = BytesStructure.construct(**bytes_structure_data)
-#
-#         load_config_data = {
-#             "provisioning_strategy": ByteProvisioningStrategy.FILE_PATH_MAP,
-#             "module_type": "table.load_from.disk",
-#             "inputs": {"bytes_structure": LOAD_CONFIG_PLACEHOLDER},
-#             "output_name": value.value_schema.type,
-#         }
-#
-#         load_config = LoadConfig(**load_config_data)
-#         return load_config, bytes_structure
-#
-#     def _store_array(
-#         self, array_obj: "pa.Array", file_name: str, column_name: "str" = "array"
-#     ):
-#
-#         import pyarrow as pa
-#
-#         schema = pa.schema([pa.field(column_name, array_obj.type)])
-#
-#         # TODO: support non-single chunk columns
-#         with pa.OSFile(file_name, "wb") as sink:
-#             with pa.ipc.new_file(sink, schema=schema) as writer:
-#                 batch = pa.record_batch(array_obj.chunks, schema=schema)
-#                 writer.write(batch)
-
-
 class CutColumnModule(KiaraModule):
     """Cut off one column from a table, returning an array."""
 
@@ -392,3 +206,71 @@ class CutColumnModule(KiaraModule):
         column = table.column(column_name)
 
         outputs.set_value("array", column)
+
+
+class QueryTableSQLModuleConfig(KiaraModuleConfig):
+
+    query: Optional[str] = Field(
+        description="The query to execute. If not specified, the user will be able to provide their own.",
+        default=None,
+    )
+    relation_name: Optional[str] = Field(
+        description="The name the table is referred to in the sql query. If not specified, the user will be able to provide their own.",
+        default="data",
+    )
+
+
+class QueryTableSQL(KiaraModule):
+    """Execute a sql query against an (Arrow) table."""
+
+    _module_type_name = "query.table"
+    _config_cls = QueryTableSQLModuleConfig
+
+    def create_inputs_schema(
+        self,
+    ) -> ValueSetSchema:
+
+        inputs = {
+            "table": {
+                "type": "table",
+                "doc": "The table to query",
+            }
+        }
+
+        if self.get_config_value("query") is None:
+            inputs["query"] = {"type": "string", "doc": "The query."}
+            inputs["relation_name"] = {
+                "type": "string",
+                "doc": "The name the table is referred to in the sql query.",
+                "default": "data",
+            }
+
+        return inputs
+
+    def create_outputs_schema(
+        self,
+    ) -> ValueSetSchema:
+
+        return {"query_result": {"type": "table", "doc": "The query result."}}
+
+    def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+        import duckdb
+
+        if self.get_config_value("query") is None:
+            _query: str = inputs.get_value_data("query")
+            _relation_name: str = inputs.get_value_data("relation_name")
+        else:
+            _query = self.get_config_value("query")
+            _relation_name = self.get_config_value("relation_name")
+
+        if _relation_name.upper() in RESERVED_SQL_KEYWORDS:
+            raise KiaraProcessingException(
+                f"Invalid relation name '{_relation_name}': this is a reserved sql keyword, please select a different name."
+            )
+
+        _table: KiaraTable = inputs.get_value_data("table")
+        rel_from_arrow = duckdb.arrow(_table.arrow_table)
+        result: duckdb.DuckDBPyResult = rel_from_arrow.query(_relation_name, _query)
+
+        outputs.set_value("query_result", result.fetch_arrow_table())

@@ -190,12 +190,8 @@ class KiaraDatabase(KiaraModel):
         if data:
             statement.bindparams(**data)
 
-        self.create_if_not_exists()
-        conn = self.get_sqlalchemy_engine().raw_connection()
-        conn.execute(statement)
-
-        conn.commit()
-        conn.close()
+        with self.get_sqlalchemy_engine().connect() as con:
+            con.execute(statement)
 
         if invalidate:
             self._invalidate()

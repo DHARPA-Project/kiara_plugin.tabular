@@ -18,7 +18,7 @@ from kiara.modules.included_core_modules.create_from import (
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils import find_free_id, log_message
 from pydantic import Field
-from sqlalchemy import insert
+from sqlalchemy import insert, text
 
 from kiara_plugin.tabular.defaults import DEFAULT_TABULAR_DATA_CHUNK_SIZE
 from kiara_plugin.tabular.models.db import KiaraDatabase
@@ -241,10 +241,14 @@ class LoadDatabaseFromDiskModule(DeserializeValueModule):
 
 class QueryDatabaseConfig(KiaraModuleConfig):
 
-    fixed_query: Optional[str] = Field(description="The query.", default=None)
+    query: Optional[str] = Field(description="The query.", default=None)
 
 
 class QueryDatabaseModule(KiaraModule):
+
+    _config_cls = QueryDatabaseConfig
+    _module_type_name = "query.database"
+
     def create_inputs_schema(
         self,
     ) -> ValueSetSchema:
@@ -253,7 +257,7 @@ class QueryDatabaseModule(KiaraModule):
             "database": {"type": "database", "doc": "The database to query."}
         }
 
-        if not self.get_config_value("fixed_query"):
+        if not self.get_config_value("query"):
             result["query"] = {"type": "string", "doc": "The query to execute."}
 
         return result
@@ -263,3 +267,24 @@ class QueryDatabaseModule(KiaraModule):
     ) -> ValueSetSchema:
 
         return {"query_result": {"type": "table", "doc": "The query result."}}
+
+    def process(self, inputs: ValueMap, outputs: ValueMap):
+
+        import pyarrow as pa
+
+        database: KiaraDatabase = inputs.get_value_data("database")
+        query = self.get_config_value("query")
+        if query is None:
+            query = inputs.get_value_data("query")
+
+        # TODO: make this memory efficent
+
+        result_columns: Dict[str, List[Any]] = {}
+        with database.get_sqlalchemy_engine().connect() as con:
+            result = con.execute(text(query))
+            for r in result:
+                for k, v in dict(r).items():
+                    result_columns.setdefault(k, []).append(v)
+
+        table = pa.Table.from_pydict(result_columns)
+        outputs.set_value("query_result", table)
