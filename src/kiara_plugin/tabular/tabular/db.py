@@ -3,11 +3,14 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, List, Mapping, Type
+from typing import Any, Dict, List, Mapping, Optional, Type
 
+from kiara import KiaraModule
 from kiara.exceptions import KiaraProcessingException
-from kiara.models.filesystem import FileBundle
-from kiara.models.values.value import SerializedData, Value
+from kiara.models.filesystem import FileBundle, FileModel
+from kiara.models.module import KiaraModuleConfig
+from kiara.models.values.value import SerializedData, Value, ValueMap
+from kiara.modules import ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
@@ -15,9 +18,13 @@ from kiara.modules.included_core_modules.create_from import (
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils import find_free_id, log_message
 from pydantic import Field
+from sqlalchemy import insert
 
+from kiara_plugin.tabular.defaults import DEFAULT_TABULAR_DATA_CHUNK_SIZE
 from kiara_plugin.tabular.models.db import KiaraDatabase
+from kiara_plugin.tabular.models.table import KiaraTable
 from kiara_plugin.tabular.utils import (
+    create_sqlite_schema_data_from_arrow_table,
     create_sqlite_table_from_tabular_file,
     insert_db_table_from_file_bundle,
 )
@@ -32,9 +39,9 @@ class CreateDatabaseModuleConfig(CreateFromModuleConfig):
     merge_into_single_table: bool = Field(
         description="Whether to merge all csv files into a single table.", default=False
     )
-    include_source_metadata: bool = Field(
+    include_source_metadata: Optional[bool] = Field(
         description="Whether to include a table with metadata about the source files.",
-        default=True,
+        default=None,
     )
     include_source_file_content: bool = Field(
         description="When including source metadata, whether to also include the original raw (string) content.",
@@ -49,7 +56,48 @@ class CreateDatabaseModule(CreateFromModule):
 
     def create__database__from__csv_file(self, source_value: Value) -> Any:
 
-        raise NotImplementedError()
+        temp_f = tempfile.mkdtemp()
+        db_path = os.path.join(temp_f, "db.sqlite")
+
+        def cleanup():
+            shutil.rmtree(db_path, ignore_errors=True)
+
+        atexit.register(cleanup)
+
+        file_item: FileModel = source_value.data
+        table_name = file_item.file_name_without_extension
+
+        try:
+            create_sqlite_table_from_tabular_file(
+                target_db_file=db_path, file_item=file_item, table_name=table_name
+            )
+        except Exception as e:
+            if self.get_config_value("ignore_errors") is True or True:
+                log_message("ignore.import_file", file=file_item.path, reason=str(e))
+
+            raise KiaraProcessingException(e)
+
+        include_raw_content_in_file_info: bool = self.get_config_value(
+            "include_source_metadata"
+        )
+        if include_raw_content_in_file_info:
+            db = KiaraDatabase(db_file_path=db_path)
+            db.create_if_not_exists()
+            include_content: bool = self.get_config_value("include_source_file_content")
+            db._unlock_db()
+            included_files = {file_item.file_name: file_item}
+            file_bundle = FileBundle.create_from_file_models(
+                files=included_files, bundle_name=file_item.file_name
+            )
+            insert_db_table_from_file_bundle(
+                database=db,
+                file_bundle=file_bundle,
+                table_name="source_files_metadata",
+                include_content=include_content,
+            )
+            db._lock_db()
+
+        return db_path
 
     def create__database__from__csv_file_bundle(self, source_value: Value) -> Any:
 
@@ -57,7 +105,7 @@ class CreateDatabaseModule(CreateFromModule):
         if merge_into_single_table:
             raise NotImplementedError("Not supported (yet).")
 
-        include_raw_content_in_file_info: bool = self.get_config_value(
+        include_raw_content_in_file_info: Optional[bool] = self.get_config_value(
             "include_source_metadata"
         )
 
@@ -93,7 +141,7 @@ class CreateDatabaseModule(CreateFromModule):
                     continue
                 raise KiaraProcessingException(e)
 
-        if include_raw_content_in_file_info:
+        if include_raw_content_in_file_info in [None, True]:
             include_content: bool = self.get_config_value("include_source_file_content")
             db._unlock_db()
             insert_db_table_from_file_bundle(
@@ -105,6 +153,57 @@ class CreateDatabaseModule(CreateFromModule):
             db._lock_db()
 
         return db_path
+
+    def create_optional_inputs(
+        self, source_type: str, target_type
+    ) -> Optional[Mapping[str, Mapping[str, Any]]]:
+
+        if target_type == "database" and source_type == "table":
+
+            return {
+                "table_name": {
+                    "type": "string",
+                    "doc": "The name of the table in the new database.",
+                    "default": "imported_table",
+                }
+            }
+        else:
+            return None
+
+    def create__database__from__table(
+        self, source_value: Value, optional: ValueMap
+    ) -> Any:
+
+        table_name = optional.get_value_data("table_name")
+        if not table_name:
+            table_name = "imported_table"
+
+        table: KiaraTable = source_value.data
+        arrow_table = table.arrow_table
+
+        column_map = None
+        index_columns = None
+
+        sqlite_schema = create_sqlite_schema_data_from_arrow_table(
+            table=arrow_table, index_columns=index_columns, column_map=column_map
+        )
+
+        db = KiaraDatabase.create_in_temp_dir()
+        db._unlock_db()
+        engine = db.get_sqlalchemy_engine()
+
+        table = sqlite_schema.create_table(table_name=table_name, engine=engine)
+
+        with engine.connect() as conn:
+
+            for batch in arrow_table.to_batches(
+                max_chunksize=DEFAULT_TABULAR_DATA_CHUNK_SIZE
+            ):
+                conn.execute(insert(table), batch.to_pylist())
+                conn.commit()
+
+        db._lock_db()
+        return db
 
 
 class LoadDatabaseFromDiskModule(DeserializeValueModule):
@@ -138,3 +237,29 @@ class LoadDatabaseFromDiskModule(DeserializeValueModule):
 
         db = KiaraDatabase(db_file_path=db_file)
         return db
+
+
+class QueryDatabaseConfig(KiaraModuleConfig):
+
+    fixed_query: Optional[str] = Field(description="The query.", default=None)
+
+
+class QueryDatabaseModule(KiaraModule):
+    def create_inputs_schema(
+        self,
+    ) -> ValueSetSchema:
+
+        result: Dict[str, Dict[str, Any]] = {
+            "database": {"type": "database", "doc": "The database to query."}
+        }
+
+        if not self.get_config_value("fixed_query"):
+            result["query"] = {"type": "string", "doc": "The query to execute."}
+
+        return result
+
+    def create_outputs_schema(
+        self,
+    ) -> ValueSetSchema:
+
+        return {"query_result": {"type": "table", "doc": "The query result."}}

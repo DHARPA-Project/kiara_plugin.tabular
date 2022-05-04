@@ -4,15 +4,64 @@ import hashlib
 import os
 import shutil
 import tempfile
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Mapping, Optional, Union
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple, Union
 
 from kiara.models import KiaraModel
-from pydantic import Field, PrivateAttr, validator
+from pydantic import BaseModel, Field, PrivateAttr, validator
+from sqlalchemy import Column, MetaData, create_engine, event, inspect, text
+from sqlalchemy.engine import Engine
+from sqlalchemy.engine.reflection import Inspector
+from sqlalchemy.sql.elements import TextClause
+from sqlalchemy.testing.schema import Table
 
-if TYPE_CHECKING:
-    from sqlalchemy.engine import Engine
-    from sqlalchemy.engine.reflection import Inspector
-    from sqlalchemy.sql.elements import TextClause
+from kiara_plugin.tabular.defaults import SQLITE_SQLALCHEMY_TYPE_MAP, SqliteDataType
+
+
+class SqliteTableSchema(BaseModel):
+
+    columns: Dict[str, SqliteDataType] = Field(
+        description="The table columns and their attributes."
+    )
+    index_columns: List[str] = Field(
+        description="The columns to index", default_factory=list
+    )
+    nullable_columns: List[str] = Field(
+        description="The columns that are nullable.", default_factory=list
+    )
+    primary_key: Optional[str] = Field(
+        description="The primary key for this table.", default=None
+    )
+
+    def create_table_metadata(
+        self,
+        table_name: str,
+    ) -> Tuple[MetaData, Table]:
+        """Create an sql script to initialize a table.
+
+        Arguments:
+            column_attrs: a map with the column name as key, and column details ('type', 'extra_column_info', 'create_index') as values
+        """
+
+        table_columns = []
+        for column_name, data_type in self.columns.items():
+            column_obj = Column(
+                column_name,
+                SQLITE_SQLALCHEMY_TYPE_MAP[data_type],
+                nullable=column_name in self.nullable_columns,
+                primary_key=column_name == self.primary_key,
+                index=column_name in self.index_columns,
+            )
+            table_columns.append(column_obj)
+
+        meta = MetaData()
+        table = Table(table_name, meta, *table_columns)
+        return meta, table
+
+    def create_table(self, table_name: str, engine: Engine) -> Table:
+
+        meta, table = self.create_table_metadata(table_name=table_name)
+        meta.create_all(engine)
+        return table
 
 
 class KiaraDatabase(KiaraModel):
@@ -94,16 +143,12 @@ class KiaraDatabase(KiaraModel):
         if self._cached_engine is not None:
             return self._cached_engine
 
-        from sqlalchemy import create_engine
-
         def _pragma_on_connect(dbapi_con, con_record):
             dbapi_con.execute("PRAGMA query_only = ON")
 
         self._cached_engine = create_engine(self.db_url, future=True)
 
         if self._lock:
-            from sqlalchemy import event
-
             event.listen(self._cached_engine, "connect", _pragma_on_connect)
 
         return self._cached_engine
@@ -138,8 +183,6 @@ class KiaraDatabase(KiaraModel):
           data: (optional) data, to be bound to the statement
           invalidate: whether to invalidate cached values within this object
         """
-
-        from sqlalchemy import text
 
         if isinstance(statement, str):
             statement = text(statement)
@@ -179,8 +222,6 @@ class KiaraDatabase(KiaraModel):
 
         if self._cached_inspector is not None:
             return self._cached_inspector
-
-        from sqlalchemy.inspection import inspect
 
         self._cached_inspector = inspect(self.get_sqlalchemy_engine())
         return self._cached_inspector

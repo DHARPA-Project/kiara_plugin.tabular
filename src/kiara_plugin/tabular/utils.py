@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-from typing import Iterable, Optional
+import typing
+from typing import Dict, Iterable, Mapping, Optional
 
 from kiara.models.filesystem import FileBundle, FileModel
 from sqlite_utils.cli import insert_upsert_implementation
 
-from kiara_plugin.tabular.models.db import KiaraDatabase
+from kiara_plugin.tabular.defaults import SqliteDataType
+from kiara_plugin.tabular.models.db import KiaraDatabase, SqliteTableSchema
+
+if typing.TYPE_CHECKING:
+    import pyarrow as pa
 
 
 def insert_db_table_from_file_bundle(
@@ -78,6 +83,101 @@ def insert_db_table_from_file_bundle(
             stmt = insert(file_items).values(**_values)
             con.execute(stmt)
         con.commit()
+
+
+def convert_arrow_type_to_sqlite(data_type: str) -> SqliteDataType:
+
+    if data_type.startswith("int") or data_type.startswith("uint"):
+        return "INTEGER"
+
+    if (
+        data_type.startswith("float")
+        or data_type.startswith("decimal")
+        or data_type.startswith("double")
+    ):
+        return "REAL"
+
+    if data_type.startswith("time") or data_type.startswith("date"):
+        return "TEXT"
+
+    if data_type == "bool":
+        return "INTEGER"
+
+    if data_type in ["string", "utf8", "large_string", "large_utf8"]:
+        return "TEXT"
+
+    if data_type in ["binary", "large_binary"]:
+        return "BLOB"
+
+    raise Exception(f"Can't convert to sqlite type: {data_type}")
+
+
+def convert_arrow_column_types_to_sqlite(
+    table: "pa.Table",
+) -> Dict[str, SqliteDataType]:
+
+    result: Dict[str, SqliteDataType] = {}
+    for column_name in table.column_names:
+        field = table.field(column_name)
+        sqlite_type = convert_arrow_type_to_sqlite(str(field.type))
+        result[column_name] = sqlite_type
+
+    return result
+
+
+def create_sqlite_schema_data_from_arrow_table(
+    table: "pa.Table",
+    column_map: Optional[Mapping[str, str]] = None,
+    index_columns: Optional[Iterable[str]] = None,
+    nullable_columns: Optional[Iterable[str]] = None,
+    primary_key: Optional[str] = None,
+) -> SqliteTableSchema:
+    """Create a sql schema statement from an Arrow table object.
+
+    Arguments:
+        table: the Arrow table object
+        column_map: a map that contains column names that should be changed in the new table
+        index_columns: a list of column names (after mapping) to create module_indexes for
+        extra_column_info: a list of extra schema instructions per column name (after mapping)
+    """
+
+    columns = convert_arrow_column_types_to_sqlite(table=table)
+    if column_map is None:
+        column_map = {}
+
+    temp: Dict[str, SqliteDataType] = {}
+
+    if index_columns is None:
+        index_columns = []
+
+    if nullable_columns is None:
+        nullable_columns = []
+
+    for cn, sqlite_data_type in columns.items():
+        if cn in column_map.keys():
+            new_key = column_map[cn]
+        else:
+            new_key = cn
+
+        temp[new_key] = sqlite_data_type
+
+    columns = temp
+    if not columns:
+        raise Exception("Resulting table schema has no columns.")
+    else:
+        for ic in index_columns:
+            if ic not in columns.keys():
+                raise Exception(
+                    f"Can't create schema, requested index column name not available: {ic}"
+                )
+
+    schema = SqliteTableSchema(
+        columns=columns,
+        index_columns=index_columns,
+        nullable_columns=nullable_columns,
+        primary_key=primary_key,
+    )
+    return schema
 
 
 def create_sqlite_table_from_tabular_file(
