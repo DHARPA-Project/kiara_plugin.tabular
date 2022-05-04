@@ -496,11 +496,25 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../defaults/" class="md-nav__link">
+        defaults
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_2" type="checkbox" id="__nav_4_1_1_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_3" type="checkbox" id="__nav_4_1_1_3" >
       
       
       
@@ -510,14 +524,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../models/__init__/">models</a>
           
-            <label for="__nav_4_1_1_2">
+            <label for="__nav_4_1_1_3">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="models" data-md-level="4">
-        <label class="md-nav__title" for="__nav_4_1_1_2">
+        <label class="md-nav__title" for="__nav_4_1_1_3">
           <span class="md-nav__icon md-icon"></span>
           models
         </label>
@@ -583,7 +597,7 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_4" type="checkbox" id="__nav_4_1_1_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_5" type="checkbox" id="__nav_4_1_1_5" checked>
       
       
       
@@ -593,14 +607,14 @@
         <div class="md-nav__link md-nav__link--index md-nav__link--active">
           <a href="./">tabular</a>
           
-            <label for="__nav_4_1_1_4">
+            <label for="__nav_4_1_1_5">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="tabular" data-md-level="4">
-        <label class="md-nav__title" for="__nav_4_1_1_4">
+        <label class="md-nav__title" for="__nav_4_1_1_5">
           <span class="md-nav__icon md-icon"></span>
           tabular
         </label>
@@ -774,6 +788,46 @@
   <a href="#kiara_plugin.tabular.tabular.db.LoadDatabaseFromDiskModule" class="md-nav__link">
     LoadDatabaseFromDiskModule
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseConfig" class="md-nav__link">
+    QueryDatabaseConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryDatabaseConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseConfig-attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseModule" class="md-nav__link">
+    QueryDatabaseModule
+  </a>
+  
+    <nav class="md-nav" aria-label="QueryDatabaseModule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseModule-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -987,7 +1041,48 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
 
     <span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+        <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">cleanup</span><span class="p">():</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">cleanup</span><span class="p">)</span>
+
+        <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">table_name</span> <span class="o">=</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name_without_extension</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
+                <span class="n">target_db_file</span><span class="o">=</span><span class="n">db_path</span><span class="p">,</span> <span class="n">file_item</span><span class="o">=</span><span class="n">file_item</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;ignore_errors&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;ignore.import_file&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+            <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
+            <span class="s2">&quot;include_source_metadata&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">include_raw_content_in_file_info</span><span class="p">:</span>
+            <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_path</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">create_if_not_exists</span><span class="p">()</span>
+            <span class="n">include_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;include_source_file_content&quot;</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
+            <span class="n">included_files</span> <span class="o">=</span> <span class="p">{</span><span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span> <span class="n">file_item</span><span class="p">}</span>
+            <span class="n">file_bundle</span> <span class="o">=</span> <span class="n">FileBundle</span><span class="o">.</span><span class="n">create_from_file_models</span><span class="p">(</span>
+                <span class="n">files</span><span class="o">=</span><span class="n">included_files</span><span class="p">,</span> <span class="n">bundle_name</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span>
+            <span class="p">)</span>
+            <span class="n">insert_db_table_from_file_bundle</span><span class="p">(</span>
+                <span class="n">database</span><span class="o">=</span><span class="n">db</span><span class="p">,</span>
+                <span class="n">file_bundle</span><span class="o">=</span><span class="n">file_bundle</span><span class="p">,</span>
+                <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;source_files_metadata&quot;</span><span class="p">,</span>
+                <span class="n">include_content</span><span class="o">=</span><span class="n">include_content</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">db_path</span>
 
     <span class="k">def</span> <span class="nf">create__database__from__csv_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
@@ -995,7 +1090,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not supported (yet).&quot;</span><span class="p">)</span>
 
-        <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
+        <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
             <span class="s2">&quot;include_source_metadata&quot;</span>
         <span class="p">)</span>
 
@@ -1031,7 +1126,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
                     <span class="k">continue</span>
                 <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">include_raw_content_in_file_info</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">include_raw_content_in_file_info</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">]:</span>
             <span class="n">include_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;include_source_file_content&quot;</span><span class="p">)</span>
             <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
             <span class="n">insert_db_table_from_file_bundle</span><span class="p">(</span>
@@ -1043,6 +1138,57 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
             <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">db_path</span>
+
+    <span class="k">def</span> <span class="nf">create_optional_inputs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">source_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+
+        <span class="k">if</span> <span class="n">target_type</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span> <span class="ow">and</span> <span class="n">source_type</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;table_name&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The name of the table in the new database.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;imported_table&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">create__database__from__table</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span> <span class="n">ValueMap</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+
+        <span class="n">table_name</span> <span class="o">=</span> <span class="n">optional</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;table_name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
+            <span class="n">table_name</span> <span class="o">=</span> <span class="s2">&quot;imported_table&quot;</span>
+
+        <span class="n">table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">arrow_table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span>
+
+        <span class="n">column_map</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">index_columns</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">sqlite_schema</span> <span class="o">=</span> <span class="n">create_sqlite_schema_data_from_arrow_table</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="n">arrow_table</span><span class="p">,</span> <span class="n">index_columns</span><span class="o">=</span><span class="n">index_columns</span><span class="p">,</span> <span class="n">column_map</span><span class="o">=</span><span class="n">column_map</span>
+        <span class="p">)</span>
+
+        <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="o">.</span><span class="n">create_in_temp_dir</span><span class="p">()</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="n">sqlite_schema</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">arrow_table</span><span class="o">.</span><span class="n">to_batches</span><span class="p">(</span>
+                <span class="n">max_chunksize</span><span class="o">=</span><span class="n">DEFAULT_TABULAR_DATA_CHUNK_SIZE</span>
+            <span class="p">):</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">),</span> <span class="n">batch</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">())</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">db</span>
 </code></pre></div>
         </details>
 
@@ -1087,9 +1233,9 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
     <span class="n">merge_into_single_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to merge all csv files into a single table.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to include a table with metadata about the source files.&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">include_source_file_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;When including source metadata, whether to also include the original raw (string) content.&quot;</span><span class="p">,</span>
@@ -1227,7 +1373,48 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
           <summary>Source code in <code>tabular/tabular/db.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+    <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">():</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">db_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">cleanup</span><span class="p">)</span>
+
+    <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">table_name</span> <span class="o">=</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name_without_extension</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
+            <span class="n">target_db_file</span><span class="o">=</span><span class="n">db_path</span><span class="p">,</span> <span class="n">file_item</span><span class="o">=</span><span class="n">file_item</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;ignore_errors&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;ignore.import_file&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
+        <span class="s2">&quot;include_source_metadata&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">include_raw_content_in_file_info</span><span class="p">:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_path</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">create_if_not_exists</span><span class="p">()</span>
+        <span class="n">include_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;include_source_file_content&quot;</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
+        <span class="n">included_files</span> <span class="o">=</span> <span class="p">{</span><span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span> <span class="n">file_item</span><span class="p">}</span>
+        <span class="n">file_bundle</span> <span class="o">=</span> <span class="n">FileBundle</span><span class="o">.</span><span class="n">create_from_file_models</span><span class="p">(</span>
+            <span class="n">files</span><span class="o">=</span><span class="n">included_files</span><span class="p">,</span> <span class="n">bundle_name</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span>
+        <span class="p">)</span>
+        <span class="n">insert_db_table_from_file_bundle</span><span class="p">(</span>
+            <span class="n">database</span><span class="o">=</span><span class="n">db</span><span class="p">,</span>
+            <span class="n">file_bundle</span><span class="o">=</span><span class="n">file_bundle</span><span class="p">,</span>
+            <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;source_files_metadata&quot;</span><span class="p">,</span>
+            <span class="n">include_content</span><span class="o">=</span><span class="n">include_content</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">db_path</span>
 </code></pre></div>
         </details>
     </div>
@@ -1257,7 +1444,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
     <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not supported (yet).&quot;</span><span class="p">)</span>
 
-    <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
+    <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
         <span class="s2">&quot;include_source_metadata&quot;</span>
     <span class="p">)</span>
 
@@ -1293,7 +1480,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
                 <span class="k">continue</span>
             <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">include_raw_content_in_file_info</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">include_raw_content_in_file_info</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">]:</span>
         <span class="n">include_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;include_source_file_content&quot;</span><span class="p">)</span>
         <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
         <span class="n">insert_db_table_from_file_bundle</span><span class="p">(</span>
@@ -1305,6 +1492,101 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
         <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">db_path</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.tabular.db.CreateDatabaseModule.create__database__from__table" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create__database__from__table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">,</span> <span class="n">optional</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.tabular.db.CreateDatabaseModule.create__database__from__table" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__table</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span> <span class="n">ValueMap</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+
+    <span class="n">table_name</span> <span class="o">=</span> <span class="n">optional</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;table_name&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
+        <span class="n">table_name</span> <span class="o">=</span> <span class="s2">&quot;imported_table&quot;</span>
+
+    <span class="n">table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">arrow_table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span>
+
+    <span class="n">column_map</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">index_columns</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">sqlite_schema</span> <span class="o">=</span> <span class="n">create_sqlite_schema_data_from_arrow_table</span><span class="p">(</span>
+        <span class="n">table</span><span class="o">=</span><span class="n">arrow_table</span><span class="p">,</span> <span class="n">index_columns</span><span class="o">=</span><span class="n">index_columns</span><span class="p">,</span> <span class="n">column_map</span><span class="o">=</span><span class="n">column_map</span>
+    <span class="p">)</span>
+
+    <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="o">.</span><span class="n">create_in_temp_dir</span><span class="p">()</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">sqlite_schema</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">arrow_table</span><span class="o">.</span><span class="n">to_batches</span><span class="p">(</span>
+            <span class="n">max_chunksize</span><span class="o">=</span><span class="n">DEFAULT_TABULAR_DATA_CHUNK_SIZE</span>
+        <span class="p">):</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">),</span> <span class="n">batch</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">())</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">db</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.tabular.db.CreateDatabaseModule.create_optional_inputs" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_optional_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_type</span><span class="p">,</span> <span class="n">target_type</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.tabular.db.CreateDatabaseModule.create_optional_inputs" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_optional_inputs</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">source_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+
+    <span class="k">if</span> <span class="n">target_type</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span> <span class="ow">and</span> <span class="n">source_type</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;table_name&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The name of the table in the new database.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;imported_table&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div>
         </details>
     </div>
@@ -1353,9 +1635,9 @@ CreateDatabaseModuleConfig            (<a class="autorefs autorefs-external" tit
     <span class="n">merge_into_single_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to merge all csv files into a single table.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to include a table with metadata about the source files.&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">include_source_file_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;When including source metadata, whether to also include the original raw (string) content.&quot;</span><span class="p">,</span>
@@ -1655,6 +1937,204 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
     <span class="n">db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">db_file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">db</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="kiara_plugin.tabular.tabular.db.QueryDatabaseConfig" class="doc doc-heading">
+        <code>
+QueryDatabaseConfig            (<a class="autorefs autorefs-external" title="kiara.models.module.KiaraModuleConfig" href="https://dharpa.org/kiara/latest/reference/kiara/models/module/__init__/#kiara.models.module.KiaraModuleConfig">KiaraModuleConfig</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseConfig" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
+
+    <span class="n">fixed_query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+<h6 id="kiara_plugin.tabular.tabular.db.QueryDatabaseConfig-attributes">Attributes<a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="kiara_plugin.tabular.tabular.db.QueryDatabaseConfig.fixed_query" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fixed_query</span><span class="p">:</span> <span class="nb">str</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseConfig.fixed_query" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>The query.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h5 id="kiara_plugin.tabular.tabular.db.QueryDatabaseModule" class="doc doc-heading">
+        <code>
+QueryDatabaseModule            (<a class="autorefs autorefs-external" title="kiara.modules.KiaraModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/__init__/#kiara.modules.KiaraModule">KiaraModule</a>)
+        </code>
+
+
+
+<a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseModule" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+
+        <span class="n">result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The database to query.&quot;</span><span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;fixed_query&quot;</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The query to execute.&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;query_result&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The query result.&quot;</span><span class="p">}}</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<h6 id="kiara_plugin.tabular.tabular.db.QueryDatabaseModule-methods">Methods<a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseModule-methods" class="headerlink" title="Permanent link">&para;</a></h6>
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.tabular.db.QueryDatabaseModule.create_inputs_schema" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_inputs_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseModule.create_inputs_schema" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the schema for this types' inputs.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+
+    <span class="n">result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;database&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;database&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The database to query.&quot;</span><span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;fixed_query&quot;</span><span class="p">):</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The query to execute.&quot;</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.tabular.db.QueryDatabaseModule.create_outputs_schema" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_outputs_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.tabular.db.QueryDatabaseModule.create_outputs_schema" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the schema for this types' outputs.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;query_result&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The query result.&quot;</span><span class="p">}}</span>
 </code></pre></div>
         </details>
     </div>

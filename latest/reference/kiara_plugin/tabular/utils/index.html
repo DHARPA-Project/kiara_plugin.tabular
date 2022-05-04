@@ -496,11 +496,25 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../defaults/" class="md-nav__link">
+        defaults
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_2" type="checkbox" id="__nav_4_1_1_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_3" type="checkbox" id="__nav_4_1_1_3" >
       
       
       
@@ -510,14 +524,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../models/__init__/">models</a>
           
-            <label for="__nav_4_1_1_2">
+            <label for="__nav_4_1_1_3">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="models" data-md-level="4">
-        <label class="md-nav__title" for="__nav_4_1_1_2">
+        <label class="md-nav__title" for="__nav_4_1_1_3">
           <span class="md-nav__icon md-icon"></span>
           models
         </label>
@@ -581,7 +595,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_4" type="checkbox" id="__nav_4_1_1_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_5" type="checkbox" id="__nav_4_1_1_5" >
       
       
       
@@ -591,14 +605,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../tabular/__init__/">tabular</a>
           
-            <label for="__nav_4_1_1_4">
+            <label for="__nav_4_1_1_5">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="tabular" data-md-level="4">
-        <label class="md-nav__title" for="__nav_4_1_1_4">
+        <label class="md-nav__title" for="__nav_4_1_1_5">
           <span class="md-nav__icon md-icon"></span>
           tabular
         </label>
@@ -679,8 +693,36 @@
     kiara_plugin.tabular.utils
   </a>
   
-    <nav class="md-nav" aria-label="kiara_plugin.tabular.utils">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.utils-functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.utils.convert_arrow_column_types_to_sqlite" class="md-nav__link">
+    convert_arrow_column_types_to_sqlite()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.utils.convert_arrow_type_to_sqlite" class="md-nav__link">
+    convert_arrow_type_to_sqlite()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.utils.create_sqlite_schema_data_from_arrow_table" class="md-nav__link">
+    create_sqlite_schema_data_from_arrow_table()
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.utils.create_sqlite_table_from_tabular_file" class="md-nav__link">
@@ -759,8 +801,36 @@
     kiara_plugin.tabular.utils
   </a>
   
-    <nav class="md-nav" aria-label="kiara_plugin.tabular.utils">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.utils-functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.utils.convert_arrow_column_types_to_sqlite" class="md-nav__link">
+    convert_arrow_column_types_to_sqlite()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.utils.convert_arrow_type_to_sqlite" class="md-nav__link">
+    convert_arrow_type_to_sqlite()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.utils.create_sqlite_schema_data_from_arrow_table" class="md-nav__link">
+    create_sqlite_schema_data_from_arrow_table()
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.utils.create_sqlite_table_from_tabular_file" class="md-nav__link">
@@ -815,6 +885,202 @@
 
 
 
+
+<h2 id="kiara_plugin.tabular.utils-functions">Functions<a href="#kiara_plugin.tabular.utils-functions" class="headerlink" title="Permanent link">&para;</a></h2>
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="kiara_plugin.tabular.utils.convert_arrow_column_types_to_sqlite" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">convert_arrow_column_types_to_sqlite</span><span class="p">(</span><span class="n">table</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.utils.convert_arrow_column_types_to_sqlite" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">convert_arrow_column_types_to_sqlite</span><span class="p">(</span>
+    <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;pa.Table&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SqliteDataType</span><span class="p">]:</span>
+
+    <span class="n">result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SqliteDataType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">column_name</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
+        <span class="n">sqlite_type</span> <span class="o">=</span> <span class="n">convert_arrow_type_to_sqlite</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sqlite_type</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="kiara_plugin.tabular.utils.convert_arrow_type_to_sqlite" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">convert_arrow_type_to_sqlite</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.utils.convert_arrow_type_to_sqlite" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">convert_arrow_type_to_sqlite</span><span class="p">(</span><span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SqliteDataType</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">data_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">data_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;uint&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;INTEGER&quot;</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">data_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">data_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;decimal&quot;</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">data_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;double&quot;</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;REAL&quot;</span>
+
+    <span class="k">if</span> <span class="n">data_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">data_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;TEXT&quot;</span>
+
+    <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;INTEGER&quot;</span>
+
+    <span class="k">if</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="s2">&quot;large_string&quot;</span><span class="p">,</span> <span class="s2">&quot;large_utf8&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s2">&quot;TEXT&quot;</span>
+
+    <span class="k">if</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;binary&quot;</span><span class="p">,</span> <span class="s2">&quot;large_binary&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="s2">&quot;BLOB&quot;</span>
+
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Can&#39;t convert to sqlite type: </span><span class="si">{</span><span class="n">data_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="kiara_plugin.tabular.utils.create_sqlite_schema_data_from_arrow_table" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_sqlite_schema_data_from_arrow_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">column_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nullable_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.utils.create_sqlite_schema_data_from_arrow_table" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create a sql schema statement from an Arrow table object.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>table</code></td>
+        <td><code>pa.Table</code></td>
+        <td><p>the Arrow table object</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>column_map</code></td>
+        <td><code>Optional[Mapping[str, str]]</code></td>
+        <td><p>a map that contains column names that should be changed in the new table</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>index_columns</code></td>
+        <td><code>Optional[Iterable[str]]</code></td>
+        <td><p>a list of column names (after mapping) to create module_indexes for</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>extra_column_info</code></td>
+        <td></td>
+        <td><p>a list of extra schema instructions per column name (after mapping)</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>tabular/utils.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_sqlite_schema_data_from_arrow_table</span><span class="p">(</span>
+    <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;pa.Table&quot;</span><span class="p">,</span>
+    <span class="n">column_map</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">index_columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nullable_columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">primary_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SqliteTableSchema</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a sql schema statement from an Arrow table object.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        table: the Arrow table object</span>
+<span class="sd">        column_map: a map that contains column names that should be changed in the new table</span>
+<span class="sd">        index_columns: a list of column names (after mapping) to create module_indexes for</span>
+<span class="sd">        extra_column_info: a list of extra schema instructions per column name (after mapping)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">convert_arrow_column_types_to_sqlite</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">column_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">column_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">temp</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SqliteDataType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">index_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">index_columns</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">nullable_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nullable_columns</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">cn</span><span class="p">,</span> <span class="n">sqlite_data_type</span> <span class="ow">in</span> <span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">cn</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">new_key</span> <span class="o">=</span> <span class="n">column_map</span><span class="p">[</span><span class="n">cn</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_key</span> <span class="o">=</span> <span class="n">cn</span>
+
+        <span class="n">temp</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sqlite_data_type</span>
+
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">temp</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Resulting table schema has no columns.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="n">index_columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ic</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Can&#39;t create schema, requested index column name not available: </span><span class="si">{</span><span class="n">ic</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">SqliteTableSchema</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
+        <span class="n">index_columns</span><span class="o">=</span><span class="n">index_columns</span><span class="p">,</span>
+        <span class="n">nullable_columns</span><span class="o">=</span><span class="n">nullable_columns</span><span class="p">,</span>
+        <span class="n">primary_key</span><span class="o">=</span><span class="n">primary_key</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">schema</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
 
 
 

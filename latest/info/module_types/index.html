@@ -564,11 +564,25 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/defaults/" class="md-nav__link">
+        defaults
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_2" type="checkbox" id="__nav_4_1_1_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_3" type="checkbox" id="__nav_4_1_1_3" >
       
       
       
@@ -578,14 +592,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../reference/kiara_plugin/tabular/models/__init__/">models</a>
           
-            <label for="__nav_4_1_1_2">
+            <label for="__nav_4_1_1_3">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="models" data-md-level="4">
-        <label class="md-nav__title" for="__nav_4_1_1_2">
+        <label class="md-nav__title" for="__nav_4_1_1_3">
           <span class="md-nav__icon md-icon"></span>
           models
         </label>
@@ -649,7 +663,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_4" type="checkbox" id="__nav_4_1_1_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1_1_5" type="checkbox" id="__nav_4_1_1_5" >
       
       
       
@@ -659,14 +673,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../reference/kiara_plugin/tabular/tabular/__init__/">tabular</a>
           
-            <label for="__nav_4_1_1_4">
+            <label for="__nav_4_1_1_5">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="tabular" data-md-level="4">
-        <label class="md-nav__title" for="__nav_4_1_1_4">
+        <label class="md-nav__title" for="__nav_4_1_1_5">
           <span class="md-nav__icon md-icon"></span>
           tabular
         </label>
@@ -1118,7 +1132,7 @@
                                                 (string)                        
                                                 content.                        
                                                                                 
-                          include_…   boolean   Whether    no         true      
+                          include_…   boolean   Whether    no                   
                                                 to                              
                                                 include                         
                                                 a table                         
@@ -1166,7 +1180,23 @@
                                                                                 
                           <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    source_value </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> inputs</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">get_value_obj(source_typ…</span>   
                                                                                 
-                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    result </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> func(source_value</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">source_value)</span>          
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    signature </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> inspect</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">signature(func)</span>               
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">if</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> </span><span style="color: #e6db74; text-decoration-color: #e6db74; background-color: #ffffff">"optional"</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">in</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> signature</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">parameters:</span>            
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        optional: Dict[str, Value] </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> {}</span>               
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        op_schemas </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> {}</span>                               
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">for</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> field, schema </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">in</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> self</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">inputs_schema</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">it…</span>   
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">if</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> field </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">==</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> source_type:</span>                  
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">                </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">continue</span>                              
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            optional[field] </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> inputs</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">get_value_obj…</span>   
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            op_schemas[field] </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> schema</span>                
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        result </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> func(</span>                                
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            source_value</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">source_value,</span>                
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            optional</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">ValueMapReadOnly(</span>                
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">                value_items</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">optional, values_schem…</span>   
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            ),</span>                                        
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        )</span>                                             
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">else</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">:</span>                                             
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        result </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> func(source_value</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">source_value)</span>      
                           <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    outputs</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">set_value(target_type, result)</span>            
                                                                                 
                          ─────────────────────────────────────────────────────  
@@ -1240,7 +1270,23 @@
                                                                                 
                           <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    source_value </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> inputs</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">get_value_obj(source_typ…</span>   
                                                                                 
-                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    result </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> func(source_value</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">source_value)</span>          
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    signature </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> inspect</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">signature(func)</span>               
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">if</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> </span><span style="color: #e6db74; text-decoration-color: #e6db74; background-color: #ffffff">"optional"</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">in</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> signature</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">parameters:</span>            
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        optional: Dict[str, Value] </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> {}</span>               
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        op_schemas </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> {}</span>                               
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">for</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> field, schema </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">in</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> self</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">inputs_schema</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">it…</span>   
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">if</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> field </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">==</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> source_type:</span>                  
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">                </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">continue</span>                              
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            optional[field] </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> inputs</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">get_value_obj…</span>   
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            op_schemas[field] </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> schema</span>                
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        result </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> func(</span>                                
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            source_value</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">source_value,</span>                
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            optional</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">ValueMapReadOnly(</span>                
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">                value_items</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">optional, values_schem…</span>   
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">            ),</span>                                        
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        )</span>                                             
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    </span><span style="color: #66d9ef; text-decoration-color: #66d9ef; background-color: #ffffff">else</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">:</span>                                             
+                          <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">        result </span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff"> func(source_value</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">=</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">source_value)</span>      
                           <span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">    outputs</span><span style="color: #f92672; text-decoration-color: #f92672; background-color: #ffffff">.</span><span style="color: #f8f8f2; text-decoration-color: #f8f8f2; background-color: #ffffff">set_value(target_type, result)</span>            
                                                                                 
                          ─────────────────────────────────────────────────────  
