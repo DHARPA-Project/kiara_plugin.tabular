@@ -1840,7 +1840,7 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;table&quot;</span><span class="p">]</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TableMetadata&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KiaraTableMetadata&quot;</span><span class="p">:</span>
 
         <span class="n">kiara_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
 
@@ -1868,7 +1868,7 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
             <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">nbytes</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">KiaraTableMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">md</span><span class="p">)</span>
 
     <span class="n">table</span><span class="p">:</span> <span class="n">TableMetadata</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The table schema.&quot;</span><span class="p">)</span>
@@ -1929,7 +1929,7 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
         <details class="quote">
           <summary>Source code in <code>tabular/models/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TableMetadata&quot;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KiaraTableMetadata&quot;</span><span class="p">:</span>
 
     <span class="n">kiara_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
 
@@ -1957,7 +1957,7 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
         <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">nbytes</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">KiaraTableMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">md</span><span class="p">)</span>
 </code></pre></div>
         </details>

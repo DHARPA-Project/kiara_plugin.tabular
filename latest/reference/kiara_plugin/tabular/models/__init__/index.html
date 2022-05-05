@@ -852,6 +852,26 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.models.db.DatabaseMetadata" class="md-nav__link">
+    DatabaseMetadata
+  </a>
+  
+    <nav class="md-nav" aria-label="DatabaseMetadata">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.models.db.DatabaseMetadata-attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.db.KiaraDatabase" class="md-nav__link">
     KiaraDatabase
   </a>
@@ -1340,6 +1360,240 @@ TableMetadata            (<a class="autorefs autorefs-external" title="kiara.mod
 
 
 
+<h5 id="kiara_plugin.tabular.models.db.DatabaseMetadata" class="doc doc-heading">
+        <code>
+DatabaseMetadata            (<a class="autorefs autorefs-external" title="kiara.models.values.value_metadata.ValueMetadata" href="https://dharpa.org/kiara/latest/reference/kiara/models/values/value_metadata/__init__/#kiara.models.values.value_metadata.ValueMetadata">ValueMetadata</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.db.DatabaseMetadata" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>File stats.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseMetadata</span><span class="p">(</span><span class="n">ValueMetadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;File stats.&quot;&quot;&quot;</span>
+
+    <span class="n">_metadata_key</span> <span class="o">=</span> <span class="s2">&quot;database&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_supported_data_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
+
+        <span class="n">database</span><span class="p">:</span> <span class="n">KiaraDatabase</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="n">insp</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
+
+        <span class="n">mds</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
+
+            <span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+                <span class="n">num_rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                        <span class="n">text</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s1">&#39;SELECT SUM(&quot;pgsize&quot;) FROM &quot;dbstat&quot; WHERE name=&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="n">_type</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+                <span class="n">type_name</span> <span class="o">=</span> <span class="n">SQLALCHEMY_SQLITE_TYPE_MAP</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">_type</span><span class="p">)]</span>
+                <span class="n">columns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;type_name&quot;</span><span class="p">:</span> <span class="n">type_name</span><span class="p">,</span>
+                    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;nullable&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;primary_key&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">}</span>
+
+            <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;column_names&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+                <span class="s2">&quot;column_schema&quot;</span><span class="p">:</span> <span class="n">columns</span><span class="p">,</span>
+                <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">num_rows</span><span class="p">,</span>
+                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
+            <span class="n">mds</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+
+        <span class="k">return</span> <span class="n">DatabaseMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">tables</span><span class="o">=</span><span class="n">mds</span><span class="p">)</span>
+
+    <span class="n">tables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TableMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The table schema.&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+<h6 id="kiara_plugin.tabular.models.db.DatabaseMetadata-attributes">Attributes<a href="#kiara_plugin.tabular.models.db.DatabaseMetadata-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="kiara_plugin.tabular.models.db.DatabaseMetadata.tables" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">tables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">kiara_plugin</span><span class="o">.</span><span class="n">tabular</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">TableMetadata</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+      <small class="doc doc-property doc-property-required"><code>required</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.db.DatabaseMetadata.tables" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>The table schema.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.models.db.DatabaseMetadata.create_value_metadata" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_value_metadata</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.db.DatabaseMetadata.create_value_metadata" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
+
+    <span class="n">database</span><span class="p">:</span> <span class="n">KiaraDatabase</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="n">insp</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
+
+    <span class="n">mds</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
+
+        <span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+            <span class="n">num_rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                    <span class="n">text</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;SELECT SUM(&quot;pgsize&quot;) FROM &quot;dbstat&quot; WHERE name=&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">_type</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+            <span class="n">type_name</span> <span class="o">=</span> <span class="n">SQLALCHEMY_SQLITE_TYPE_MAP</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">_type</span><span class="p">)]</span>
+            <span class="n">columns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;type_name&quot;</span><span class="p">:</span> <span class="n">type_name</span><span class="p">,</span>
+                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;nullable&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;primary_key&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">}</span>
+
+        <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;column_names&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="s2">&quot;column_schema&quot;</span><span class="p">:</span> <span class="n">columns</span><span class="p">,</span>
+            <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">num_rows</span><span class="p">,</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">mds</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+
+    <span class="k">return</span> <span class="n">DatabaseMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">tables</span><span class="o">=</span><span class="n">mds</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.models.db.DatabaseMetadata.retrieve_supported_data_types" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve_supported_data_types</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.db.DatabaseMetadata.retrieve_supported_data_types" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">retrieve_supported_data_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
 <h5 id="kiara_plugin.tabular.models.db.KiaraDatabase" class="doc doc-heading">
         <code>
 KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.models.KiaraModel" href="https://dharpa.org/kiara/latest/reference/kiara/models/__init__/#kiara.models.KiaraModel">KiaraModel</a>)
@@ -1388,7 +1642,9 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="n">_cached_engine</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_cached_inspector</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_table_names</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">_table_schemas</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_tables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Table</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">_metadata_obj</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MetaData</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># _table_schemas: Optional[Dict[str, SqliteTableSchema]] = PrivateAttr(default=None)</span>
     <span class="n">_file_hash</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">_immutable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -1493,11 +1749,23 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_table_names</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_obj</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_invalidate_other</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">get_sqlalchemy_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetaData</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return the sqlalchemy Metadtaa object for the underlying database.</span>
+
+<span class="sd">        This is used internally, you typically don&#39;t need to access this attribute.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_obj</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_obj</span>
 
     <span class="k">def</span> <span class="nf">copy_database_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -1510,7 +1778,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
             <span class="n">new_db</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
         <span class="k">return</span> <span class="n">new_db</span>
 
-    <span class="k">def</span> <span class="nf">get_sqlalchemy_inspector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Inspector&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_sqlalchemy_inspector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Inspector</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span>
@@ -1526,30 +1794,19 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="bp">self</span><span class="o">.</span><span class="n">_table_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_names</span>
 
-    <span class="k">def</span> <span class="nf">get_schema_for_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_sqlalchemy_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Table</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return the sqlalchemy edges table instance for this network datab.&quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">table_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Can&#39;t get table schema, database does not contain table with name &#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
-                <span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
 
-        <span class="n">ts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">inspector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">tn</span> <span class="ow">in</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
-            <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="n">tn</span><span class="p">)</span>
-            <span class="n">ts</span><span class="p">[</span><span class="n">tn</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-                <span class="n">ts</span><span class="p">[</span><span class="n">tn</span><span class="p">][</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">c</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="o">=</span> <span class="n">ts</span>
-        <span class="k">if</span> <span class="n">table_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Can&#39;t get table schema, database does not contain table with name &#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
-            <span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+            <span class="n">table_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_metadata</span><span class="p">(),</span>
+            <span class="n">autoload_with</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span>
+        <span class="k">return</span> <span class="n">table</span>
 </code></pre></div>
         </details>
 
@@ -1883,53 +2140,6 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
 
 
-<h7 id="kiara_plugin.tabular.models.db.KiaraDatabase.get_schema_for_table" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_schema_for_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_schema_for_table" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/models/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_schema_for_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">table_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Can&#39;t get table schema, database does not contain table with name &#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
-
-    <span class="n">ts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">inspector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">tn</span> <span class="ow">in</span> <span class="n">inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="n">tn</span><span class="p">)</span>
-        <span class="n">ts</span><span class="p">[</span><span class="n">tn</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="n">ts</span><span class="p">[</span><span class="n">tn</span><span class="p">][</span><span class="n">c</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">c</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="o">=</span> <span class="n">ts</span>
-    <span class="k">if</span> <span class="n">table_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Can&#39;t get table schema, database does not contain table with name &#39;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
 <h7 id="kiara_plugin.tabular.models.db.KiaraDatabase.get_sqlalchemy_engine" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_sqlalchemy_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
@@ -1978,13 +2188,85 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
         <details class="quote">
           <summary>Source code in <code>tabular/models/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_sqlalchemy_inspector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Inspector&quot;</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_sqlalchemy_inspector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Inspector</span><span class="p">:</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">())</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.models.db.KiaraDatabase.get_sqlalchemy_metadata" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_sqlalchemy_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_sqlalchemy_metadata" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the sqlalchemy Metadtaa object for the underlying database.</p>
+<p>This is used internally, you typically don't need to access this attribute.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_sqlalchemy_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetaData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return the sqlalchemy Metadtaa object for the underlying database.</span>
+
+<span class="sd">    This is used internally, you typically don&#39;t need to access this attribute.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_obj</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_obj</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.models.db.KiaraDatabase.get_sqlalchemy_table" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_sqlalchemy_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_sqlalchemy_table" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the sqlalchemy edges table instance for this network datab.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_sqlalchemy_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Table</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return the sqlalchemy edges table instance for this network datab.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+        <span class="n">table_name</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_metadata</span><span class="p">(),</span>
+        <span class="n">autoload_with</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">(),</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span>
+    <span class="k">return</span> <span class="n">table</span>
 </code></pre></div>
         </details>
     </div>
@@ -2982,7 +3264,7 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;table&quot;</span><span class="p">]</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TableMetadata&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KiaraTableMetadata&quot;</span><span class="p">:</span>
 
         <span class="n">kiara_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
 
@@ -3010,7 +3292,7 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
             <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">nbytes</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">KiaraTableMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">md</span><span class="p">)</span>
 
     <span class="n">table</span><span class="p">:</span> <span class="n">TableMetadata</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The table schema.&quot;</span><span class="p">)</span>
@@ -3071,7 +3353,7 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
         <details class="quote">
           <summary>Source code in <code>tabular/models/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;TableMetadata&quot;</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KiaraTableMetadata&quot;</span><span class="p">:</span>
 
     <span class="n">kiara_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
 
@@ -3099,7 +3381,7 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
         <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">nbytes</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">KiaraTableMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">md</span><span class="p">)</span>
 </code></pre></div>
         </details>
