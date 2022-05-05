@@ -756,6 +756,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.models.db.SqliteTableSchema.unique_columns" class="md-nav__link">
+    unique_columns
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1149,6 +1156,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.models.db.SqliteTableSchema.unique_columns" class="md-nav__link">
+    unique_columns
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1386,6 +1400,9 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="bp">self</span><span class="o">.</span><span class="n">_table_names</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_table_schemas</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_invalidate_other</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">copy_database_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
@@ -1923,6 +1940,9 @@ SqliteTableSchema            (<span title="pydantic.main.BaseModel">BaseModel</s
     <span class="n">nullable_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The columns that are nullable.&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span>
     <span class="p">)</span>
+    <span class="n">unique_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The columns that should be marked &#39;UNIQUE&#39;.&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span>
+    <span class="p">)</span>
     <span class="n">primary_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The primary key for this table.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span>
@@ -1945,6 +1965,7 @@ SqliteTableSchema            (<span title="pydantic.main.BaseModel">BaseModel</s
                 <span class="n">nullable</span><span class="o">=</span><span class="n">column_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nullable_columns</span><span class="p">,</span>
                 <span class="n">primary_key</span><span class="o">=</span><span class="n">column_name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_key</span><span class="p">,</span>
                 <span class="n">index</span><span class="o">=</span><span class="n">column_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_columns</span><span class="p">,</span>
+                <span class="n">unique</span><span class="o">=</span><span class="n">column_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_columns</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">table_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_obj</span><span class="p">)</span>
 
@@ -2058,6 +2079,28 @@ SqliteTableSchema            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="kiara_plugin.tabular.models.db.SqliteTableSchema.unique_columns" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">unique_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.db.SqliteTableSchema.unique_columns" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>The columns that should be marked 'UNIQUE'.</p>
+    </div>
+
+  </div>
+
+
+
 
 <h4 id="kiara_plugin.tabular.models.db.SqliteTableSchema-methods">Methods<a href="#kiara_plugin.tabular.models.db.SqliteTableSchema-methods" class="headerlink" title="Permanent link">&para;</a></h4>
 
@@ -2142,6 +2185,7 @@ SqliteTableSchema            (<span title="pydantic.main.BaseModel">BaseModel</s
             <span class="n">nullable</span><span class="o">=</span><span class="n">column_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nullable_columns</span><span class="p">,</span>
             <span class="n">primary_key</span><span class="o">=</span><span class="n">column_name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_key</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="n">column_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_columns</span><span class="p">,</span>
+            <span class="n">unique</span><span class="o">=</span><span class="n">column_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_columns</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">table_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_obj</span><span class="p">)</span>
 

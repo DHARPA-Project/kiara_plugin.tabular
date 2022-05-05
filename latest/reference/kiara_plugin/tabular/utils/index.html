@@ -975,7 +975,7 @@
 
 
 <h3 id="kiara_plugin.tabular.utils.create_sqlite_schema_data_from_arrow_table" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_sqlite_schema_data_from_arrow_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">column_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nullable_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">create_sqlite_schema_data_from_arrow_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">column_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nullable_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unique_columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 <a href="#kiara_plugin.tabular.utils.create_sqlite_schema_data_from_arrow_table" class="headerlink" title="Permanent link">&para;</a></h3>
@@ -1028,6 +1028,7 @@
     <span class="n">column_map</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">index_columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">nullable_columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">unique_columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">primary_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SqliteTableSchema</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Create a sql schema statement from an Arrow table object.</span>
@@ -1040,6 +1041,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">columns</span> <span class="o">=</span> <span class="n">convert_arrow_column_types_to_sqlite</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">column_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">column_map</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1051,9 +1053,24 @@
     <span class="k">if</span> <span class="n">nullable_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nullable_columns</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="k">if</span> <span class="n">unique_columns</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">unique_columns</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="k">for</span> <span class="n">cn</span><span class="p">,</span> <span class="n">sqlite_data_type</span> <span class="ow">in</span> <span class="n">columns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">cn</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">new_key</span> <span class="o">=</span> <span class="n">column_map</span><span class="p">[</span><span class="n">cn</span><span class="p">]</span>
+            <span class="n">index_columns</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">column_map</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">index_columns</span>
+            <span class="p">]</span>
+            <span class="n">unique_columns</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">column_map</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">unique_columns</span>
+            <span class="p">]</span>
+            <span class="n">nullable_columns</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="n">column_map</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nullable_columns</span>
+            <span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new_key</span> <span class="o">=</span> <span class="n">cn</span>
 
@@ -1073,6 +1090,7 @@
         <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span>
         <span class="n">index_columns</span><span class="o">=</span><span class="n">index_columns</span><span class="p">,</span>
         <span class="n">nullable_columns</span><span class="o">=</span><span class="n">nullable_columns</span><span class="p">,</span>
+        <span class="n">unique_columns</span><span class="o">=</span><span class="n">unique_columns</span><span class="p">,</span>
         <span class="n">primary_key</span><span class="o">=</span><span class="n">primary_key</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">schema</span>
