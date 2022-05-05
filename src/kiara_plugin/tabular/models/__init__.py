@@ -35,12 +35,6 @@ class TableMetadata(KiaraModel):
     rows: int = Field(description="The number of rows the table contains.")
     size: Optional[int] = Field(description="The tables size in bytes.", default=None)
 
-    def _retrieve_id(self) -> str:
-        return str(self.model_data_hash)
-
-    def _retrieve_category_id(self) -> str:
-        return "instance.metadata.table"
-
     def _retrieve_data_to_hash(self) -> Any:
 
         return {

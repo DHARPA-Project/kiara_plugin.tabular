@@ -9,7 +9,7 @@ from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
-from kiara.utils.hashing import compute_hash
+from kiara.utils.hashing import compute_cid
 from kiara.utils.output import ArrowTabularWrap
 from mmh3 import hash_from_buffer
 
@@ -45,21 +45,6 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
     @classmethod
     def python_class(cls) -> Type:
         return KiaraArray
-
-    def calculate_hash(self, data: KiaraArray) -> int:
-        hashes = []
-
-        for chunk in data.arrow_array.chunks:
-            for buf in chunk.buffers():
-                if not buf:
-                    continue
-                h = hash_from_buffer(memoryview(buf))
-                hashes.append(h)
-        return compute_hash(hashes)
-        # return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))
-
-    def calculate_size(self, data: KiaraArray) -> int:
-        return len(data.arrow_array)
 
     def parse_python_obj(self, data: Any) -> KiaraArray:
 
@@ -178,7 +163,7 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
                         continue
                     h = hash_from_buffer(memoryview(buf))
                     hashes.append(h)
-        return compute_hash(hashes)
+        return compute_cid(hashes)
         # return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))
 
     def calculate_size(self, data: KiaraTable) -> int:

@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-import uuid
 from typing import TYPE_CHECKING, Any, Iterable, Optional
 
 import pyarrow as pa
-from kiara.defaults import ARRAY_MODEL_CATEOGORY_ID, TABLE_MODEL_CATEOGORY_ID
 from kiara.models import KiaraModel
 from kiara.models.values.value_metadata import ValueMetadata
 from pydantic import Field, PrivateAttr
@@ -66,12 +64,6 @@ class KiaraArray(KiaraModel):
 
     _array_obj: pa.Array = PrivateAttr(default=None)
 
-    def _retrieve_id(self) -> str:
-        return str(uuid.uuid4())
-
-    def _retrieve_category_id(self) -> str:
-        return ARRAY_MODEL_CATEOGORY_ID
-
     def _retrieve_data_to_hash(self) -> Any:
         raise NotImplementedError()
 
@@ -131,12 +123,6 @@ class KiaraTable(KiaraModel):
         description="The path to the (feather) file backing this array."
     )
     _table_obj: pa.Table = PrivateAttr(default=None)
-
-    def _retrieve_id(self) -> str:
-        return str(uuid.uuid4())
-
-    def _retrieve_category_id(self) -> str:
-        return TABLE_MODEL_CATEOGORY_ID
 
     def _retrieve_data_to_hash(self) -> Any:
         raise NotImplementedError()

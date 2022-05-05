@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import atexit
-import hashlib
 import os
 import shutil
 import tempfile
@@ -9,6 +8,8 @@ from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple, Union
 from kiara.models import KiaraModel
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
+from kiara.utils.hashing import compute_cid_from_file
+from multiformats import CID
 from pydantic import BaseModel, Field, PrivateAttr, validator
 from sqlalchemy import Column, MetaData, create_engine, event, inspect, text
 from sqlalchemy.engine import Engine
@@ -109,20 +110,16 @@ class KiaraDatabase(KiaraModel):
     _tables: Dict[str, Table] = PrivateAttr(default_factory=dict)
     _metadata_obj: Optional[MetaData] = PrivateAttr(default=None)
     # _table_schemas: Optional[Dict[str, SqliteTableSchema]] = PrivateAttr(default=None)
-    _file_hash: Optional[str] = PrivateAttr(default=None)
+    # _file_hash: Optional[str] = PrivateAttr(default=None)
+    _file_cid: Optional[CID] = PrivateAttr(default=None)
     _lock: bool = PrivateAttr(default=True)
     _immutable: bool = PrivateAttr(default=None)
 
     def _retrieve_id(self) -> str:
-        return self.file_hash
-
-    def _retrieve_category_id(self) -> str:
-        return "instance.database"
+        return str(self.file_cid)
 
     def _retrieve_data_to_hash(self) -> Any:
-        return {
-            "file_hash": self.file_hash,
-        }
+        return self.file_cid
 
     @validator("db_file_path", allow_reuse=True)
     def ensure_absolute_path(cls, path: str):
@@ -137,19 +134,13 @@ class KiaraDatabase(KiaraModel):
         return f"sqlite:///{self.db_file_path}"
 
     @property
-    def file_hash(self) -> str:
+    def file_cid(self) -> CID:
 
-        if self._file_hash is not None:
-            return self._file_hash
+        if self._file_cid is not None:
+            return self._file_cid
 
-        sha256_hash = hashlib.sha3_256()
-        with open(self.db_file_path, "rb") as f:
-            # Read and update hash string value in blocks of 4K
-            for byte_block in iter(lambda: f.read(4096), b""):
-                sha256_hash.update(byte_block)
-
-        self._file_hash = sha256_hash.hexdigest()
-        return self._file_hash
+        self._file_cid = compute_cid_from_file(file=self.db_file_path, codec="raw")
+        return self._file_cid
 
     def get_sqlalchemy_engine(self) -> "Engine":
 
@@ -213,7 +204,7 @@ class KiaraDatabase(KiaraModel):
         self._cached_engine = None
         self._cached_inspector = None
         self._table_names = None
-        self._file_hash = None
+        # self._file_hash = None
         self._metadata_obj = None
         self._tables.clear()
 
@@ -238,8 +229,8 @@ class KiaraDatabase(KiaraModel):
         shutil.copy2(self.db_file_path, target)
 
         new_db = KiaraDatabase(db_file_path=target)
-        if self._file_hash:
-            new_db._file_hash = self._file_hash
+        # if self._file_hash:
+        #     new_db._file_hash = self._file_hash
         return new_db
 
     def get_sqlalchemy_inspector(self) -> Inspector:
@@ -274,7 +265,7 @@ class KiaraDatabase(KiaraModel):
 
 
 class DatabaseMetadata(ValueMetadata):
-    """File stats."""
+    """Database and table properties."""
 
     _metadata_key = "database"
 

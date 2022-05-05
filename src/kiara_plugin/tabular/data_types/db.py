@@ -5,7 +5,7 @@ from typing import Any, List, Mapping, Optional, Type
 
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
-from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG, KIARA_HASH_FUNCTION
+from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
 from kiara.utils.output import SqliteTabularWrap
 from rich.console import Group
@@ -24,15 +24,6 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
     @classmethod
     def python_class(self) -> Type[KiaraDatabase]:
         return KiaraDatabase
-
-    def calculate_size(self, data: KiaraDatabase) -> int:
-
-        file_stats = os.stat(data.db_file_path)
-        size = file_stats.st_size
-        return size
-
-    def calculate_hash(self, data: KiaraDatabase) -> int:
-        return KIARA_HASH_FUNCTION(data.file_hash)
 
     def parse_python_obj(self, data: Any) -> KiaraDatabase:
 
