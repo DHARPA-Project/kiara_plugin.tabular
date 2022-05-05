@@ -28,6 +28,9 @@ class SqliteTableSchema(BaseModel):
     nullable_columns: List[str] = Field(
         description="The columns that are nullable.", default_factory=list
     )
+    unique_columns: List[str] = Field(
+        description="The columns that should be marked 'UNIQUE'.", default_factory=list
+    )
     primary_key: Optional[str] = Field(
         description="The primary key for this table.", default=None
     )
@@ -50,6 +53,7 @@ class SqliteTableSchema(BaseModel):
                 nullable=column_name in self.nullable_columns,
                 primary_key=column_name == self.primary_key,
                 index=column_name in self.index_columns,
+                unique=column_name in self.unique_columns,
             )
             table_columns.append(column_obj)
 
@@ -202,6 +206,9 @@ class KiaraDatabase(KiaraModel):
         self._table_names = None
         self._table_schemas = None
         self._file_hash = None
+
+    def _invalidate_other(self):
+        pass
 
     def copy_database_file(self, target: str):
 

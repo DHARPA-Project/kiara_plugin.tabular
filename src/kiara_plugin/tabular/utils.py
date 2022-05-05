@@ -130,6 +130,7 @@ def create_sqlite_schema_data_from_arrow_table(
     column_map: Optional[Mapping[str, str]] = None,
     index_columns: Optional[Iterable[str]] = None,
     nullable_columns: Optional[Iterable[str]] = None,
+    unique_columns: Optional[Iterable[str]] = None,
     primary_key: Optional[str] = None,
 ) -> SqliteTableSchema:
     """Create a sql schema statement from an Arrow table object.
@@ -142,6 +143,7 @@ def create_sqlite_schema_data_from_arrow_table(
     """
 
     columns = convert_arrow_column_types_to_sqlite(table=table)
+
     if column_map is None:
         column_map = {}
 
@@ -153,9 +155,24 @@ def create_sqlite_schema_data_from_arrow_table(
     if nullable_columns is None:
         nullable_columns = []
 
+    if unique_columns is None:
+        unique_columns = []
+
     for cn, sqlite_data_type in columns.items():
         if cn in column_map.keys():
             new_key = column_map[cn]
+            index_columns = [
+                x if x not in column_map.keys() else column_map[x]
+                for x in index_columns
+            ]
+            unique_columns = [
+                x if x not in column_map.keys() else column_map[x]
+                for x in unique_columns
+            ]
+            nullable_columns = [
+                x if x not in column_map.keys() else column_map[x]
+                for x in nullable_columns
+            ]
         else:
             new_key = cn
 
@@ -175,6 +192,7 @@ def create_sqlite_schema_data_from_arrow_table(
         columns=columns,
         index_columns=index_columns,
         nullable_columns=nullable_columns,
+        unique_columns=unique_columns,
         primary_key=primary_key,
     )
     return schema
