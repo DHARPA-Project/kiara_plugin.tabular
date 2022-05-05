@@ -73,7 +73,7 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
                     "python_object": {
                         "module_type": "load.database",
                         "module_config": {
-                            "value_type": "database",
+                            "value_type": self.data_type_name,
                             "target_profile": "python_object",
                             "serialization_profile": "copy",
                         },
