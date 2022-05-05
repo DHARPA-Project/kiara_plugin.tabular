@@ -184,7 +184,7 @@ class KiaraTableMetadata(ValueMetadata):
         return ["table"]
 
     @classmethod
-    def create_value_metadata(cls, value: "Value") -> "TableMetadata":
+    def create_value_metadata(cls, value: "Value") -> "KiaraTableMetadata":
 
         kiara_table: KiaraTable = value.data
 
@@ -212,7 +212,7 @@ class KiaraTableMetadata(ValueMetadata):
             "size": table.nbytes,
         }
 
-        md = TableMetadata(**schema)
+        md = TableMetadata.construct(**schema)
         return KiaraTableMetadata.construct(table=md)
 
     table: TableMetadata = Field(description="The table schema.")

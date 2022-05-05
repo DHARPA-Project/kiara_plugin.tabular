@@ -7,6 +7,8 @@ import tempfile
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple, Union
 
 from kiara.models import KiaraModel
+from kiara.models.values.value import Value
+from kiara.models.values.value_metadata import ValueMetadata
 from pydantic import BaseModel, Field, PrivateAttr, validator
 from sqlalchemy import Column, MetaData, create_engine, event, inspect, text
 from sqlalchemy.engine import Engine
@@ -14,7 +16,12 @@ from sqlalchemy.engine.reflection import Inspector
 from sqlalchemy.sql.elements import TextClause
 from sqlalchemy.testing.schema import Table
 
-from kiara_plugin.tabular.defaults import SQLITE_SQLALCHEMY_TYPE_MAP, SqliteDataType
+from kiara_plugin.tabular.defaults import (
+    SQLALCHEMY_SQLITE_TYPE_MAP,
+    SQLITE_SQLALCHEMY_TYPE_MAP,
+    SqliteDataType,
+)
+from kiara_plugin.tabular.models import TableMetadata
 
 
 class SqliteTableSchema(BaseModel):
@@ -99,7 +106,9 @@ class KiaraDatabase(KiaraModel):
     _cached_engine = PrivateAttr(default=None)
     _cached_inspector = PrivateAttr(default=None)
     _table_names = PrivateAttr(default=None)
-    _table_schemas = PrivateAttr(default=None)
+    _tables: Dict[str, Table] = PrivateAttr(default_factory=dict)
+    _metadata_obj: Optional[MetaData] = PrivateAttr(default=None)
+    # _table_schemas: Optional[Dict[str, SqliteTableSchema]] = PrivateAttr(default=None)
     _file_hash: Optional[str] = PrivateAttr(default=None)
     _lock: bool = PrivateAttr(default=True)
     _immutable: bool = PrivateAttr(default=None)
@@ -204,11 +213,23 @@ class KiaraDatabase(KiaraModel):
         self._cached_engine = None
         self._cached_inspector = None
         self._table_names = None
-        self._table_schemas = None
         self._file_hash = None
+        self._metadata_obj = None
+        self._tables.clear()
 
     def _invalidate_other(self):
         pass
+
+    def get_sqlalchemy_metadata(self) -> MetaData:
+        """Return the sqlalchemy Metadtaa object for the underlying database.
+
+        This is used internally, you typically don't need to access this attribute.
+
+        """
+
+        if self._metadata_obj is None:
+            self._metadata_obj = MetaData()
+        return self._metadata_obj
 
     def copy_database_file(self, target: str):
 
@@ -221,7 +242,7 @@ class KiaraDatabase(KiaraModel):
             new_db._file_hash = self._file_hash
         return new_db
 
-    def get_sqlalchemy_inspector(self) -> "Inspector":
+    def get_sqlalchemy_inspector(self) -> Inspector:
 
         if self._cached_inspector is not None:
             return self._cached_inspector
@@ -237,27 +258,78 @@ class KiaraDatabase(KiaraModel):
         self._table_names = self.get_sqlalchemy_inspector().get_table_names()
         return self._table_names
 
-    def get_schema_for_table(self, table_name: str):
+    def get_sqlalchemy_table(self, table_name: str) -> Table:
+        """Return the sqlalchemy edges table instance for this network datab."""
 
-        if self._table_schemas is not None:
-            if table_name not in self._table_schemas.keys():
-                raise Exception(
-                    f"Can't get table schema, database does not contain table with name '{table_name}'."
-                )
-            return self._table_schemas[table_name]
+        if table_name in self._tables.keys():
+            return self._tables[table_name]
 
-        ts: Dict[str, Dict[str, Any]] = {}
-        inspector = self.get_sqlalchemy_inspector()
-        for tn in inspector.get_table_names():
-            columns = self.get_sqlalchemy_inspector().get_columns(tn)
-            ts[tn] = {}
-            for c in columns:
-                ts[tn][c["name"]] = c
+        table = Table(
+            table_name,
+            self.get_sqlalchemy_metadata(),
+            autoload_with=self.get_sqlalchemy_engine(),
+        )
+        self._tables[table_name] = table
+        return table
 
-        self._table_schemas = ts
-        if table_name not in self._table_schemas.keys():
-            raise Exception(
-                f"Can't get table schema, database does not contain table with name '{table_name}'."
-            )
 
-        return self._table_schemas[table_name]
+class DatabaseMetadata(ValueMetadata):
+    """File stats."""
+
+    _metadata_key = "database"
+
+    @classmethod
+    def retrieve_supported_data_types(cls) -> Iterable[str]:
+        return ["database"]
+
+    @classmethod
+    def create_value_metadata(cls, value: Value) -> "DatabaseMetadata":
+
+        database: KiaraDatabase = value.data
+
+        insp = database.get_sqlalchemy_inspector()
+
+        mds = {}
+
+        for table_name in insp.get_table_names():
+
+            with database.get_sqlalchemy_engine().connect() as con:
+                result = con.execute(text(f"SELECT count(*) from {table_name}"))
+                num_rows = result.fetchone()[0]
+
+                try:
+                    result = con.execute(
+                        text(
+                            f'SELECT SUM("pgsize") FROM "dbstat" WHERE name="{table_name}"'
+                        )
+                    )
+                    size: Optional[int] = result.fetchone()[0]
+                except Exception:
+                    size = None
+
+            columns = {}
+            for column in insp.get_columns(table_name=table_name):
+                name = column["name"]
+                _type = column["type"]
+                type_name = SQLALCHEMY_SQLITE_TYPE_MAP[type(_type)]
+                columns[name] = {
+                    "type_name": type_name,
+                    "metadata": {
+                        "nullable": column["nullable"],
+                        "primary_key": True if column["primary_key"] else False,
+                    },
+                }
+
+            schema = {
+                "column_names": list(columns.keys()),
+                "column_schema": columns,
+                "rows": num_rows,
+                "size": size,
+            }
+
+            md = TableMetadata(**schema)
+            mds[table_name] = md
+
+        return DatabaseMetadata.construct(tables=mds)
+
+    tables: Dict[str, TableMetadata] = Field(description="The table schema.")

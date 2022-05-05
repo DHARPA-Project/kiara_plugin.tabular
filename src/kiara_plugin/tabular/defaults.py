@@ -35,6 +35,13 @@ SQLITE_SQLALCHEMY_TYPE_MAP: Dict[SqliteDataType, Type] = {
     "BLOB": BLOB,
 }
 
+SQLALCHEMY_SQLITE_TYPE_MAP: Dict[Type, SqliteDataType] = {
+    INTEGER: "INTEGER",
+    FLOAT: "REAL",
+    TEXT: "TEXT",
+    BLOB: "BLOB",
+}
+
 RESERVED_SQL_KEYWORDS = [
     "ALL",
     "AND",
