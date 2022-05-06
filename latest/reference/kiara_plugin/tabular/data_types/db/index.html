@@ -525,20 +525,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.data_types.db.DatabaseType.calculate_hash" class="md-nav__link">
-    calculate_hash()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.data_types.db.DatabaseType.calculate_size" class="md-nav__link">
-    calculate_size()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.data_types.db.DatabaseType.parse_python_obj" class="md-nav__link">
     parse_python_obj()
   </a>
@@ -863,20 +849,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.data_types.db.DatabaseType.calculate_hash" class="md-nav__link">
-    calculate_hash()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.data_types.db.DatabaseType.calculate_size" class="md-nav__link">
-    calculate_size()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.data_types.db.DatabaseType.parse_python_obj" class="md-nav__link">
     parse_python_obj()
   </a>
@@ -987,15 +959,6 @@ DatabaseType            (<a class="autorefs autorefs-external" title="kiara.data
     <span class="k">def</span> <span class="nf">python_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">KiaraDatabase</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">KiaraDatabase</span>
 
-    <span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-
-        <span class="n">file_stats</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">)</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="n">file_stats</span><span class="o">.</span><span class="n">st_size</span>
-        <span class="k">return</span> <span class="n">size</span>
-
-    <span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">KIARA_HASH_FUNCTION</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">file_hash</span><span class="p">)</span>
-
     <span class="k">def</span> <span class="nf">parse_python_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KiaraDatabase</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
@@ -1096,61 +1059,6 @@ DatabaseType            (<a class="autorefs autorefs-external" title="kiara.data
 
 
 <h4 id="kiara_plugin.tabular.data_types.db.DatabaseType-methods">Methods<a href="#kiara_plugin.tabular.data_types.db.DatabaseType-methods" class="headerlink" title="Permanent link">&para;</a></h4>
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h5 id="kiara_plugin.tabular.data_types.db.DatabaseType.calculate_hash" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.data_types.db.DatabaseType.calculate_hash" class="headerlink" title="Permanent link">&para;</a></h5>
-
-    <div class="doc doc-contents ">
-
-      <p>Calculate the hash of the value.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/data_types/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">KIARA_HASH_FUNCTION</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">file_hash</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h5 id="kiara_plugin.tabular.data_types.db.DatabaseType.calculate_size" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.data_types.db.DatabaseType.calculate_size" class="headerlink" title="Permanent link">&para;</a></h5>
-
-    <div class="doc doc-contents ">
-
-      <p>Calculate the size of the value.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/data_types/db.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-
-    <span class="n">file_stats</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">)</span>
-    <span class="n">size</span> <span class="o">=</span> <span class="n">file_stats</span><span class="o">.</span><span class="n">st_size</span>
-    <span class="k">return</span> <span class="n">size</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
 
   <div class="doc doc-object doc-method">
 

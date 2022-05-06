@@ -667,8 +667,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_hash" class="md-nav__link">
-    file_hash
+  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_cid" class="md-nav__link">
+    file_cid
   </a>
   
 </li>
@@ -1121,8 +1121,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_hash" class="md-nav__link">
-    file_hash
+  <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_cid" class="md-nav__link">
+    file_cid
   </a>
   
 </li>
@@ -1367,12 +1367,12 @@ DatabaseMetadata            (<a class="autorefs autorefs-external" title="kiara.
 
     <div class="doc doc-contents ">
 
-      <p>File stats.</p>
+      <p>Database and table properties.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/models/db.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseMetadata</span><span class="p">(</span><span class="n">ValueMetadata</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;File stats.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Database and table properties.&quot;&quot;&quot;</span>
 
     <span class="n">_metadata_key</span> <span class="o">=</span> <span class="s2">&quot;database&quot;</span>
 
@@ -1638,20 +1638,16 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="n">_tables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Table</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
     <span class="n">_metadata_obj</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MetaData</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="c1"># _table_schemas: Optional[Dict[str, SqliteTableSchema]] = PrivateAttr(default=None)</span>
-    <span class="n">_file_hash</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># _file_hash: Optional[str] = PrivateAttr(default=None)</span>
+    <span class="n">_file_cid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CID</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">_immutable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_retrieve_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_hash</span>
-
-    <span class="k">def</span> <span class="nf">_retrieve_category_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;instance.database&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_cid</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_retrieve_data_to_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;file_hash&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_hash</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_cid</span>
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;db_file_path&quot;</span><span class="p">,</span> <span class="n">allow_reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">ensure_absolute_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -1666,19 +1662,13 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;sqlite:///</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">file_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">file_cid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CID</span><span class="p">:</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_cid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_cid</span>
 
-        <span class="n">sha256_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha3_256</span><span class="p">()</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="c1"># Read and update hash string value in blocks of 4K</span>
-            <span class="k">for</span> <span class="n">byte_block</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4096</span><span class="p">),</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-                <span class="n">sha256_hash</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">byte_block</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="n">sha256_hash</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_cid</span> <span class="o">=</span> <span class="n">compute_cid_from_file</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s2">&quot;raw&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_cid</span>
 
     <span class="k">def</span> <span class="nf">get_sqlalchemy_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Engine&quot;</span><span class="p">:</span>
 
@@ -1742,7 +1732,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_engine</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached_inspector</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_table_names</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># self._file_hash = None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_obj</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
@@ -1767,8 +1757,8 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
         <span class="n">new_db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span><span class="p">:</span>
-            <span class="n">new_db</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
+        <span class="c1"># if self._file_hash:</span>
+        <span class="c1">#     new_db._file_hash = self._file_hash</span>
         <span class="k">return</span> <span class="n">new_db</span>
 
     <span class="k">def</span> <span class="nf">get_sqlalchemy_inspector</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Inspector</span><span class="p">:</span>
@@ -1861,15 +1851,15 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
 
 
-<h5 id="kiara_plugin.tabular.models.db.KiaraDatabase.file_hash" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">file_hash</span><span class="p">:</span> <span class="nb">str</span></code>
+<h5 id="kiara_plugin.tabular.models.db.KiaraDatabase.file_cid" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">file_cid</span><span class="p">:</span> <span class="n">CID</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-property"><code>property</code></small>
       <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
   </span>
 
-<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_hash" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.file_cid" class="headerlink" title="Permanent link">&para;</a></h5>
 
     <div class="doc doc-contents ">
 
@@ -1926,8 +1916,8 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db_file_path</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
     <span class="n">new_db</span> <span class="o">=</span> <span class="n">KiaraDatabase</span><span class="p">(</span><span class="n">db_file_path</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span><span class="p">:</span>
-        <span class="n">new_db</span><span class="o">.</span><span class="n">_file_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_hash</span>
+    <span class="c1"># if self._file_hash:</span>
+    <span class="c1">#     new_db._file_hash = self._file_hash</span>
     <span class="k">return</span> <span class="n">new_db</span>
 </code></pre></div>
         </details>
