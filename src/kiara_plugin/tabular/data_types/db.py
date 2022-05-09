@@ -76,7 +76,7 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
         serialized = SerializationResult(**serialized_data)
         return serialized
 
-    def render_as__terminal_renderable(
+    def pretty_print_as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
     ) -> Any:
 
