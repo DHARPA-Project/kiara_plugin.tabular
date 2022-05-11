@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, Iterable, Optional
+from typing import Any, Iterable, List, Optional
 
 import pyarrow as pa
 from kiara.models import KiaraModel
+from kiara.models.render_value import RenderInstruction, RenderValueResult
+from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
+from kiara.utils.output import ArrowTabularWrap
 from pydantic import Field, PrivateAttr
 
 from kiara_plugin.tabular.models import TableMetadata
-
-if TYPE_CHECKING:
-    from kiara.models.values.value import Value
 
 
 class KiaraArray(KiaraModel):
@@ -202,3 +202,42 @@ class KiaraTableMetadata(ValueMetadata):
         return KiaraTableMetadata.construct(table=md)
 
     table: TableMetadata = Field(description="The table schema.")
+
+
+class RenderTableInstruction(RenderInstruction):
+    @classmethod
+    def retrieve_source_type(cls) -> str:
+        return "table"
+
+    _kiara_model_id = "instance.render_instruction.table"
+    number_of_rows: int = Field(description="How namy rows to display.", default=20)
+    row_offset: int = Field(description="From which row to start.", default=0)
+    columns: Optional[List[str]] = Field(
+        description="Which rows do display.", default=None
+    )
+
+    def render_as__terminal_renderable(self, value: Value):
+
+        import duckdb
+
+        from kiara_plugin.tabular.models.table import KiaraTable
+
+        table: KiaraTable = value.data
+
+        columnns: Iterable[str] = self.columns  # type: ignore
+        if not columnns:
+            columnns = table.column_names
+
+        assert columnns
+
+        query = f"""SELECT {', '.join(columnns)} FROM data ORDER by {', '.join(columnns)} LIMIT {self.number_of_rows} OFFSET {self.row_offset}"""
+
+        rel_from_arrow = duckdb.arrow(table.arrow_table)
+        query_result: duckdb.DuckDBPyResult = rel_from_arrow.query("data", query)
+
+        result_table = query_result.fetch_arrow_table()
+
+        wrap = ArrowTabularWrap(table=result_table)
+        pretty = wrap.pretty_print()
+
+        return RenderValueResult(rendered=pretty)
