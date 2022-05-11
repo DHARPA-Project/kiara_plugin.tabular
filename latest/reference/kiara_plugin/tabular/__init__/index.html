@@ -304,8 +304,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../info/metadata_types/" class="md-nav__link">
-        metadata_types
+      <a href="../../../../info/kiara_model_types/" class="md-nav__link">
+        kiara_model_types
       </a>
     </li>
   
@@ -734,6 +734,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.find_model_classes" class="md-nav__link">
+    find_model_classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.find_modules" class="md-nav__link">
     find_modules
   </a>
@@ -743,13 +750,6 @@
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.find_pipelines" class="md-nav__link">
     find_pipelines
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.find_value_metadata" class="md-nav__link">
-    find_value_metadata
   </a>
   
 </li>
@@ -1336,6 +1336,24 @@
 
 
 
+<h3 id="kiara_plugin.tabular.find_model_classes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">find_model_classes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span></code>
+
+
+<a href="#kiara_plugin.tabular.find_model_classes" class="headerlink" title="Permanent link">&para;</a></h3>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
 <h3 id="kiara_plugin.tabular.find_modules" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">find_modules</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span></code>
 
@@ -1359,24 +1377,6 @@
 
 
 <a href="#kiara_plugin.tabular.find_pipelines" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="kiara_plugin.tabular.find_value_metadata" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">find_value_metadata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span></code>
-
-
-<a href="#kiara_plugin.tabular.find_value_metadata" class="headerlink" title="Permanent link">&para;</a></h3>
 
     <div class="doc doc-contents ">
 
@@ -5283,6 +5283,232 @@ KiaraTableMetadata            (<a class="autorefs autorefs-external" title="kiar
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_supported_data_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;table&quot;</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h7 id="kiara_plugin.tabular.models.table.RenderTableInstruction" class="doc doc-heading">
+        <code>
+RenderTableInstruction            (<span title="kiara.models.render_value.RenderInstruction">RenderInstruction</span>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.table.RenderTableInstruction" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">RenderTableInstruction</span><span class="p">(</span><span class="n">RenderInstruction</span><span class="p">):</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_source_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;table&quot;</span>
+
+    <span class="n">_kiara_model_id</span> <span class="o">=</span> <span class="s2">&quot;instance.render_instruction.table&quot;</span>
+    <span class="n">number_of_rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;How namy rows to display.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">row_offset</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;From which row to start.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Which rows do display.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">render_as__terminal_renderable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">):</span>
+
+        <span class="kn">import</span> <span class="nn">duckdb</span>
+
+        <span class="kn">from</span> <span class="nn">kiara_plugin.tabular.models.table</span> <span class="kn">import</span> <span class="n">KiaraTable</span>
+
+        <span class="n">table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="n">columnns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>  <span class="c1"># type: ignore</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">columnns</span><span class="p">:</span>
+            <span class="n">columnns</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column_names</span>
+
+        <span class="k">assert</span> <span class="n">columnns</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM data ORDER by </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> LIMIT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="si">}</span><span class="s2"> OFFSET </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+
+        <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
+        <span class="n">query_result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyResult</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+
+        <span class="n">result_table</span> <span class="o">=</span> <span class="n">query_result</span><span class="o">.</span><span class="n">fetch_arrow_table</span><span class="p">()</span>
+
+        <span class="n">wrap</span> <span class="o">=</span> <span class="n">ArrowTabularWrap</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">result_table</span><span class="p">)</span>
+        <span class="n">pretty</span> <span class="o">=</span> <span class="n">wrap</span><span class="o">.</span><span class="n">pretty_print</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">RenderValueResult</span><span class="p">(</span><span class="n">rendered</span><span class="o">=</span><span class="n">pretty</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+<h8 id="kiara_plugin.tabular.models.table.RenderTableInstruction-attributes">Attributes<a href="#kiara_plugin.tabular.models.table.RenderTableInstruction-attributes" class="headerlink" title="Permanent link">&para;</a></h8>
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h9 id="kiara_plugin.tabular.models.table.RenderTableInstruction.columns" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.table.RenderTableInstruction.columns" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+      <p>Which rows do display.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h9 id="kiara_plugin.tabular.models.table.RenderTableInstruction.number_of_rows" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">number_of_rows</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.table.RenderTableInstruction.number_of_rows" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+      <p>How namy rows to display.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h9 id="kiara_plugin.tabular.models.table.RenderTableInstruction.row_offset" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">row_offset</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.table.RenderTableInstruction.row_offset" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+      <p>From which row to start.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.models.table.RenderTableInstruction.render_as__terminal_renderable" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">render_as__terminal_renderable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.models.table.RenderTableInstruction.render_as__terminal_renderable" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">render_as__terminal_renderable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">):</span>
+
+    <span class="kn">import</span> <span class="nn">duckdb</span>
+
+    <span class="kn">from</span> <span class="nn">kiara_plugin.tabular.models.table</span> <span class="kn">import</span> <span class="n">KiaraTable</span>
+
+    <span class="n">table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="n">columnns</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">columnns</span><span class="p">:</span>
+        <span class="n">columnns</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column_names</span>
+
+    <span class="k">assert</span> <span class="n">columnns</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM data ORDER by </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> LIMIT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="si">}</span><span class="s2"> OFFSET </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+
+    <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
+    <span class="n">query_result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyResult</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+
+    <span class="n">result_table</span> <span class="o">=</span> <span class="n">query_result</span><span class="o">.</span><span class="n">fetch_arrow_table</span><span class="p">()</span>
+
+    <span class="n">wrap</span> <span class="o">=</span> <span class="n">ArrowTabularWrap</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">result_table</span><span class="p">)</span>
+    <span class="n">pretty</span> <span class="o">=</span> <span class="n">wrap</span><span class="o">.</span><span class="n">pretty_print</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">RenderValueResult</span><span class="p">(</span><span class="n">rendered</span><span class="o">=</span><span class="n">pretty</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.models.table.RenderTableInstruction.retrieve_source_type" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve_source_type</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.models.table.RenderTableInstruction.retrieve_source_type" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">retrieve_source_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;table&quot;</span>
 </code></pre></div>
         </details>
     </div>
