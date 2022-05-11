@@ -3,7 +3,11 @@ from typing import Any, Iterable, List, Optional
 
 import pyarrow as pa
 from kiara.models import KiaraModel
-from kiara.models.render_value import RenderInstruction, RenderValueResult
+from kiara.models.render_value import (
+    RenderInstruction,
+    RenderMetadata,
+    RenderValueResult,
+)
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
 from kiara.utils.output import ArrowTabularWrap
@@ -210,7 +214,7 @@ class RenderTableInstruction(RenderInstruction):
         return "table"
 
     _kiara_model_id = "instance.render_instruction.table"
-    number_of_rows: int = Field(description="How namy rows to display.", default=20)
+    number_of_rows: int = Field(description="How many rows to display.", default=20)
     row_offset: int = Field(description="From which row to start.", default=0)
     columns: Optional[List[str]] = Field(
         description="Which rows do display.", default=None
@@ -219,8 +223,6 @@ class RenderTableInstruction(RenderInstruction):
     def render_as__terminal_renderable(self, value: Value):
 
         import duckdb
-
-        from kiara_plugin.tabular.models.table import KiaraTable
 
         table: KiaraTable = value.data
 
@@ -240,4 +242,30 @@ class RenderTableInstruction(RenderInstruction):
         wrap = ArrowTabularWrap(table=result_table)
         pretty = wrap.pretty_print()
 
-        return RenderValueResult(rendered=pretty)
+        related_instructions = {}
+
+        related_instructions["first"] = RenderTableInstruction.construct(
+            **{"row_offset": 0, "columns": self.columns}
+        )
+
+        if self.row_offset > 0:
+            p_offset = self.row_offset - self.number_of_rows
+            if p_offset < 0:
+                p_offset = 0
+            previous = {"row_offset": p_offset, "columns": self.columns}
+            related_instructions["previous"] = RenderTableInstruction.construct(
+                **previous
+            )
+
+        n_offset = self.row_offset + self.number_of_rows
+        if n_offset < table.num_rows:
+            next = {"row_offset": n_offset, "columns": self.columns}
+            related_instructions["next"] = RenderTableInstruction.construct(**next)
+
+        related_instructions["last"] = RenderTableInstruction.construct(
+            **{"row_offset": table.num_rows - self.number_of_rows, "columns": columnns}
+        )
+
+        render_metadata = RenderMetadata(related_instructions=related_instructions)
+
+        return RenderValueResult(rendered=pretty, metadata=render_metadata)
