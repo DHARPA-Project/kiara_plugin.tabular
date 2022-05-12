@@ -116,7 +116,7 @@ class KiaraTable(KiaraModel):
 
         if table_obj is None:
             raise Exception(
-                f"Can't create array, invalid source data type: {type(data)}."
+                f"Can't create table, invalid source data type: {type(data)}."
             )
 
         obj = KiaraTable()
