@@ -48,7 +48,7 @@ class CreateTableModule(CreateFromModule):
         imported_data = csv.read_csv(input_file.path)
         return imported_data
 
-    def create__table__from__csv_file_bundle(self, source_value: Value) -> Any:
+    def create__table__from__text_file_bundle(self, source_value: Value) -> Any:
 
         import pyarrow as pa
 
