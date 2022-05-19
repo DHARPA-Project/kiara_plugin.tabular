@@ -59,6 +59,8 @@ class KiaraArray(KiaraModel):
             )
 
         obj = KiaraArray()
+        if not isinstance(array_obj, pa.lib.ChunkedArray):
+            array_obj = pa.chunked_array(array_obj)
         obj._array_obj = array_obj
         return obj
 
