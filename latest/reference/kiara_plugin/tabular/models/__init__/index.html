@@ -2691,6 +2691,8 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
             <span class="p">)</span>
 
         <span class="n">obj</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array_obj</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">ChunkedArray</span><span class="p">):</span>
+            <span class="n">array_obj</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">chunked_array</span><span class="p">(</span><span class="n">array_obj</span><span class="p">)</span>
         <span class="n">obj</span><span class="o">.</span><span class="n">_array_obj</span> <span class="o">=</span> <span class="n">array_obj</span>
         <span class="k">return</span> <span class="n">obj</span>
 
@@ -2832,6 +2834,8 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
         <span class="p">)</span>
 
     <span class="n">obj</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array_obj</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">ChunkedArray</span><span class="p">):</span>
+        <span class="n">array_obj</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">chunked_array</span><span class="p">(</span><span class="n">array_obj</span><span class="p">)</span>
     <span class="n">obj</span><span class="o">.</span><span class="n">_array_obj</span> <span class="o">=</span> <span class="n">array_obj</span>
     <span class="k">return</span> <span class="n">obj</span>
 </code></pre></div>
