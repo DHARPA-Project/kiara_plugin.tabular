@@ -101,8 +101,11 @@ class KiaraArray(KiaraModel):
 
 
 class KiaraTable(KiaraModel):
+    """A wrapper class to manage tabular data in a hopefully memory efficient way."""
+
     @classmethod
     def create_table(cls, data: Any) -> "KiaraTable":
+        """Create a `KiaraTable` instance from an Apache Arrow Table, or dict of lists."""
 
         table_obj = None
         if isinstance(data, KiaraTable):
@@ -128,6 +131,7 @@ class KiaraTable(KiaraModel):
     data_path: Optional[str] = Field(
         description="The path to the (feather) file backing this array."
     )
+    """The path where the table object is store (for internal or read-only use)."""
     _table_obj: pa.Table = PrivateAttr(default=None)
 
     def _retrieve_data_to_hash(self) -> Any:
@@ -135,6 +139,7 @@ class KiaraTable(KiaraModel):
 
     @property
     def arrow_table(self) -> pa.Table:
+        """Return the data as an Apache Arrow Table instance."""
 
         if self._table_obj is not None:
             return self._table_obj
@@ -150,19 +155,34 @@ class KiaraTable(KiaraModel):
 
     @property
     def column_names(self) -> Iterable[str]:
+        """Retrieve the names of all the columns of this table."""
         return self.arrow_table.column_names
 
     @property
     def num_rows(self) -> int:
+        """Return the number of rows in this table."""
         return self.arrow_table.num_rows
 
     def to_pydict(self):
+        """Convert and return the table data as a dictionary of lists.
+
+        This will load all data into memory, so you might or might not want to do that.
+        """
         return self.arrow_table.to_pydict()
 
     def to_pylist(self):
+        """Convert and return the table data as a list of rows/dictionaries.
+
+        This will load all data into memory, so you might or might not want to do that.
+        """
+
         return self.arrow_table.to_pylist()
 
     def to_pandas(self):
+        """Convert and return the table data to a Pandas dataframe.
+
+        This will load all data into memory, so you might or might not want to do that.
+        """
         return self.arrow_table.to_pandas()
 
 

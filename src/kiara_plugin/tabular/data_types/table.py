@@ -137,16 +137,24 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
 class TableType(AnyType[KiaraTable, DataTypeConfig]):
     """Tabular data (table, spreadsheet, data_frame, what have you).
 
-    Internally, this is backed by the [Apache Arrow](https://arrow.apache.org) [``Table``](https://arrow.apache.org/docs/python/generated/pyarrow.Table.html) class.
+    The table data is organized in sets of columns (arrays of data of the same type), with each column having a string identifier.
+
+    *kiara* uses an instance of the [`KiaraTable`][kiara_plugin.tabular.models.table.KiaraTable]
+    class to manage the table data, which let's developers access it in different formats ([Apache Arrow Table](https://arrow.apache.org/docs/python/generated/pyarrow.Table.html), [Pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html), Python dict of lists, more to follow...).
+
+    Please consult the API doc of the `KiaraTable` class for more information about how to access and query the data:
+
+    - [`KiaraTable` API doc](https://dharpa.org/kiara_plugin.tabular/latest/reference/kiara_plugin/tabular/models/__init__/#kiara_plugin.tabular.models.table.KiaraTable)
+
+    Internally, the data is stored in [Apache Feather format](https://arrow.apache.org/docs/python/feather.html) -- both
+    in memory and on disk when saved, which enables some advanced usage to preserve memory and compute overhead.
     """
 
     _data_type_name = "table"
 
     @classmethod
     def python_class(cls) -> Type:
-        import pyarrow as pa
-
-        return pa.Table
+        return KiaraTable
 
     def parse_python_obj(self, data: Any) -> KiaraTable:
 
