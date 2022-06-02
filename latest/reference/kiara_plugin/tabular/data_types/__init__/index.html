@@ -11,7 +11,7 @@
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
     
     
       
@@ -19,7 +19,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.1c3799f8.min.css">
       
         
         <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.cc9b2e1e.min.css">
@@ -1693,23 +1693,39 @@ TableType            (<a class="autorefs autorefs-external" title="kiara.data_ty
     <div class="doc doc-contents ">
 
       <p>Tabular data (table, spreadsheet, data_frame, what have you).</p>
-<p>Internally, this is backed by the <a href="https://arrow.apache.org">Apache Arrow</a> <a href="https://arrow.apache.org/docs/python/generated/pyarrow.Table.html"><code>Table</code></a> class.</p>
+<p>The table data is organized in sets of columns (arrays of data of the same type), with each column having a string identifier.</p>
+<p><em>kiara</em> uses an instance of the <a class="autorefs autorefs-internal" href="../../models/table/#kiara_plugin.tabular.models.table.KiaraTable"><code>KiaraTable</code></a>
+class to manage the table data, which let's developers access it in different formats (<a href="https://arrow.apache.org/docs/python/generated/pyarrow.Table.html">Apache Arrow Table</a>, <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">Pandas dataframe</a>, Python dict of lists, more to follow...).</p>
+<p>Please consult the API doc of the <code>KiaraTable</code> class for more information about how to access and query the data:</p>
+<ul>
+<li><a href="https://dharpa.org/kiara_plugin.tabular/latest/reference/kiara_plugin/tabular/models/__init__/#kiara_plugin.tabular.models.table.KiaraTable"><code>KiaraTable</code> API doc</a></li>
+</ul>
+<p>Internally, the data is stored in <a href="https://arrow.apache.org/docs/python/feather.html">Apache Feather format</a> -- both
+in memory and on disk when saved, which enables some advanced usage to preserve memory and compute overhead.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/data_types/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TableType</span><span class="p">(</span><span class="n">AnyType</span><span class="p">[</span><span class="n">KiaraTable</span><span class="p">,</span> <span class="n">DataTypeConfig</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;Tabular data (table, spreadsheet, data_frame, what have you).</span>
 
-<span class="sd">    Internally, this is backed by the [Apache Arrow](https://arrow.apache.org) [``Table``](https://arrow.apache.org/docs/python/generated/pyarrow.Table.html) class.</span>
+<span class="sd">    The table data is organized in sets of columns (arrays of data of the same type), with each column having a string identifier.</span>
+
+<span class="sd">    *kiara* uses an instance of the [`KiaraTable`][kiara_plugin.tabular.models.table.KiaraTable]</span>
+<span class="sd">    class to manage the table data, which let&#39;s developers access it in different formats ([Apache Arrow Table](https://arrow.apache.org/docs/python/generated/pyarrow.Table.html), [Pandas dataframe](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html), Python dict of lists, more to follow...).</span>
+
+<span class="sd">    Please consult the API doc of the `KiaraTable` class for more information about how to access and query the data:</span>
+
+<span class="sd">    - [`KiaraTable` API doc](https://dharpa.org/kiara_plugin.tabular/latest/reference/kiara_plugin/tabular/models/__init__/#kiara_plugin.tabular.models.table.KiaraTable)</span>
+
+<span class="sd">    Internally, the data is stored in [Apache Feather format](https://arrow.apache.org/docs/python/feather.html) -- both</span>
+<span class="sd">    in memory and on disk when saved, which enables some advanced usage to preserve memory and compute overhead.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_data_type_name</span> <span class="o">=</span> <span class="s2">&quot;table&quot;</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">python_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
-
-        <span class="k">return</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span>
+        <span class="k">return</span> <span class="n">KiaraTable</span>
 
     <span class="k">def</span> <span class="nf">parse_python_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KiaraTable</span><span class="p">:</span>
 
@@ -2024,9 +2040,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
           <summary>Source code in <code>tabular/data_types/table.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">python_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
-
-    <span class="k">return</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span>
+    <span class="k">return</span> <span class="n">KiaraTable</span>
 </code></pre></div>
         </details>
     </div>
@@ -2235,7 +2249,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
     <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.3a4b43e5.min.js"></script>
       
     
   </body>
