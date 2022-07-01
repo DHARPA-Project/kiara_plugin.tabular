@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Type
 
 from kiara import KiaraModule
@@ -15,6 +16,7 @@ from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
 )
+from kiara.modules.included_core_modules.export_as import DataExportModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from pydantic import Field
 
@@ -274,3 +276,30 @@ class QueryTableSQL(KiaraModule):
         result: duckdb.DuckDBPyResult = rel_from_arrow.query(_relation_name, _query)
 
         outputs.set_value("query_result", result.fetch_arrow_table())
+
+
+class ExportTableModule(DataExportModule):
+    """Export network data items."""
+
+    _module_type_name = "export.table"
+
+    def export__table__as__csv_file(self, value: KiaraTable, base_path: str, name: str):
+
+        import pyarrow.csv as csv
+
+        target_path = os.path.join(base_path, f"{name}.csv")
+
+        csv.write_csv(value.arrow_table, target_path)
+
+        return {"files": target_path}
+
+    # def export__table__as__sqlite_db(
+    #     self, value: KiaraTable, base_path: str, name: str
+    # ):
+    #
+    #     target_path = os.path.abspath(os.path.join(base_path, f"{name}.sqlite"))
+    #
+    #     raise NotImplementedError()
+    #     # shutil.copy2(value.db_file_path, target_path)
+    #
+    #     return {"files": target_path}
