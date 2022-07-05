@@ -11,7 +11,7 @@
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.9">
     
     
       
@@ -19,7 +19,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.1d29e8d0.min.css">
       
         
         <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -942,6 +942,13 @@
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.tabular.table.DeserializeTableModule" class="md-nav__link">
     DeserializeTableModule
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.tabular.table.ExportTableModule" class="md-nav__link">
+    ExportTableModule
   </a>
   
 </li>
@@ -3350,6 +3357,107 @@ DeserializeTableModule            (<a class="autorefs autorefs-external" title="
 
 
 
+<h5 id="kiara_plugin.tabular.tabular.table.ExportTableModule" class="doc doc-heading">
+        <code>
+ExportTableModule            (<a class="autorefs autorefs-external" title="kiara.modules.included_core_modules.export_as.DataExportModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/included_core_modules/export_as/#kiara.modules.included_core_modules.export_as.DataExportModule">DataExportModule</a>)
+        </code>
+
+
+
+<a href="#kiara_plugin.tabular.tabular.table.ExportTableModule" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>Export network data items.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExportTableModule</span><span class="p">(</span><span class="n">DataExportModule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Export network data items.&quot;&quot;&quot;</span>
+
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;export.table&quot;</span>
+
+    <span class="k">def</span> <span class="nf">export__table__as__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="kn">import</span> <span class="nn">pyarrow.csv</span> <span class="k">as</span> <span class="nn">csv</span>
+
+        <span class="n">target_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+
+        <span class="n">csv</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">,</span> <span class="n">target_path</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="n">target_path</span><span class="p">}</span>
+
+    <span class="c1"># def export__table__as__sqlite_db(</span>
+    <span class="c1">#     self, value: KiaraTable, base_path: str, name: str</span>
+    <span class="c1"># ):</span>
+    <span class="c1">#</span>
+    <span class="c1">#     target_path = os.path.abspath(os.path.join(base_path, f&quot;{name}.sqlite&quot;))</span>
+    <span class="c1">#</span>
+    <span class="c1">#     raise NotImplementedError()</span>
+    <span class="c1">#     # shutil.copy2(value.db_file_path, target_path)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return {&quot;files&quot;: target_path}</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.tabular.table.ExportTableModule.export__table__as__csv_file" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">export__table__as__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">base_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.tabular.table.ExportTableModule.export__table__as__csv_file" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/tabular/table.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">export__table__as__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+    <span class="kn">import</span> <span class="nn">pyarrow.csv</span> <span class="k">as</span> <span class="nn">csv</span>
+
+    <span class="n">target_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+
+    <span class="n">csv</span><span class="o">.</span><span class="n">write_csv</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">,</span> <span class="n">target_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="n">target_path</span><span class="p">}</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
 <h5 id="kiara_plugin.tabular.tabular.table.QueryTableSQL" class="doc doc-heading">
         <code>
 QueryTableSQL            (<a class="autorefs autorefs-external" title="kiara.modules.KiaraModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/__init__/#kiara.modules.KiaraModule">KiaraModule</a>)
@@ -3847,10 +3955,10 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.6c7ad80a.min.js"></script>
       
     
   </body>
