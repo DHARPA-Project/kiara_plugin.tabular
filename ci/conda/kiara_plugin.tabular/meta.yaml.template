@@ -22,6 +22,7 @@ requirements:
     - setuptools_scm
     - setuptools_scm_git_archive
   run:
+    - polars>=0.13.51
     - python-duckdb>=0.3.4
     - python
     - kiara>=0.4.13
