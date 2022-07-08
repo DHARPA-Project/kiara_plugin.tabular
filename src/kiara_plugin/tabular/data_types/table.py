@@ -14,7 +14,7 @@ from kiara.utils.output import ArrowTabularWrap
 from mmh3 import hash_from_buffer
 
 from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable
-from kiara_plugin.tabular.tabular.table import EMPTY_COLUMN_NAME_MARKER
+from kiara_plugin.tabular.modules.table import EMPTY_COLUMN_NAME_MARKER
 
 if TYPE_CHECKING:
     import pyarrow as pa
