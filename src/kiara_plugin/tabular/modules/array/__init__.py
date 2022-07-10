@@ -118,24 +118,15 @@ class ExtractDateModule(KiaraModule):
             if d_obj is None:
                 return None
 
-            return (d_obj,)
+            return d_obj
 
         value = inputs.get_value_obj("array")
         array: KiaraArray = value.data
 
-        # TODO: use array directly once new polars version is released
-        table = pa.Table.from_arrays([array.arrow_array], ["array"])
-        df = pl.DataFrame(data=table)
+        series = pl.Series(name="tokens", values=array.arrow_array)
+        result = series.apply(parse_date)
+        result_array = result.to_arrow()
 
-        result: pl.DataFrame = df.apply(
-            parse_date, return_dtype=pl.datatypes.List(inner=pl.datatypes.Date)
-        )
-        if errors:
-            job_log.add_log(f"Parsing finished, could not parse {len(errors)} strings")
-
-        column = result.get_column("column_0")
-
-        _array = column.to_arrow()
-        chunked = pa.chunked_array(_array)
-
-        outputs.set_value("date_array", chunked)
+        # TODO: remove this cast once the array data type can handle non-chunked arrays
+        chunked = pa.chunked_array(result_array)
+        outputs.set_values(date_array=chunked)
