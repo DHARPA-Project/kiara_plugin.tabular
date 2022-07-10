@@ -1,0 +1,23 @@
+{
+  "pipeline_name": "import.table.from.text_file_bundle",
+  "doc": "Load a table from a bundle of text files.",
+  "steps": [
+    {
+      "module_type": "import.file_bundle",
+      "step_id": "import_file_bundle"
+    },
+    {
+      "module_type": "create.table.from.text_file_bundle",
+      "step_id": "create_table_from_files",
+      "input_links": {
+        "text_file_bundle": "import_file_bundle.file_bundle"
+      }
+    }],
+  "input_aliases": {
+    "import_file_bundle.path": "path"
+  },
+  "output_aliases": {
+    "import_file_bundle.file_bundle": "imported_file_bundle",
+    "create_table_from_files.table": "table"
+  }
+}

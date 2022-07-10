@@ -1,0 +1,23 @@
+{
+  "pipeline_name": "extract.date_array.from.table",
+  "doc": "Extract a date array from a table column.",
+  "steps": [
+    {
+      "module_type": "table.cut_column",
+      "step_id": "cut_column"
+    },
+    {
+      "module_type": "create.date_array",
+      "step_id": "create_date_array",
+      "input_links": {
+        "array": "cut_column.array"
+      }
+    }],
+  "input_aliases": {
+      "cut_column.table": "table",
+      "cut_column.column_name": "column_name"
+  },
+  "output_aliases": {
+      "create_date_array.date_array": "date_array"
+  }
+}
