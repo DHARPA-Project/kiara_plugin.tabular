@@ -74,7 +74,7 @@ class KiaraArray(KiaraModel):
         raise NotImplementedError()
 
     def __len__(self):
-        return len(*self.arrow_array)
+        return len(self.arrow_array)
 
     @property
     def arrow_array(self) -> pa.Array:

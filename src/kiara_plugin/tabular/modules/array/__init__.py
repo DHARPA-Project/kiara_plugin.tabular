@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Literal, Mapping, Type
+from typing import Any, Mapping, Tuple, Type, Union
 
 from kiara import KiaraModule
 from kiara.models.module import KiaraModuleConfig
+from kiara.models.module.jobs import JobLog
 from kiara.models.values.value import SerializedData, ValueMap
 from kiara.modules import ValueSetSchema
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
@@ -46,14 +47,22 @@ class DeserializeArrayModule(DeserializeValueModule):
 
 class ExtractDateConfig(KiaraModuleConfig):
 
-    resolution: Literal["year", "month", "day", "hour", "minute", "second"] = Field(
-        description="The resolution of the resolved date.", default="day"
+    # resolution: Literal["year", "month", "day"] = Field(
+    #     description="The resolution of the resolved date.", default="day"
+    # )
+    min_index: Union[None, int] = Field(
+        description="The minimum index from where to start parsing the string(s).",
+        default=None,
+    )
+    max_index: Union[None, int] = Field(
+        description="The maximum index until whic to parse the string(s).", default=None
     )
 
 
 class ExtractDateModule(KiaraModule):
 
     _module_type_name = "create.date_array"
+    _config_cls = ExtractDateConfig
 
     def create_inputs_schema(
         self,
@@ -72,16 +81,44 @@ class ExtractDateModule(KiaraModule):
             }
         }
 
-    def process(self, inputs: ValueMap, outputs: ValueMap):
+    def process(self, inputs: ValueMap, outputs: ValueMap, job_log: JobLog):
 
         import polars as pl
         import pyarrow as pa
         from dateutil import parser
 
-        def parse_date(text: str):
+        min_pos: Union[None, int] = self.get_config_value("min_index")
+        if min_pos is None:
+            min_pos = 0
+        max_pos: Union[None, int] = self.get_config_value("min_index")
 
-            d_obj = parser.parse(text[0], fuzzy=True)
-            return d_obj
+        errors = []
+
+        def parse_date(_text: Tuple[str]):
+
+            text = _text[0]
+
+            if min_pos:
+                try:
+                    text = text[min_pos:]  # type: ignore
+                except Exception:
+                    return None
+            if max_pos:
+                try:
+                    text = text[0 : max_pos - min_pos]  # type: ignore  # noqa
+                except Exception:
+                    pass
+
+            try:
+                d_obj = parser.parse(text, fuzzy=True)
+            except Exception as e:
+                errors.append(e)
+                return None
+
+            if d_obj is None:
+                return None
+
+            return (d_obj,)
 
         value = inputs.get_value_obj("array")
         array: KiaraArray = value.data
@@ -93,6 +130,9 @@ class ExtractDateModule(KiaraModule):
         result: pl.DataFrame = df.apply(
             parse_date, return_dtype=pl.datatypes.List(inner=pl.datatypes.Date)
         )
+        if errors:
+            job_log.add_log(f"Parsing finished, could not parse {len(errors)} strings")
+
         column = result.get_column("column_0")
 
         _array = column.to_arrow()
