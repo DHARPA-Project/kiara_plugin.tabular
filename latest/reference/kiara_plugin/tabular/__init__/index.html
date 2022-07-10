@@ -626,7 +626,21 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/db/" class="md-nav__link">
+      <a href="../modules/array/__init__/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/db/__init__/" class="md-nav__link">
         db
       </a>
     </li>
@@ -640,7 +654,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules/table/" class="md-nav__link">
+      <a href="../modules/table/__init__/" class="md-nav__link">
         table
       </a>
     </li>
@@ -1086,6 +1100,26 @@
   
     <nav class="md-nav" aria-label="Modules">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.array" class="md-nav__link">
+    array
+  </a>
+  
+    <nav class="md-nav" aria-label="array">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.array-classes" class="md-nav__link">
+    Classes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.modules.db" class="md-nav__link">
@@ -5719,10 +5753,528 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
 
 
 
+<h5 id="kiara_plugin.tabular.modules.array" class="doc doc-heading">
+        <code>array</code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h6 id="kiara_plugin.tabular.modules.array-classes">Classes<a href="#kiara_plugin.tabular.modules.array-classes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h7 id="kiara_plugin.tabular.modules.array.DeserializeArrayModule" class="doc doc-heading">
+        <code>
+DeserializeArrayModule            (<a class="autorefs autorefs-external" title="kiara.modules.included_core_modules.serialization.DeserializeValueModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/included_core_modules/serialization/#kiara.modules.included_core_modules.serialization.DeserializeValueModule">DeserializeValueModule</a>)
+        </code>
+
+
+
+<a href="#kiara_plugin.tabular.modules.array.DeserializeArrayModule" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DeserializeArrayModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
+
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.array&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="n">KiaraArray</span><span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_serialized_value_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;array&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">retrieve_supported_serialization_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;feather&quot;</span>
+
+    <span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+
+        <span class="k">assert</span> <span class="s2">&quot;array.arrow&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
+
+        <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array.arrow&quot;</span><span class="p">)</span>
+
+        <span class="c1"># TODO: support multiple chunks</span>
+        <span class="k">assert</span> <span class="n">chunks</span><span class="o">.</span><span class="n">get_number_of_chunks</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">get_chunks</span><span class="p">(</span><span class="n">as_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symlink_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+        <span class="n">array_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">array</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">array_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">array</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.DeserializeArrayModule.retrieve_serialized_value_type" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve_serialized_value_type</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.DeserializeArrayModule.retrieve_serialized_value_type" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">retrieve_serialized_value_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;array&quot;</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.DeserializeArrayModule.retrieve_supported_serialization_profile" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve_supported_serialization_profile</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.DeserializeArrayModule.retrieve_supported_serialization_profile" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">retrieve_supported_serialization_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;feather&quot;</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.DeserializeArrayModule.retrieve_supported_target_profiles" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">retrieve_supported_target_profiles</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.DeserializeArrayModule.retrieve_supported_target_profiles" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="n">KiaraArray</span><span class="p">}</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.DeserializeArrayModule.to__python_object" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.modules.array.DeserializeArrayModule.to__python_object" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="s2">&quot;array.arrow&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array.arrow&quot;</span><span class="p">)</span>
+
+    <span class="c1"># TODO: support multiple chunks</span>
+    <span class="k">assert</span> <span class="n">chunks</span><span class="o">.</span><span class="n">get_number_of_chunks</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">get_chunks</span><span class="p">(</span><span class="n">as_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symlink_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">array_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">array</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">array_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">array</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h7 id="kiara_plugin.tabular.modules.array.ExtractDateConfig" class="doc doc-heading">
+        <code>
+ExtractDateConfig            (<a class="autorefs autorefs-external" title="kiara.models.module.KiaraModuleConfig" href="https://dharpa.org/kiara/latest/reference/kiara/models/module/__init__/#kiara.models.module.KiaraModuleConfig">KiaraModuleConfig</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateConfig" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExtractDateConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
+
+    <span class="n">resolution</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="s2">&quot;second&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The resolution of the resolved date.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;day&quot;</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+<h8 id="kiara_plugin.tabular.modules.array.ExtractDateConfig-attributes">Attributes<a href="#kiara_plugin.tabular.modules.array.ExtractDateConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h8>
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.ExtractDateConfig.resolution" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">resolution</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">,</span> <span class="s1">&#39;minute&#39;</span><span class="p">,</span> <span class="s1">&#39;second&#39;</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateConfig.resolution" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+      <p>The resolution of the resolved date.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h7 id="kiara_plugin.tabular.modules.array.ExtractDateModule" class="doc doc-heading">
+        <code>
+ExtractDateModule            (<a class="autorefs autorefs-external" title="kiara.modules.KiaraModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/__init__/#kiara.modules.KiaraModule">KiaraModule</a>)
+        </code>
+
+
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExtractDateModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
+
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;create.date_array&quot;</span>
+
+    <span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;array&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The input array.&quot;</span><span class="p">}}</span>
+
+    <span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;date_array&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The resulting array with items of a date data type.&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
+
+        <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+        <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
+        <span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
+
+        <span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+            <span class="n">d_obj</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fuzzy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">d_obj</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_obj</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+        <span class="n">array</span><span class="p">:</span> <span class="n">KiaraArray</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="c1"># TODO: use array directly once new polars version is released</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">([</span><span class="n">array</span><span class="o">.</span><span class="n">arrow_array</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;array&quot;</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+
+        <span class="n">result</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+            <span class="n">parse_date</span><span class="p">,</span> <span class="n">return_dtype</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">datatypes</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="n">inner</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">datatypes</span><span class="o">.</span><span class="n">Date</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s2">&quot;column_0&quot;</span><span class="p">)</span>
+
+        <span class="n">_array</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">to_arrow</span><span class="p">()</span>
+        <span class="n">chunked</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">chunked_array</span><span class="p">(</span><span class="n">_array</span><span class="p">)</span>
+
+        <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;date_array&quot;</span><span class="p">,</span> <span class="n">chunked</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<h8 id="kiara_plugin.tabular.modules.array.ExtractDateModule-methods">Methods<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule-methods" class="headerlink" title="Permanent link">&para;</a></h8>
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.ExtractDateModule.create_inputs_schema" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_inputs_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule.create_inputs_schema" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the schema for this types' inputs.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;array&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The input array.&quot;</span><span class="p">}}</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.ExtractDateModule.create_outputs_schema" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_outputs_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule.create_outputs_schema" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the schema for this types' outputs.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;date_array&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;array&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The resulting array with items of a date data type.&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.ExtractDateModule.process" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule.process" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
+
+    <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+    <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
+    <span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
+
+    <span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="n">d_obj</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fuzzy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d_obj</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_obj</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+    <span class="n">array</span><span class="p">:</span> <span class="n">KiaraArray</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="c1"># TODO: use array directly once new polars version is released</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">([</span><span class="n">array</span><span class="o">.</span><span class="n">arrow_array</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;array&quot;</span><span class="p">])</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">)</span>
+
+    <span class="n">result</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="n">parse_date</span><span class="p">,</span> <span class="n">return_dtype</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">datatypes</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="n">inner</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">datatypes</span><span class="o">.</span><span class="n">Date</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">column</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s2">&quot;column_0&quot;</span><span class="p">)</span>
+
+    <span class="n">_array</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">to_arrow</span><span class="p">()</span>
+    <span class="n">chunked</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">chunked_array</span><span class="p">(</span><span class="n">_array</span><span class="p">)</span>
+
+    <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;date_array&quot;</span><span class="p">,</span> <span class="n">chunked</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-module">
+
+
+
 <h5 id="kiara_plugin.tabular.modules.db" class="doc doc-heading">
         <code>db</code>
 
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
 
 <a href="#kiara_plugin.tabular.modules.db" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -5756,7 +6308,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CreateDatabaseModule</span><span class="p">(</span><span class="n">CreateFromModule</span><span class="p">):</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;create.database&quot;</span>
@@ -5946,7 +6498,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CreateDatabaseModuleConfig</span><span class="p">(</span><span class="n">CreateFromModuleConfig</span><span class="p">):</span>
 
     <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -6093,7 +6645,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
     <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
@@ -6160,7 +6712,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__csv_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
     <span class="n">merge_into_single_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;merge_into_single_table&quot;</span><span class="p">)</span>
@@ -6237,7 +6789,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__table</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span> <span class="n">ValueMap</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
@@ -6294,7 +6846,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_optional_inputs</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">source_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
@@ -6348,7 +6900,7 @@ CreateDatabaseModuleConfig            (<a class="autorefs autorefs-external" tit
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CreateDatabaseModuleConfig</span><span class="p">(</span><span class="n">CreateFromModuleConfig</span><span class="p">):</span>
 
     <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -6496,7 +7048,7 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LoadDatabaseFromDiskModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.database&quot;</span>
@@ -6560,7 +7112,7 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_serialized_value_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;database&quot;</span>
@@ -6589,7 +7141,7 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_supported_serialization_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;copy&quot;</span>
@@ -6618,7 +7170,7 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="n">KiaraDatabase</span><span class="p">}</span>
@@ -6644,7 +7196,7 @@ LoadDatabaseFromDiskModule            (<a class="autorefs autorefs-external" tit
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 
     <span class="k">assert</span> <span class="s2">&quot;db.sqlite&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
@@ -6698,7 +7250,7 @@ QueryDatabaseConfig            (<a class="autorefs autorefs-external" title="kia
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
     <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -6766,7 +7318,7 @@ QueryDatabaseModule            (<a class="autorefs autorefs-external" title="kia
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
 
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">QueryDatabaseConfig</span>
@@ -6845,7 +7397,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
     <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -6913,7 +7465,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
       <p>Return the schema for this types' inputs.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
@@ -6949,7 +7501,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
       <p>Return the schema for this types' outputs.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
@@ -6977,7 +7529,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/db.py</code></summary>
+          <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
@@ -7036,6 +7588,9 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
         <code>table</code>
 
 
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
 
 <a href="#kiara_plugin.tabular.modules.table" class="headerlink" title="Permanent link">&para;</a></h5>
 
@@ -7087,7 +7642,7 @@ CreateTableModule            (<a class="autorefs autorefs-external" title="kiara
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CreateTableModule</span><span class="p">(</span><span class="n">CreateFromModule</span><span class="p">):</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;create.table&quot;</span>
@@ -7165,7 +7720,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CreateTableModuleConfig</span><span class="p">(</span><span class="n">CreateFromModuleConfig</span><span class="p">):</span>
 
     <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -7235,7 +7790,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__table__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
     <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
@@ -7265,7 +7820,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__table__from__text_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
@@ -7334,7 +7889,7 @@ CreateTableModuleConfig            (<a class="autorefs autorefs-external" title=
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CreateTableModuleConfig</span><span class="p">(</span><span class="n">CreateFromModuleConfig</span><span class="p">):</span>
 
     <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -7406,7 +7961,7 @@ CutColumnModule            (<a class="autorefs autorefs-external" title="kiara.m
       <p>Cut off one column from a table, returning an array.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">CutColumnModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Cut off one column from a table, returning an array.&quot;&quot;&quot;</span>
 
@@ -7484,7 +8039,7 @@ CutColumnModule            (<a class="autorefs autorefs-external" title="kiara.m
       <p>Return the schema for this types' inputs.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
@@ -7520,7 +8075,7 @@ CutColumnModule            (<a class="autorefs autorefs-external" title="kiara.m
       <p>Return the schema for this types' outputs.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
@@ -7549,7 +8104,7 @@ CutColumnModule            (<a class="autorefs autorefs-external" title="kiara.m
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
@@ -7594,205 +8149,6 @@ CutColumnModule            (<a class="autorefs autorefs-external" title="kiara.m
 
 
 
-<h7 id="kiara_plugin.tabular.modules.table.DeserializeArrayModule" class="doc doc-heading">
-        <code>
-DeserializeArrayModule            (<a class="autorefs autorefs-external" title="kiara.modules.included_core_modules.serialization.DeserializeValueModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/included_core_modules/serialization/#kiara.modules.included_core_modules.serialization.DeserializeValueModule">DeserializeValueModule</a>)
-        </code>
-
-
-
-<a href="#kiara_plugin.tabular.modules.table.DeserializeArrayModule" class="headerlink" title="Permanent link">&para;</a></h7>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DeserializeArrayModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
-
-    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.array&quot;</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="n">KiaraArray</span><span class="p">}</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">retrieve_serialized_value_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;array&quot;</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">retrieve_supported_serialization_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;feather&quot;</span>
-
-    <span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
-
-        <span class="k">assert</span> <span class="s2">&quot;array.arrow&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
-
-        <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array.arrow&quot;</span><span class="p">)</span>
-
-        <span class="c1"># TODO: support multiple chunks</span>
-        <span class="k">assert</span> <span class="n">chunks</span><span class="o">.</span><span class="n">get_number_of_chunks</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">get_chunks</span><span class="p">(</span><span class="n">as_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symlink_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-        <span class="n">array_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="n">array</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">array_file</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">array</span>
-</code></pre></div>
-        </details>
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.modules.table.DeserializeArrayModule.retrieve_serialized_value_type" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">retrieve_serialized_value_type</span><span class="p">()</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#kiara_plugin.tabular.modules.table.DeserializeArrayModule.retrieve_serialized_value_type" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">retrieve_serialized_value_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="s2">&quot;array&quot;</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.modules.table.DeserializeArrayModule.retrieve_supported_serialization_profile" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">retrieve_supported_serialization_profile</span><span class="p">()</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#kiara_plugin.tabular.modules.table.DeserializeArrayModule.retrieve_supported_serialization_profile" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">retrieve_supported_serialization_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="s2">&quot;feather&quot;</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.modules.table.DeserializeArrayModule.retrieve_supported_target_profiles" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">retrieve_supported_target_profiles</span><span class="p">()</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#kiara_plugin.tabular.modules.table.DeserializeArrayModule.retrieve_supported_target_profiles" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="n">KiaraArray</span><span class="p">}</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.modules.table.DeserializeArrayModule.to__python_object" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.modules.table.DeserializeArrayModule.to__python_object" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
-
-    <span class="k">assert</span> <span class="s2">&quot;array.arrow&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span>
-
-    <span class="n">chunks</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_serialized_data</span><span class="p">(</span><span class="s2">&quot;array.arrow&quot;</span><span class="p">)</span>
-
-    <span class="c1"># TODO: support multiple chunks</span>
-    <span class="k">assert</span> <span class="n">chunks</span><span class="o">.</span><span class="n">get_number_of_chunks</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">get_chunks</span><span class="p">(</span><span class="n">as_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symlink_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-    <span class="n">array_file</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="n">array</span> <span class="o">=</span> <span class="n">KiaraArray</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">array_file</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">array</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
 <h7 id="kiara_plugin.tabular.modules.table.DeserializeTableModule" class="doc doc-heading">
         <code>
 DeserializeTableModule            (<a class="autorefs autorefs-external" title="kiara.modules.included_core_modules.serialization.DeserializeValueModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/included_core_modules/serialization/#kiara.modules.included_core_modules.serialization.DeserializeValueModule">DeserializeValueModule</a>)
@@ -7806,7 +8162,7 @@ DeserializeTableModule            (<a class="autorefs autorefs-external" title="
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DeserializeTableModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.table&quot;</span>
@@ -7883,7 +8239,7 @@ DeserializeTableModule            (<a class="autorefs autorefs-external" title="
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_serialized_value_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;table&quot;</span>
@@ -7912,7 +8268,7 @@ DeserializeTableModule            (<a class="autorefs autorefs-external" title="
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_supported_serialization_profile</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="s2">&quot;feather&quot;</span>
@@ -7941,7 +8297,7 @@ DeserializeTableModule            (<a class="autorefs autorefs-external" title="
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_supported_target_profiles</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;python_object&quot;</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">}</span>
@@ -7967,7 +8323,7 @@ DeserializeTableModule            (<a class="autorefs autorefs-external" title="
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to__python_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">SerializedData</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
@@ -8032,7 +8388,7 @@ ExportTableModule            (<a class="autorefs autorefs-external" title="kiara
       <p>Export network data items.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExportTableModule</span><span class="p">(</span><span class="n">DataExportModule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Export network data items.&quot;&quot;&quot;</span>
 
@@ -8087,7 +8443,7 @@ ExportTableModule            (<a class="autorefs autorefs-external" title="kiara
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">export__table__as__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow.csv</span> <span class="k">as</span> <span class="nn">csv</span>
@@ -8135,7 +8491,7 @@ MergeTableConfig            (<a class="autorefs autorefs-external" title="kiara.
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MergeTableConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
     <span class="n">inputs_schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ValueSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -8207,7 +8563,7 @@ MergeTableModule            (<a class="autorefs autorefs-external" title="kiara.
       <p>Create a table from other tables and/or arrays.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MergeTableModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a table from other tables and/or arrays.&quot;&quot;&quot;</span>
 
@@ -8325,7 +8681,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MergeTableConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
     <span class="n">inputs_schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ValueSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -8396,7 +8752,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
       <p>Return the schema for this types' inputs.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
@@ -8426,7 +8782,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
       <p>Return the schema for this types' outputs.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
@@ -8460,7 +8816,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
@@ -8555,7 +8911,7 @@ QueryTableSQL            (<a class="autorefs autorefs-external" title="kiara.mod
       <p>Execute a sql query against an (Arrow) table.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQL</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Execute a sql query against an (Arrow) table.&quot;&quot;&quot;</span>
 
@@ -8644,7 +9000,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQLModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
     <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -8741,7 +9097,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
       <p>Return the schema for this types' inputs.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
@@ -8785,7 +9141,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
       <p>Return the schema for this types' outputs.</p>
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_outputs_schema</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValueSetSchema</span><span class="p">:</span>
@@ -8813,7 +9169,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">duckdb</span>
@@ -8873,7 +9229,7 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
 
 
         <details class="quote">
-          <summary>Source code in <code>tabular/modules/table.py</code></summary>
+          <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQLModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
     <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
