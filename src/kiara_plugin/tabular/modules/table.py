@@ -11,6 +11,7 @@ from kiara.models.filesystem import (
 )
 from kiara.models.module import KiaraModuleConfig
 from kiara.models.values.value import SerializedData, Value, ValueMap
+from kiara.models.values.value_schema import ValueSchema
 from kiara.modules import ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
@@ -208,6 +209,98 @@ class CutColumnModule(KiaraModule):
         column = table.column(column_name)
 
         outputs.set_value("array", column)
+
+
+class MergeTableConfig(KiaraModuleConfig):
+
+    inputs_schema: Dict[str, ValueSchema] = Field(
+        description="A dict describing the inputs for this merge process."
+    )
+
+
+class MergeTableModule(KiaraModule):
+    """Create a table from other tables and/or arrays."""
+
+    _module_type_name = "table.merge"
+    _config_cls = MergeTableConfig
+
+    def create_inputs_schema(
+        self,
+    ) -> ValueSetSchema:
+
+        input_schema_dict = self.get_config_value("inputs_schema")
+        return input_schema_dict
+
+    def create_outputs_schema(
+        self,
+    ) -> ValueSetSchema:
+
+        outputs = {
+            "table": {
+                "type": "table",
+                "doc": "The merged table, including all source tables and columns.",
+            }
+        }
+        return outputs
+
+    def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+        import pyarrow as pa
+
+        inputs_schema: Dict[str, Any] = self.get_config_value("inputs_schema")
+
+        sources = {}
+        for field_name in inputs_schema.keys():
+            sources[field_name] = inputs.get_value_data(field_name)
+
+        len_dict = {}
+        arrays = []
+        column_names = []
+        for source_key, table_or_column in sources.items():
+
+            if isinstance(table_or_column, KiaraTable):
+                rows = table_or_column.num_rows
+                for name in table_or_column.column_names:
+                    column = table_or_column.arrow_table.column(name)
+                    arrays.append(column)
+                    if name in column_names:
+                        raise KiaraProcessingException(
+                            f"Can't merge table: duplicate column name '{name}'."
+                        )
+                    column_names.append(name)
+
+            elif isinstance(table_or_column, KiaraArray):
+                rows = len(table_or_column)
+                arrays.append(table_or_column.arrow_array)
+                column_names.append(source_key)
+            else:
+                raise KiaraProcessingException(
+                    f"Can't merge table: invalid type '{type(table_or_column)}' for source '{source_key}'."
+                )
+
+            len_dict[source_key] = rows
+
+        all_rows = None
+        for source_key, rows in len_dict.items():
+            if all_rows is None:
+                all_rows = rows
+            else:
+                if all_rows != rows:
+                    all_rows = None
+                    break
+
+        if all_rows is None:
+            len_str = ""
+            for name, rows in len_dict.items():
+                len_str = f" {name} ({rows})"
+
+            raise KiaraProcessingException(
+                f"Can't merge table, sources have different lengths:{len_str}"
+            )
+
+        table = pa.Table.from_arrays(arrays=arrays, names=column_names)
+
+        outputs.set_value("table", table)
 
 
 class QueryTableSQLModuleConfig(KiaraModuleConfig):

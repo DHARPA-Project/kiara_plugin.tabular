@@ -73,6 +73,9 @@ class KiaraArray(KiaraModel):
     def _retrieve_data_to_hash(self) -> Any:
         raise NotImplementedError()
 
+    def __len__(self):
+        return len(*self.arrow_array)
+
     @property
     def arrow_array(self) -> pa.Array:
 
