@@ -1121,6 +1121,36 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls.max_index" class="md-nav__link">
+    max_index
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls.min_index" class="md-nav__link">
+    min_index
+  </a>
+  
+    <nav class="md-nav" aria-label="min_index">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.modules.db" class="md-nav__link">
     db
@@ -1133,16 +1163,6 @@
   <a href="#kiara_plugin.tabular.modules.db-classes" class="md-nav__link">
     Classes
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -4656,7 +4676,7 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">arrow_array</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arrow_array</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">arrow_array</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pa</span><span class="o">.</span><span class="n">Array</span><span class="p">:</span>
@@ -5998,8 +6018,15 @@ ExtractDateConfig            (<a class="autorefs autorefs-external" title="kiara
           <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExtractDateConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">resolution</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="s2">&quot;second&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The resolution of the resolved date.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;day&quot;</span>
+    <span class="c1"># resolution: Literal[&quot;year&quot;, &quot;month&quot;, &quot;day&quot;] = Field(</span>
+    <span class="c1">#     description=&quot;The resolution of the resolved date.&quot;, default=&quot;day&quot;</span>
+    <span class="c1"># )</span>
+    <span class="n">min_index</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The minimum index from where to start parsing the string(s).&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">max_index</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The maximum index until whic to parse the string(s).&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -6017,18 +6044,40 @@ ExtractDateConfig            (<a class="autorefs autorefs-external" title="kiara
 
 
 
-<h9 id="kiara_plugin.tabular.modules.array.ExtractDateConfig.resolution" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">resolution</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">,</span> <span class="s1">&#39;minute&#39;</span><span class="p">,</span> <span class="s1">&#39;second&#39;</span><span class="p">]</span></code>
+<h9 id="kiara_plugin.tabular.modules.array.ExtractDateConfig.max_index" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">max_index</span><span class="p">:</span> <span class="nb">int</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
   </span>
 
-<a href="#kiara_plugin.tabular.modules.array.ExtractDateConfig.resolution" class="headerlink" title="Permanent link">&para;</a></h9>
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateConfig.max_index" class="headerlink" title="Permanent link">&para;</a></h9>
 
     <div class="doc doc-contents ">
 
-      <p>The resolution of the resolved date.</p>
+      <p>The maximum index until whic to parse the string(s).</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.ExtractDateConfig.min_index" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">min_index</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateConfig.min_index" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+      <p>The minimum index from where to start parsing the string(s).</p>
     </div>
 
   </div>
@@ -6069,6 +6118,7 @@ ExtractDateModule            (<a class="autorefs autorefs-external" title="kiara
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExtractDateModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;create.date_array&quot;</span>
+    <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">ExtractDateConfig</span>
 
     <span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -6087,16 +6137,44 @@ ExtractDateModule            (<a class="autorefs autorefs-external" title="kiara
             <span class="p">}</span>
         <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">job_log</span><span class="p">:</span> <span class="n">JobLog</span><span class="p">):</span>
 
         <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
         <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
         <span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
 
-        <span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">min_pos</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;min_index&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min_pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">min_pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_pos</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;min_index&quot;</span><span class="p">)</span>
 
-            <span class="n">d_obj</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fuzzy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">d_obj</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">_text</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+
+            <span class="n">text</span> <span class="o">=</span> <span class="n">_text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">min_pos</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">min_pos</span><span class="p">:]</span>  <span class="c1"># type: ignore</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">max_pos</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="n">max_pos</span> <span class="o">-</span> <span class="n">min_pos</span><span class="p">]</span>  <span class="c1"># type: ignore  # noqa</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">d_obj</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fuzzy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="k">if</span> <span class="n">d_obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="p">(</span><span class="n">d_obj</span><span class="p">,)</span>
 
         <span class="n">value</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_obj</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
         <span class="n">array</span><span class="p">:</span> <span class="n">KiaraArray</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
@@ -6108,6 +6186,9 @@ ExtractDateModule            (<a class="autorefs autorefs-external" title="kiara
         <span class="n">result</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
             <span class="n">parse_date</span><span class="p">,</span> <span class="n">return_dtype</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">datatypes</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="n">inner</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">datatypes</span><span class="o">.</span><span class="n">Date</span><span class="p">)</span>
         <span class="p">)</span>
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="n">job_log</span><span class="o">.</span><span class="n">add_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsing finished, could not parse </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="si">}</span><span class="s2"> strings&quot;</span><span class="p">)</span>
+
         <span class="n">column</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s2">&quot;column_0&quot;</span><span class="p">)</span>
 
         <span class="n">_array</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">to_arrow</span><span class="p">()</span>
@@ -6124,6 +6205,109 @@ ExtractDateModule            (<a class="autorefs autorefs-external" title="kiara
 
 
 
+
+<h8 id="kiara_plugin.tabular.modules.array.ExtractDateModule-classes">Classes<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule-classes" class="headerlink" title="Permanent link">&para;</a></h8>
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h9 id="kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls" class="doc doc-heading">
+        <code>
+_config_cls            (<a class="autorefs autorefs-external" title="kiara.models.module.KiaraModuleConfig" href="https://dharpa.org/kiara/latest/reference/kiara/models/module/__init__/#kiara.models.module.KiaraModuleConfig">KiaraModuleConfig</a>)
+        </code>
+
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-private"><code>private</code></small>
+      <small class="doc doc-property doc-property-pydantic-model"><code>pydantic-model</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls" class="headerlink" title="Permanent link">&para;</a></h9>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExtractDateConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
+
+    <span class="c1"># resolution: Literal[&quot;year&quot;, &quot;month&quot;, &quot;day&quot;] = Field(</span>
+    <span class="c1">#     description=&quot;The resolution of the resolved date.&quot;, default=&quot;day&quot;</span>
+    <span class="c1"># )</span>
+    <span class="n">min_index</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The minimum index from where to start parsing the string(s).&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">max_index</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The maximum index until whic to parse the string(s).&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+<h10 id="kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls-attributes">Attributes<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls-attributes" class="headerlink" title="Permanent link">&para;</a></h10>
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h11 id="kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls.max_index" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">max_index</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls.max_index" class="headerlink" title="Permanent link">&para;</a></h11>
+
+    <div class="doc doc-contents ">
+
+      <p>The maximum index until whic to parse the string(s).</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h11 id="kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls.min_index" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">min_index</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.array.ExtractDateModule._config_cls.min_index" class="headerlink" title="Permanent link">&para;</a></h11>
+
+    <div class="doc doc-contents ">
+
+      <p>The minimum index from where to start parsing the string(s).</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
 
 
@@ -6197,7 +6381,7 @@ ExtractDateModule            (<a class="autorefs autorefs-external" title="kiara
 
 
 <h9 id="kiara_plugin.tabular.modules.array.ExtractDateModule.process" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">job_log</span><span class="p">)</span></code>
 
 
 <a href="#kiara_plugin.tabular.modules.array.ExtractDateModule.process" class="headerlink" title="Permanent link">&para;</a></h9>
@@ -6207,16 +6391,44 @@ ExtractDateModule            (<a class="autorefs autorefs-external" title="kiara
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">job_log</span><span class="p">:</span> <span class="n">JobLog</span><span class="p">):</span>
 
     <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
     <span class="kn">from</span> <span class="nn">dateutil</span> <span class="kn">import</span> <span class="n">parser</span>
 
-    <span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">min_pos</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;min_index&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">min_pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">min_pos</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">max_pos</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;min_index&quot;</span><span class="p">)</span>
 
-        <span class="n">d_obj</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">fuzzy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">d_obj</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">_text</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+
+        <span class="n">text</span> <span class="o">=</span> <span class="n">_text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">min_pos</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">min_pos</span><span class="p">:]</span>  <span class="c1"># type: ignore</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">max_pos</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="n">max_pos</span> <span class="o">-</span> <span class="n">min_pos</span><span class="p">]</span>  <span class="c1"># type: ignore  # noqa</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">d_obj</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">fuzzy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">d_obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">d_obj</span><span class="p">,)</span>
 
     <span class="n">value</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_obj</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
     <span class="n">array</span><span class="p">:</span> <span class="n">KiaraArray</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
@@ -6228,6 +6440,9 @@ ExtractDateModule            (<a class="autorefs autorefs-external" title="kiara
     <span class="n">result</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
         <span class="n">parse_date</span><span class="p">,</span> <span class="n">return_dtype</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">datatypes</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="n">inner</span><span class="o">=</span><span class="n">pl</span><span class="o">.</span><span class="n">datatypes</span><span class="o">.</span><span class="n">Date</span><span class="p">)</span>
     <span class="p">)</span>
+    <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="n">job_log</span><span class="o">.</span><span class="n">add_log</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsing finished, could not parse </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="si">}</span><span class="s2"> strings&quot;</span><span class="p">)</span>
+
     <span class="n">column</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s2">&quot;column_0&quot;</span><span class="p">)</span>
 
     <span class="n">_array</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">to_arrow</span><span class="p">()</span>
