@@ -931,6 +931,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.table.MergeTableConfig.column_map" class="md-nav__link">
+    column_map
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.modules.table.MergeTableConfig.inputs_schema" class="md-nav__link">
     inputs_schema
   </a>
@@ -1484,6 +1491,13 @@
   
     <nav class="md-nav" aria-label="Attributes">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.table.MergeTableConfig.column_map" class="md-nav__link">
+    column_map
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.modules.table.MergeTableConfig.inputs_schema" class="md-nav__link">
@@ -2633,6 +2647,9 @@ MergeTableConfig            (<a class="autorefs autorefs-external" title="kiara.
     <span class="n">inputs_schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ValueSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dict describing the inputs for this merge process.&quot;</span>
     <span class="p">)</span>
+    <span class="n">column_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A map describing&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -2644,6 +2661,28 @@ MergeTableConfig            (<a class="autorefs autorefs-external" title="kiara.
 
 
 <h4 id="kiara_plugin.tabular.modules.table.MergeTableConfig-attributes">Attributes<a href="#kiara_plugin.tabular.modules.table.MergeTableConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h5 id="kiara_plugin.tabular.modules.table.MergeTableConfig.column_map" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">column_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.table.MergeTableConfig.column_map" class="headerlink" title="Permanent link">&para;</a></h5>
+
+    <div class="doc doc-contents ">
+
+      <p>A map describing</p>
+    </div>
+
+  </div>
+
+
 
   <div class="doc doc-object doc-attribute">
 
@@ -2725,39 +2764,64 @@ MergeTableModule            (<a class="autorefs autorefs-external" title="kiara.
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">outputs</span>
 
-    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">job_log</span><span class="p">:</span> <span class="n">JobLog</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
 
         <span class="n">inputs_schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;inputs_schema&quot;</span><span class="p">)</span>
+        <span class="n">column_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;column_map&quot;</span><span class="p">)</span>
 
         <span class="n">sources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">inputs_schema</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">sources</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
 
         <span class="n">len_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">arrays</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">column_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">source_key</span><span class="p">,</span> <span class="n">table_or_column</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">arrays</span> <span class="o">=</span> <span class="p">{}</span>
 
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_or_column</span><span class="p">,</span> <span class="n">KiaraTable</span><span class="p">):</span>
-                <span class="n">rows</span> <span class="o">=</span> <span class="n">table_or_column</span><span class="o">.</span><span class="n">num_rows</span>
-                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">table_or_column</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
-                    <span class="n">column</span> <span class="o">=</span> <span class="n">table_or_column</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-                    <span class="n">arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table: duplicate column name &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+        <span class="n">column_map_final</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">column_map</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">source_key</span><span class="p">,</span> <span class="n">table_or_array</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_or_array</span><span class="p">,</span> <span class="n">KiaraTable</span><span class="p">):</span>
+                <span class="n">rows</span> <span class="o">=</span> <span class="n">table_or_array</span><span class="o">.</span><span class="n">num_rows</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">table_or_array</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
+                    <span class="n">array_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="k">if</span> <span class="n">column_map</span> <span class="ow">and</span> <span class="n">array_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                        <span class="n">job_log</span><span class="o">.</span><span class="n">add_log</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Ignoring column &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; of input table &#39;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">&#39;: not listed in column_map.&quot;</span>
                         <span class="p">)</span>
-                    <span class="n">column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                        <span class="k">continue</span>
 
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_or_column</span><span class="p">,</span> <span class="n">KiaraArray</span><span class="p">):</span>
-                <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">table_or_column</span><span class="p">)</span>
-                <span class="n">arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_or_column</span><span class="o">.</span><span class="n">arrow_array</span><span class="p">)</span>
-                <span class="n">column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_key</span><span class="p">)</span>
+                    <span class="n">column</span> <span class="o">=</span> <span class="n">table_or_array</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                    <span class="n">arrays</span><span class="p">[</span><span class="n">array_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">column_map</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_map_final</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table, duplicate column name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
+                            <span class="p">)</span>
+                        <span class="n">column_map_final</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">array_name</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_or_array</span><span class="p">,</span> <span class="n">KiaraArray</span><span class="p">):</span>
+
+                <span class="k">if</span> <span class="n">column_map</span> <span class="ow">and</span> <span class="n">source_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">job_log</span><span class="o">.</span><span class="n">add_log</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Ignoring array &#39;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">&#39;: not listed in column_map.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">table_or_array</span><span class="p">)</span>
+                <span class="n">arrays</span><span class="p">[</span><span class="n">source_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">table_or_array</span><span class="o">.</span><span class="n">arrow_array</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">column_map</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">source_key</span> <span class="ow">in</span> <span class="n">column_map_final</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table, duplicate column name: </span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="p">)</span>
+                    <span class="n">column_map_final</span><span class="p">[</span><span class="n">source_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_key</span>
+
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table: invalid type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">table_or_column</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; for source &#39;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table: invalid type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">table_or_array</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; for source &#39;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
                 <span class="p">)</span>
 
             <span class="n">len_dict</span><span class="p">[</span><span class="n">source_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">rows</span>
@@ -2777,10 +2841,17 @@ MergeTableModule            (<a class="autorefs autorefs-external" title="kiara.
                 <span class="n">len_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">rows</span><span class="si">}</span><span class="s2">)&quot;</span>
 
             <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table, sources have different lengths:</span><span class="si">{</span><span class="n">len_str</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table, sources have different lengths: </span><span class="si">{</span><span class="n">len_str</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-        <span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="o">=</span><span class="n">arrays</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
+        <span class="n">column_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">column_map_final</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="n">ref</span><span class="p">]</span>
+            <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
 
         <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
 </code></pre></div>
@@ -2823,6 +2894,9 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
     <span class="n">inputs_schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ValueSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dict describing the inputs for this merge process.&quot;</span>
     <span class="p">)</span>
+    <span class="n">column_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A map describing&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -2834,6 +2908,28 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
 
 <h6 id="kiara_plugin.tabular.modules.table.MergeTableModule._config_cls-attributes">Attributes<a href="#kiara_plugin.tabular.modules.table.MergeTableModule._config_cls-attributes" class="headerlink" title="Permanent link">&para;</a></h6>
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h7 id="kiara_plugin.tabular.modules.table.MergeTableModule._config_cls.column_map" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">column_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.modules.table.MergeTableModule._config_cls.column_map" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+      <p>A map describing</p>
+    </div>
+
+  </div>
+
+
 
   <div class="doc doc-object doc-attribute">
 
@@ -2943,7 +3039,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
 
 <h5 id="kiara_plugin.tabular.modules.table.MergeTableModule.process" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">job_log</span><span class="p">)</span></code>
 
 
 <a href="#kiara_plugin.tabular.modules.table.MergeTableModule.process" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2953,39 +3049,64 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">job_log</span><span class="p">:</span> <span class="n">JobLog</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
 
     <span class="n">inputs_schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;inputs_schema&quot;</span><span class="p">)</span>
+    <span class="n">column_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;column_map&quot;</span><span class="p">)</span>
 
     <span class="n">sources</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">inputs_schema</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">sources</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
 
     <span class="n">len_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">arrays</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">column_names</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">source_key</span><span class="p">,</span> <span class="n">table_or_column</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_or_column</span><span class="p">,</span> <span class="n">KiaraTable</span><span class="p">):</span>
-            <span class="n">rows</span> <span class="o">=</span> <span class="n">table_or_column</span><span class="o">.</span><span class="n">num_rows</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">table_or_column</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
-                <span class="n">column</span> <span class="o">=</span> <span class="n">table_or_column</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-                <span class="n">arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_names</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table: duplicate column name &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+    <span class="n">column_map_final</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">column_map</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">source_key</span><span class="p">,</span> <span class="n">table_or_array</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_or_array</span><span class="p">,</span> <span class="n">KiaraTable</span><span class="p">):</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">table_or_array</span><span class="o">.</span><span class="n">num_rows</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">table_or_array</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
+                <span class="n">array_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">column_map</span> <span class="ow">and</span> <span class="n">array_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">job_log</span><span class="o">.</span><span class="n">add_log</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Ignoring column &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; of input table &#39;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">&#39;: not listed in column_map.&quot;</span>
                     <span class="p">)</span>
-                <span class="n">column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                    <span class="k">continue</span>
 
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_or_column</span><span class="p">,</span> <span class="n">KiaraArray</span><span class="p">):</span>
-            <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">table_or_column</span><span class="p">)</span>
-            <span class="n">arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table_or_column</span><span class="o">.</span><span class="n">arrow_array</span><span class="p">)</span>
-            <span class="n">column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source_key</span><span class="p">)</span>
+                <span class="n">column</span> <span class="o">=</span> <span class="n">table_or_array</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">arrays</span><span class="p">[</span><span class="n">array_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">column_map</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">column_map_final</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table, duplicate column name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="p">)</span>
+                    <span class="n">column_map_final</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">array_name</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_or_array</span><span class="p">,</span> <span class="n">KiaraArray</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="n">column_map</span> <span class="ow">and</span> <span class="n">source_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">column_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">job_log</span><span class="o">.</span><span class="n">add_log</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Ignoring array &#39;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">&#39;: not listed in column_map.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">table_or_array</span><span class="p">)</span>
+            <span class="n">arrays</span><span class="p">[</span><span class="n">source_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">table_or_array</span><span class="o">.</span><span class="n">arrow_array</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">column_map</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">source_key</span> <span class="ow">in</span> <span class="n">column_map_final</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table, duplicate column name: </span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">.&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">column_map_final</span><span class="p">[</span><span class="n">source_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_key</span>
+
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table: invalid type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">table_or_column</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; for source &#39;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table: invalid type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">table_or_array</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39; for source &#39;</span><span class="si">{</span><span class="n">source_key</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
             <span class="p">)</span>
 
         <span class="n">len_dict</span><span class="p">[</span><span class="n">source_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">rows</span>
@@ -3005,10 +3126,17 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
             <span class="n">len_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">rows</span><span class="si">}</span><span class="s2">)&quot;</span>
 
         <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table, sources have different lengths:</span><span class="si">{</span><span class="n">len_str</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Can&#39;t merge table, sources have different lengths: </span><span class="si">{</span><span class="n">len_str</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
-    <span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="o">=</span><span class="n">arrays</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
+    <span class="n">column_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">column_map_final</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">column_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
+        <span class="n">column</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="n">ref</span><span class="p">]</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
 
     <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
 </code></pre></div>
