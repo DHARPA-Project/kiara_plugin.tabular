@@ -7,8 +7,8 @@
       "step_id": "cut_column"
     },
     {
-      "module_type": "create.date_array",
-      "step_id": "create_date_array",
+      "module_type": "parse.date_array",
+      "step_id": "parse_date_array",
       "input_links": {
         "array": "cut_column.array"
       }
@@ -18,6 +18,6 @@
       "cut_column.column_name": "column_name"
   },
   "output_aliases": {
-      "create_date_array.date_array": "date_array"
+      "parse_date_array.date_array": "date_array"
   }
 }

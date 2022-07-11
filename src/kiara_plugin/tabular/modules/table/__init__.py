@@ -10,6 +10,7 @@ from kiara.models.filesystem import (
     FileModel,
 )
 from kiara.models.module import KiaraModuleConfig
+from kiara.models.module.jobs import JobLog
 from kiara.models.values.value import SerializedData, Value, ValueMap
 from kiara.models.values.value_schema import ValueSchema
 from kiara.modules import ValueSetSchema
@@ -183,6 +184,9 @@ class MergeTableConfig(KiaraModuleConfig):
     inputs_schema: Dict[str, ValueSchema] = Field(
         description="A dict describing the inputs for this merge process."
     )
+    column_map: Dict[str, str] = Field(
+        description="A map describing", default_factory=dict
+    )
 
 
 class MergeTableModule(KiaraModule):
@@ -210,39 +214,64 @@ class MergeTableModule(KiaraModule):
         }
         return outputs
 
-    def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+    def process(self, inputs: ValueMap, outputs: ValueMap, job_log: JobLog) -> None:
 
         import pyarrow as pa
 
         inputs_schema: Dict[str, Any] = self.get_config_value("inputs_schema")
+        column_map: Dict[str, str] = self.get_config_value("column_map")
 
         sources = {}
         for field_name in inputs_schema.keys():
             sources[field_name] = inputs.get_value_data(field_name)
 
         len_dict = {}
-        arrays = []
-        column_names = []
-        for source_key, table_or_column in sources.items():
+        arrays = {}
 
-            if isinstance(table_or_column, KiaraTable):
-                rows = table_or_column.num_rows
-                for name in table_or_column.column_names:
-                    column = table_or_column.arrow_table.column(name)
-                    arrays.append(column)
-                    if name in column_names:
-                        raise KiaraProcessingException(
-                            f"Can't merge table: duplicate column name '{name}'."
+        column_map_final = dict(column_map)
+
+        for source_key, table_or_array in sources.items():
+
+            if isinstance(table_or_array, KiaraTable):
+                rows = table_or_array.num_rows
+                for name in table_or_array.column_names:
+                    array_name = f"{source_key}.{name}"
+                    if column_map and array_name not in column_map.values():
+                        job_log.add_log(
+                            f"Ignoring column '{name}' of input table '{source_key}': not listed in column_map."
                         )
-                    column_names.append(name)
+                        continue
 
-            elif isinstance(table_or_column, KiaraArray):
-                rows = len(table_or_column)
-                arrays.append(table_or_column.arrow_array)
-                column_names.append(source_key)
+                    column = table_or_array.arrow_table.column(name)
+                    arrays[array_name] = column
+                    if not column_map:
+                        if name in column_map_final:
+                            raise Exception(
+                                f"Can't merge table, duplicate column name: {name}."
+                            )
+                        column_map_final[name] = array_name
+
+            elif isinstance(table_or_array, KiaraArray):
+
+                if column_map and source_key not in column_map.values():
+                    job_log.add_log(
+                        f"Ignoring array '{source_key}': not listed in column_map."
+                    )
+                    continue
+
+                rows = len(table_or_array)
+                arrays[source_key] = table_or_array.arrow_array
+
+                if not column_map:
+                    if source_key in column_map_final.keys():
+                        raise Exception(
+                            f"Can't merge table, duplicate column name: {source_key}."
+                        )
+                    column_map_final[source_key] = source_key
+
             else:
                 raise KiaraProcessingException(
-                    f"Can't merge table: invalid type '{type(table_or_column)}' for source '{source_key}'."
+                    f"Can't merge table: invalid type '{type(table_or_array)}' for source '{source_key}'."
                 )
 
             len_dict[source_key] = rows
@@ -262,10 +291,17 @@ class MergeTableModule(KiaraModule):
                 len_str = f" {name} ({rows})"
 
             raise KiaraProcessingException(
-                f"Can't merge table, sources have different lengths:{len_str}"
+                f"Can't merge table, sources have different lengths: {len_str}"
             )
 
-        table = pa.Table.from_arrays(arrays=arrays, names=column_names)
+        column_names = []
+        columns = []
+        for column_name, ref in column_map_final.items():
+            column_names.append(column_name)
+            column = arrays[ref]
+            columns.append(column)
+
+        table = pa.Table.from_arrays(arrays=columns, names=column_names)
 
         outputs.set_value("table", table)
 

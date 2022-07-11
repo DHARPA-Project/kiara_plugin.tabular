@@ -1,0 +1,52 @@
+pipeline_name: corpus_onboarding
+doc: Onboard a text corpus.
+steps:
+  - module_type: import.file_bundle
+    step_id: import_text_corpus
+  - module_type: create.table.from.text_file_bundle
+    step_id: create_text_corpus
+    input_links:
+      text_file_bundle: import_text_corpus.file_bundle
+  - module_type: table.cut_column
+    step_id: extract_filename_column
+    input_links:
+      table: create_text_corpus.table
+  - module_type: parse.date_array
+    step_id: create_date_array
+    input_links:
+      array: extract_filename_column.array
+  - module_type: table.merge
+    step_id: merge_table
+    module_config:
+      inputs_schema:
+        source_table:
+          type: table
+          doc: The original table.
+        date_array:
+          type: array
+          doc: The array containing the parsed date items.
+      column_map:
+        date: date_array
+        content: source_table.content
+        file_name: source_table.file_name
+    input_links:
+      source_table: create_text_corpus.table
+      date_array: create_date_array.date_array
+
+input_aliases:
+  extract_filename_column.column_name: filename_column_name
+  import_text_corpus.path: text_corpus_folder_path
+  create_date_array.min_index: date_parse_min
+  create_date_array.max_index: date_parse_max
+  create_date_array.force_non_null: force_parsed_date
+  create_date_array.remove_tokens: remove_tokens
+
+output_aliases:
+  merge_table.table: merged_table
+
+defaults:
+  filename_column_name: "file_name"
+  date_parse_min: 11
+  date_parse_max: 21
+#  text_corpus_folder_path: "${pipeline_dir}/../data/text_corpus/data"
+  text_corpus_folder_path: "/home/markus/projects/kiara_new/kiara_plugin.tabular/examples/data/text_corpus/data"
