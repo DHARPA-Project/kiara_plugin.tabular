@@ -25,8 +25,8 @@ requirements:
     - polars>=0.13.52
     - python-duckdb>=0.3.4
     - python
-    - kiara>=0.4.14
-    - kiara_plugin.core_types>=0.4.9
+    - kiara>=0.4.15
+    - kiara_plugin.core_types>=0.4.10
     - pyarrow>=7.0.0
     - sqlite-utils>=3.20
 
