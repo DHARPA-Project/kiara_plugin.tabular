@@ -573,6 +573,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../models/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../models/db/" class="md-nav__link">
         db
       </a>
@@ -911,6 +925,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModule-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1038,6 +1059,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.table.CreateTableModule-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1094,6 +1122,19 @@
   <a href="#kiara_plugin.tabular.modules.table.ExportTableModule" class="md-nav__link">
     ExportTableModule
   </a>
+  
+    <nav class="md-nav" aria-label="ExportTableModule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.table.ExportTableModule-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1359,10 +1400,12 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
 
     <div class="doc doc-contents ">
 
+      <p>Deserialize array data.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DeserializeArrayModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Deserialize array data.&quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.array&quot;</span>
 
@@ -1703,10 +1746,37 @@ ExtractDateModule            (<span title="kiara_plugin.core_types.modules.AutoI
 
     <div class="doc doc-contents ">
 
+      <p>Create an array of date objects from an array of strings.</p>
+<p>This module is very simplistic at the moment, more functionality and options will be added in the future.</p>
+<p>At its core, this module uses the standard parser from the
+<a href="https://github.com/dateutil/dateutil">dateutil</a> package to parse strings into dates. As this parser can't handle
+ complex strings, the input strings can be pre-processed in the following ways:</p>
+<ul>
+<li>'cut' non-relevant parts of the string (using 'min_index' &amp; 'max_index' input/config options)</li>
+<li>remove matching tokens from the string, and replace them with a single whitespace (using the 'remove_tokens' option)</li>
+</ul>
+<p>By default, if an input string can't be parsed this module will raise an exception. This can be prevented by
+setting this modules 'force_non_null' config option or input to 'False', in which case un-parsable strings
+will appear as 'NULL' value in the resulting array.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExtractDateModule</span><span class="p">(</span><span class="n">AutoInputsKiaraModule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an array of date objects from an array of strings.</span>
+
+<span class="sd">    This module is very simplistic at the moment, more functionality and options will be added in the future.</span>
+
+<span class="sd">    At its core, this module uses the standard parser from the</span>
+<span class="sd">    [dateutil](https://github.com/dateutil/dateutil) package to parse strings into dates. As this parser can&#39;t handle</span>
+<span class="sd">     complex strings, the input strings can be pre-processed in the following ways:</span>
+
+<span class="sd">    - &#39;cut&#39; non-relevant parts of the string (using &#39;min_index&#39; &amp; &#39;max_index&#39; input/config options)</span>
+<span class="sd">    - remove matching tokens from the string, and replace them with a single whitespace (using the &#39;remove_tokens&#39; option)</span>
+
+<span class="sd">    By default, if an input string can&#39;t be parsed this module will raise an exception. This can be prevented by</span>
+<span class="sd">    setting this modules &#39;force_non_null&#39; config option or input to &#39;False&#39;, in which case un-parsable strings</span>
+<span class="sd">    will appear as &#39;NULL&#39; value in the resulting array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;parse.date_array&quot;</span>
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">ExtractDateConfig</span>
@@ -2184,6 +2254,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CreateDatabaseModuleConfig</span>
 
     <span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a database from a csv_file value.&quot;&quot;&quot;</span>
 
         <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
         <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
@@ -2229,6 +2300,12 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="k">return</span> <span class="n">db_path</span>
 
     <span class="k">def</span> <span class="nf">create__database__from__csv_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a database from a csv_file_bundle value.</span>
+
+<span class="sd">        Unless &#39;merge_into_single_table&#39; is set to &#39;True&#39;, each csv file will create one table</span>
+<span class="sd">        in the resulting database. If this option is set, only a single table with all the values of all</span>
+<span class="sd">        csv files will be created. For this to work, all csv files should follow the same schema.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">merge_into_single_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;merge_into_single_table&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
@@ -2302,6 +2379,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
     <span class="k">def</span> <span class="nf">create__database__from__table</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span> <span class="n">ValueMap</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a database value from a table.&quot;&quot;&quot;</span>
 
         <span class="n">table_name</span> <span class="o">=</span> <span class="n">optional</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;table_name&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
@@ -2498,7 +2576,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
 
-
+<h6 id="kiara_plugin.tabular.modules.db.CreateDatabaseModule-methods">Methods<a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModule-methods" class="headerlink" title="Permanent link">&para;</a></h6>
 
   <div class="doc doc-object doc-method">
 
@@ -2512,10 +2590,12 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <div class="doc doc-contents ">
 
+      <p>Create a database from a csv_file value.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a database from a csv_file value.&quot;&quot;&quot;</span>
 
     <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
     <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
@@ -2579,10 +2659,20 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <div class="doc doc-contents ">
 
+      <p>Create a database from a csv_file_bundle value.</p>
+<p>Unless 'merge_into_single_table' is set to 'True', each csv file will create one table
+in the resulting database. If this option is set, only a single table with all the values of all
+csv files will be created. For this to work, all csv files should follow the same schema.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__csv_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a database from a csv_file_bundle value.</span>
+
+<span class="sd">    Unless &#39;merge_into_single_table&#39; is set to &#39;True&#39;, each csv file will create one table</span>
+<span class="sd">    in the resulting database. If this option is set, only a single table with all the values of all</span>
+<span class="sd">    csv files will be created. For this to work, all csv files should follow the same schema.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">merge_into_single_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;merge_into_single_table&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
@@ -2656,12 +2746,14 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <div class="doc doc-contents ">
 
+      <p>Create a database value from a table.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__table</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span> <span class="n">ValueMap</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a database value from a table.&quot;&quot;&quot;</span>
 
     <span class="n">table_name</span> <span class="o">=</span> <span class="n">optional</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;table_name&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
@@ -3185,10 +3277,12 @@ QueryDatabaseModule            (<a class="autorefs autorefs-external" title="kia
 
     <div class="doc doc-contents ">
 
+      <p>Execute a sql query against a (sqlite) database.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execute a sql query against a (sqlite) database.&quot;&quot;&quot;</span>
 
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">QueryDatabaseConfig</span>
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;query.database&quot;</span>
@@ -3518,6 +3612,7 @@ CreateTableModule            (<a class="autorefs autorefs-external" title="kiara
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CreateTableModuleConfig</span>
 
     <span class="k">def</span> <span class="nf">create__table__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
 
@@ -3526,6 +3621,13 @@ CreateTableModule            (<a class="autorefs autorefs-external" title="kiara
         <span class="k">return</span> <span class="n">imported_data</span>
 
     <span class="k">def</span> <span class="nf">create__table__from__text_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a table value from a text file_bundle.</span>
+
+<span class="sd">        The resulting table will have (at a minimum) the following collumns:</span>
+<span class="sd">        - id: an auto-assigned index</span>
+<span class="sd">        - rel_path: the relative path of the file (from the provided base path)</span>
+<span class="sd">        - content: the text file content</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
 
@@ -3643,7 +3745,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
 
-
+<h6 id="kiara_plugin.tabular.modules.table.CreateTableModule-methods">Methods<a href="#kiara_plugin.tabular.modules.table.CreateTableModule-methods" class="headerlink" title="Permanent link">&para;</a></h6>
 
   <div class="doc doc-object doc-method">
 
@@ -3657,10 +3759,12 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <div class="doc doc-contents ">
 
+      <p>Create a table from a csv_file value.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__table__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
 
@@ -3687,10 +3791,22 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <div class="doc doc-contents ">
 
+      <p>Create a table value from a text file_bundle.</p>
+<p>The resulting table will have (at a minimum) the following collumns:
+- id: an auto-assigned index
+- rel_path: the relative path of the file (from the provided base path)
+- content: the text file content</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__table__from__text_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a table value from a text file_bundle.</span>
+
+<span class="sd">    The resulting table will have (at a minimum) the following collumns:</span>
+<span class="sd">    - id: an auto-assigned index</span>
+<span class="sd">    - rel_path: the relative path of the file (from the provided base path)</span>
+<span class="sd">    - content: the text file content</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
 
@@ -4254,16 +4370,17 @@ ExportTableModule            (<a class="autorefs autorefs-external" title="kiara
 
     <div class="doc doc-contents ">
 
-      <p>Export network data items.</p>
+      <p>Export table data items.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExportTableModule</span><span class="p">(</span><span class="n">DataExportModule</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Export network data items.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Export table data items.&quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;export.table&quot;</span>
 
     <span class="k">def</span> <span class="nf">export__table__as__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Export a table as csv file.&quot;&quot;&quot;</span>
 
         <span class="kn">import</span> <span class="nn">pyarrow.csv</span> <span class="k">as</span> <span class="nn">csv</span>
 
@@ -4296,7 +4413,7 @@ ExportTableModule            (<a class="autorefs autorefs-external" title="kiara
 
 
 
-
+<h6 id="kiara_plugin.tabular.modules.table.ExportTableModule-methods">Methods<a href="#kiara_plugin.tabular.modules.table.ExportTableModule-methods" class="headerlink" title="Permanent link">&para;</a></h6>
 
   <div class="doc doc-object doc-method">
 
@@ -4310,10 +4427,12 @@ ExportTableModule            (<a class="autorefs autorefs-external" title="kiara
 
     <div class="doc doc-contents ">
 
+      <p>Export a table as csv file.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">export__table__as__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Export a table as csv file.&quot;&quot;&quot;</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow.csv</span> <span class="k">as</span> <span class="nn">csv</span>
 
@@ -4455,11 +4574,26 @@ MergeTableModule            (<a class="autorefs autorefs-external" title="kiara.
     <div class="doc doc-contents ">
 
       <p>Create a table from other tables and/or arrays.</p>
+<p>This module needs configuration to be set (for now). It's currently not possible to merge an arbitrary
+number of tables/arrays, all tables to be merged must be specified in the module configuration.</p>
+<p>Column names of the resulting table can be controlled by the 'column_map' configuration, which takes the
+desired column name as key, and a field-name in the following format as value:
+- '[inputs_schema key]' for inputs of type 'array'
+- '[inputs_schema_key].orig_column_name' for inputs of type 'table'</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MergeTableModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a table from other tables and/or arrays.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Create a table from other tables and/or arrays.</span>
+
+<span class="sd">    This module needs configuration to be set (for now). It&#39;s currently not possible to merge an arbitrary</span>
+<span class="sd">    number of tables/arrays, all tables to be merged must be specified in the module configuration.</span>
+
+<span class="sd">    Column names of the resulting table can be controlled by the &#39;column_map&#39; configuration, which takes the</span>
+<span class="sd">    desired column name as key, and a field-name in the following format as value:</span>
+<span class="sd">    - &#39;[inputs_schema key]&#39; for inputs of type &#39;array&#39;</span>
+<span class="sd">    - &#39;[inputs_schema_key].orig_column_name&#39; for inputs of type &#39;table&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;table.merge&quot;</span>
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">MergeTableConfig</span>
@@ -4892,11 +5026,20 @@ QueryTableSQL            (<a class="autorefs autorefs-external" title="kiara.mod
     <div class="doc doc-contents ">
 
       <p>Execute a sql query against an (Arrow) table.</p>
+<p>The default relation name for the sql query is 'data', but can be modified by the 'relation_name' config option/input.</p>
+<p>If the 'query' module config option is not set, users can provide their own query, otherwise the pre-set
+one will be used.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQL</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Execute a sql query against an (Arrow) table.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Execute a sql query against an (Arrow) table.</span>
+
+<span class="sd">    The default relation name for the sql query is &#39;data&#39;, but can be modified by the &#39;relation_name&#39; config option/input.</span>
+
+<span class="sd">    If the &#39;query&#39; module config option is not set, users can provide their own query, otherwise the pre-set</span>
+<span class="sd">    one will be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;query.table&quot;</span>
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">QueryTableSQLModuleConfig</span>

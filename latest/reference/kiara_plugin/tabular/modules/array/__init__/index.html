@@ -573,6 +573,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../models/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../models/db/" class="md-nav__link">
         db
       </a>
@@ -1368,10 +1382,12 @@ DeserializeArrayModule            (<a class="autorefs autorefs-external" title="
 
     <div class="doc doc-contents ">
 
+      <p>Deserialize array data.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DeserializeArrayModule</span><span class="p">(</span><span class="n">DeserializeValueModule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Deserialize array data.&quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;load.array&quot;</span>
 
@@ -1712,10 +1728,37 @@ ExtractDateModule            (<span title="kiara_plugin.core_types.modules.AutoI
 
     <div class="doc doc-contents ">
 
+      <p>Create an array of date objects from an array of strings.</p>
+<p>This module is very simplistic at the moment, more functionality and options will be added in the future.</p>
+<p>At its core, this module uses the standard parser from the
+<a href="https://github.com/dateutil/dateutil">dateutil</a> package to parse strings into dates. As this parser can't handle
+ complex strings, the input strings can be pre-processed in the following ways:</p>
+<ul>
+<li>'cut' non-relevant parts of the string (using 'min_index' &amp; 'max_index' input/config options)</li>
+<li>remove matching tokens from the string, and replace them with a single whitespace (using the 'remove_tokens' option)</li>
+</ul>
+<p>By default, if an input string can't be parsed this module will raise an exception. This can be prevented by
+setting this modules 'force_non_null' config option or input to 'False', in which case un-parsable strings
+will appear as 'NULL' value in the resulting array.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/array/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ExtractDateModule</span><span class="p">(</span><span class="n">AutoInputsKiaraModule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an array of date objects from an array of strings.</span>
+
+<span class="sd">    This module is very simplistic at the moment, more functionality and options will be added in the future.</span>
+
+<span class="sd">    At its core, this module uses the standard parser from the</span>
+<span class="sd">    [dateutil](https://github.com/dateutil/dateutil) package to parse strings into dates. As this parser can&#39;t handle</span>
+<span class="sd">     complex strings, the input strings can be pre-processed in the following ways:</span>
+
+<span class="sd">    - &#39;cut&#39; non-relevant parts of the string (using &#39;min_index&#39; &amp; &#39;max_index&#39; input/config options)</span>
+<span class="sd">    - remove matching tokens from the string, and replace them with a single whitespace (using the &#39;remove_tokens&#39; option)</span>
+
+<span class="sd">    By default, if an input string can&#39;t be parsed this module will raise an exception. This can be prevented by</span>
+<span class="sd">    setting this modules &#39;force_non_null&#39; config option or input to &#39;False&#39;, in which case un-parsable strings</span>
+<span class="sd">    will appear as &#39;NULL&#39; value in the resulting array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;parse.date_array&quot;</span>
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">ExtractDateConfig</span>

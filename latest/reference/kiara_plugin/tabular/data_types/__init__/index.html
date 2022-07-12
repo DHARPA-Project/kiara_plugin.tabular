@@ -575,6 +575,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../models/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../models/db/" class="md-nav__link">
         db
       </a>
@@ -1015,14 +1029,14 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
     <div class="doc doc-contents ">
 
       <p>An array, in most cases used as a column within a table.</p>
-<p>Internally, this type uses the <a href="https://arrow.apache.org">Apache Arrow</a> <a href="https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array">Array</a> to store the data in memory (and on disk).</p>
+<p>Internally, this type uses the <a class="autorefs autorefs-internal" href="../../models/array/#kiara_plugin.tabular.models.array.KiaraArray">KiaraArray</a> wrapper class to manage array data. This wrapper class, in turn, uses an <a href="https://arrow.apache.org">Apache Arrow</a> <a href="https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array">Array</a> to store the data in memory (and on disk).</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/data_types/array.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ArrayType</span><span class="p">(</span><span class="n">AnyType</span><span class="p">[</span><span class="n">KiaraArray</span><span class="p">,</span> <span class="n">DataTypeConfig</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;An array, in most cases used as a column within a table.</span>
 
-<span class="sd">    Internally, this type uses the [Apache Arrow](https://arrow.apache.org) [Array](https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array) to store the data in memory (and on disk).</span>
+<span class="sd">    Internally, this type uses the [KiaraArray][kiara_plugin.tabular.models.array.KiaraArray] wrapper class to manage array data. This wrapper class, in turn, uses an [Apache Arrow](https://arrow.apache.org) [Array](https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array) to store the data in memory (and on disk).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_data_type_name</span> <span class="o">=</span> <span class="s2">&quot;array&quot;</span>
@@ -1443,14 +1457,16 @@ DatabaseType            (<a class="autorefs autorefs-external" title="kiara.data
     <div class="doc doc-contents ">
 
       <p>A database, containing one or several tables.</p>
-<p>This is backed by a sqlite database file.</p>
+<p>This is backed by the <a class="autorefs autorefs-internal" href="../../models/db/#kiara_plugin.tabular.models.db.KiaraDatabase">KiaraDatabase</a> class to manage
+the stored data.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/data_types/db.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseType</span><span class="p">(</span><span class="n">AnyType</span><span class="p">[</span><span class="n">KiaraDatabase</span><span class="p">,</span> <span class="n">DataTypeConfig</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;A database, containing one or several tables.</span>
 
-<span class="sd">    This is backed by a sqlite database file.</span>
+<span class="sd">    This is backed by the [KiaraDatabase][kiara_plugin.tabular.models.db.KiaraDatabase] class to manage</span>
+<span class="sd">    the stored data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_data_type_name</span> <span class="o">=</span> <span class="s2">&quot;database&quot;</span>

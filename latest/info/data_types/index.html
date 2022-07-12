@@ -620,6 +620,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/models/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/kiara_plugin/tabular/models/db/" class="md-nav__link">
         db
       </a>
@@ -847,7 +861,8 @@
  <span style="font-style: italic">Documentation       </span>                                                                                                                       
  <span style="font-style: italic">                    </span>   An array, in most cases used as a column within a table.                                                            
  <span style="font-style: italic">                    </span>                                                                                                                       
- <span style="font-style: italic">                    </span>   Internally, this type uses the <a href="https://arrow.apache.org" target="_blank"><span style="color: #0000ff; text-decoration-color: #0000ff">Apache Arrow</span></a> <a href="https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array" target="_blank"><span style="color: #0000ff; text-decoration-color: #0000ff">Array</span></a> to store the data in memory (and on disk).                        
+ <span style="font-style: italic">                    </span>   Internally, this type uses the [KiaraArray][kiara_plugin.tabular.models.array.KiaraArray] wrapper class to manage   
+ <span style="font-style: italic">                    </span>   array data. This wrapper class, in turn, uses an <a href="https://arrow.apache.org" target="_blank"><span style="color: #0000ff; text-decoration-color: #0000ff">Apache Arrow</span></a> <a href="https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array" target="_blank"><span style="color: #0000ff; text-decoration-color: #0000ff">Array</span></a> to store the data in memory (and on disk).      
  <span style="font-style: italic">                    </span>                                                                                                                       
  <span style="font-style: italic">Author(s)           </span>                                                                                                                       
  <span style="font-style: italic">                    </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                 
@@ -870,8 +885,8 @@
  <span style="font-style: italic">                    </span>                                                                                                                       
  <span style="font-style: italic">Value class         </span>                                                                                                                       
  <span style="font-style: italic">                    </span>  <span style="font-style: italic"> python_class_name  </span>  KiaraArray                                                                                     
- <span style="font-style: italic">                    </span>  <span style="font-style: italic"> python_module_name </span>  kiara_plugin.tabular.models.table                                                              
- <span style="font-style: italic">                    </span>  <span style="font-style: italic"> full_name          </span>  kiara_plugin.tabular.models.table.KiaraArray                                                   
+ <span style="font-style: italic">                    </span>  <span style="font-style: italic"> python_module_name </span>  kiara_plugin.tabular.models.array                                                              
+ <span style="font-style: italic">                    </span>  <span style="font-style: italic"> full_name          </span>  kiara_plugin.tabular.models.array.KiaraArray                                                   
  <span style="font-style: italic">                    </span>                                                                                                                       
                                                                                                                                             
 </pre>
@@ -883,7 +898,8 @@
  <span style="font-style: italic">Documentation       </span>                                                                                                                       
  <span style="font-style: italic">                    </span>   A database, containing one or several tables.                                                                       
  <span style="font-style: italic">                    </span>                                                                                                                       
- <span style="font-style: italic">                    </span>   This is backed by a sqlite database file.                                                                           
+ <span style="font-style: italic">                    </span>   This is backed by the [KiaraDatabase][kiara_plugin.tabular.models.db.KiaraDatabase] class to manage the stored      
+ <span style="font-style: italic">                    </span>   data.                                                                                                               
  <span style="font-style: italic">                    </span>                                                                                                                       
  <span style="font-style: italic">Author(s)           </span>                                                                                                                       
  <span style="font-style: italic">                    </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                 

@@ -711,6 +711,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/models/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/kiara_plugin/tabular/models/db/" class="md-nav__link">
         db
       </a>
@@ -1024,7 +1038,7 @@
 <h3 id="kiara_info.operations.create.database.from.csv_file"><code>create.database.from.csv_file</code><a class="headerlink" href="#kiara_info.operations.create.database.from.csv_file" title="Permanent link">&para;</a></h3>
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">                                                                                                                                            
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
- <span style="font-style: italic">                 </span>   -- n/a --                                                                                                              
+ <span style="font-style: italic">                 </span>   Create a database from a csv_file value.                                                                               
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
@@ -1036,7 +1050,7 @@
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">            </span>  <span style="font-style: italic">documentation</span>: <a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/" target="_blank">https://DHARPA-Project.github.io/kiara_plugin.tabular/</a>                                     
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
- <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  -- n/a --                                                                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Create a database from a csv_file value.                                                               
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name </span> <span style="font-weight: bold"> type     </span> <span style="font-weight: bold"> description                                </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    
@@ -1055,7 +1069,11 @@
 <h3 id="kiara_info.operations.create.database.from.csv_file_bundle"><code>create.database.from.csv_file_bundle</code><a class="headerlink" href="#kiara_info.operations.create.database.from.csv_file_bundle" title="Permanent link">&para;</a></h3>
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">                                                                                                                                            
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
- <span style="font-style: italic">                 </span>   -- n/a --                                                                                                              
+ <span style="font-style: italic">                 </span>   Create a database from a csv_file_bundle value.                                                                        
+ <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   Unless 'merge_into_single_table' is set to 'True', each csv file will create one table in the resulting database. If   
+ <span style="font-style: italic">                 </span>   this option is set, only a single table with all the values of all csv files will be created. For this to work, all    
+ <span style="font-style: italic">                 </span>   csv files should follow the same schema.                                                                               
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
@@ -1067,7 +1085,11 @@
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">            </span>  <span style="font-style: italic">documentation</span>: <a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/" target="_blank">https://DHARPA-Project.github.io/kiara_plugin.tabular/</a>                                     
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
- <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  -- n/a --                                                                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Create a database from a csv_file_bundle value.                                                        
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>                                                                                                         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  Unless 'merge_into_single_table' is set to 'True', each csv file will create one table                 
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  in the resulting database. If this option is set, only a single table with all the values of all       
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  csv files will be created. For this to work, all csv files should follow the same schema.              
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name      </span> <span style="font-weight: bold"> type            </span> <span style="font-weight: bold"> description                    </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    
@@ -1086,7 +1108,7 @@
 <h3 id="kiara_info.operations.create.database.from.table"><code>create.database.from.table</code><a class="headerlink" href="#kiara_info.operations.create.database.from.table" title="Permanent link">&para;</a></h3>
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">                                                                                                                                            
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
- <span style="font-style: italic">                 </span>   -- n/a --                                                                                                              
+ <span style="font-style: italic">                 </span>   Create a database value from a table.                                                                                  
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
@@ -1098,7 +1120,7 @@
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">            </span>  <span style="font-style: italic">documentation</span>: <a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/" target="_blank">https://DHARPA-Project.github.io/kiara_plugin.tabular/</a>                                     
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
- <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  -- n/a --                                                                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Create a database value from a table.                                                                  
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name </span> <span style="font-weight: bold"> type   </span> <span style="font-weight: bold"> description                                  </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    
@@ -1118,7 +1140,7 @@
 <h3 id="kiara_info.operations.create.table.from.csv_file"><code>create.table.from.csv_file</code><a class="headerlink" href="#kiara_info.operations.create.table.from.csv_file" title="Permanent link">&para;</a></h3>
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">                                                                                                                                            
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
- <span style="font-style: italic">                 </span>   -- n/a --                                                                                                              
+ <span style="font-style: italic">                 </span>   Create a table from a csv_file value.                                                                                  
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
@@ -1130,7 +1152,7 @@
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">            </span>  <span style="font-style: italic">documentation</span>: <a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/" target="_blank">https://DHARPA-Project.github.io/kiara_plugin.tabular/</a>                                     
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
- <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  -- n/a --                                                                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Create a table from a csv_file value.                                                                  
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name </span> <span style="font-weight: bold"> type     </span> <span style="font-weight: bold"> description                                </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    
@@ -1149,7 +1171,13 @@
 <h3 id="kiara_info.operations.create.table.from.text_file_bundle"><code>create.table.from.text_file_bundle</code><a class="headerlink" href="#kiara_info.operations.create.table.from.text_file_bundle" title="Permanent link">&para;</a></h3>
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">                                                                                                                                            
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
- <span style="font-style: italic">                 </span>   -- n/a --                                                                                                              
+ <span style="font-style: italic">                 </span>   Create a table value from a text file_bundle.                                                                          
+ <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   The resulting table will have (at a minimum) the following collumns:                                                   
+ <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   <span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> • </span>id: an auto-assigned index                                                                                          
+ <span style="font-style: italic">                 </span>   <span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> • </span>rel_path: the relative path of the file (from the provided base path)                                               
+ <span style="font-style: italic">                 </span>   <span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> • </span>content: the text file content                                                                                      
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
@@ -1161,7 +1189,12 @@
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">            </span>  <span style="font-style: italic">documentation</span>: <a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/" target="_blank">https://DHARPA-Project.github.io/kiara_plugin.tabular/</a>                                     
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
- <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  -- n/a --                                                                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Create a table value from a text file_bundle.                                                          
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>                                                                                                         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  The resulting table will have (at a minimum) the following collumns:                                   
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  - id: an auto-assigned index                                                                           
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  - rel_path: the relative path of the file (from the provided base path)                                
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  - content: the text file content                                                                       
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name       </span> <span style="font-weight: bold"> type             </span> <span style="font-weight: bold"> description                  </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    
@@ -1273,7 +1306,7 @@
 <h3 id="kiara_info.operations.export.table.as.csv_file"><code>export.table.as.csv_file</code><a class="headerlink" href="#kiara_info.operations.export.table.as.csv_file" title="Permanent link">&para;</a></h3>
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">                                                                                                                                            
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
- <span style="font-style: italic">                 </span>   -- n/a --                                                                                                              
+ <span style="font-style: italic">                 </span>   Export a table as csv file.                                                                                            
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
@@ -1285,7 +1318,7 @@
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">            </span>  <span style="font-style: italic">documentation</span>: <a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/" target="_blank">https://DHARPA-Project.github.io/kiara_plugin.tabular/</a>                                     
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
- <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  -- n/a --                                                                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Export a table as csv file.                                                                            
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name      </span> <span style="font-weight: bold"> type    </span> <span style="font-weight: bold"> description                            </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    
@@ -1419,7 +1452,20 @@
 <h3 id="kiara_info.operations.parse.date_array"><code>parse.date_array</code><a class="headerlink" href="#kiara_info.operations.parse.date_array" title="Permanent link">&para;</a></h3>
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">                                                                                                                                            
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
- <span style="font-style: italic">                 </span>   -- n/a --                                                                                                              
+ <span style="font-style: italic">                 </span>   Create an array of date objects from an array of strings.                                                              
+ <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   This module is very simplistic at the moment, more functionality and options will be added in the future.              
+ <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   At its core, this module uses the standard parser from the <a href="https://github.com/dateutil/dateutil" target="_blank"><span style="color: #0000ff; text-decoration-color: #0000ff">dateutil</span></a> package to parse strings into dates. As this       
+ <span style="font-style: italic">                 </span>   parser can't handle complex strings, the input strings can be pre-processed in the following ways:                     
+ <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   <span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> • </span>'cut' non-relevant parts of the string (using 'min_index' &amp; 'max_index' input/config options)                       
+ <span style="font-style: italic">                 </span>   <span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> • </span>remove matching tokens from the string, and replace them with a single whitespace (using the 'remove_tokens'        
+ <span style="font-style: italic">                 </span>   <span style="color: #808000; text-decoration-color: #808000; font-weight: bold">   </span>option)                                                                                                             
+ <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   By default, if an input string can't be parsed this module will raise an exception. This can be prevented by setting   
+ <span style="font-style: italic">                 </span>   this modules 'force_non_null' config option or input to 'False', in which case un-parsable strings will appear as      
+ <span style="font-style: italic">                 </span>   'NULL' value in the resulting array.                                                                                   
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
@@ -1431,7 +1477,25 @@
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">            </span>  <span style="font-style: italic">documentation</span>: <a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/" target="_blank">https://DHARPA-Project.github.io/kiara_plugin.tabular/</a>                                     
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
- <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  -- n/a --                                                                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Create an array of date objects from an array of strings.                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>                                                                                                         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  This module is very simplistic at the moment, more functionality and options will be added in the      
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  future.                                                                                                
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>                                                                                                         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  At its core, this module uses the standard parser from the                                             
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  (https://github.com/dateutil/dateutil) package to parse strings into dates. As this parser can't       
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  handle                                                                                                 
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   complex strings, the input strings can be pre-processed in the following ways:                        
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>                                                                                                         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  - 'cut' non-relevant parts of the string (using 'min_index' &amp; 'max_index' input/config options)        
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  - remove matching tokens from the string, and replace them with a single whitespace (using the         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  'remove_tokens' option)                                                                                
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>                                                                                                         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  By default, if an input string can't be parsed this module will raise an exception. This can be        
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  prevented by                                                                                           
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  setting this modules 'force_non_null' config option or input to 'False', in which case un-parsable     
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  strings                                                                                                
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  will appear as 'NULL' value in the resulting array.                                                    
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name     </span> <span style="font-weight: bold"> type    </span> <span style="font-weight: bold"> description                             </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    
@@ -1460,7 +1524,7 @@
 <h3 id="kiara_info.operations.query.database"><code>query.database</code><a class="headerlink" href="#kiara_info.operations.query.database" title="Permanent link">&para;</a></h3>
 <pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">                                                                                                                                            
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
- <span style="font-style: italic">                 </span>   -- n/a --                                                                                                              
+ <span style="font-style: italic">                 </span>   Execute a sql query against a (sqlite) database.                                                                       
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
@@ -1472,7 +1536,7 @@
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">            </span>  <span style="font-style: italic">documentation</span>: <a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/" target="_blank">https://DHARPA-Project.github.io/kiara_plugin.tabular/</a>                                     
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
- <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  -- n/a --                                                                                              
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Execute a sql query against a (sqlite) database.                                                       
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name </span> <span style="font-weight: bold"> type     </span> <span style="font-weight: bold"> description                                </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    
@@ -1494,6 +1558,12 @@
  <span style="font-style: italic">Documentation    </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Execute a sql query against an (Arrow) table.                                                                          
  <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   The default relation name for the sql query is 'data', but can be modified by the 'relation_name' config               
+ <span style="font-style: italic">                 </span>   option/input.                                                                                                          
+ <span style="font-style: italic">                 </span>                                                                                                                          
+ <span style="font-style: italic">                 </span>   If the 'query' module config option is not set, users can provide their own query, otherwise the pre-set one will be   
+ <span style="font-style: italic">                 </span>   used.                                                                                                                  
+ <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Author(s)        </span>                                                                                                                          
  <span style="font-style: italic">                 </span>   Markus Binsteiner  <span style="font-style: italic"> markus@frkl.io </span>                                                                                    
  <span style="font-style: italic">                 </span>                                                                                                                          
@@ -1505,6 +1575,13 @@
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">Operation details</span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Documentation </span>  Execute a sql query against an (Arrow) table.                                                          
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>                                                                                                         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  The default relation name for the sql query is 'data', but can be modified by the 'relation_name'      
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  config option/input.                                                                                   
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>                                                                                                         
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  If the 'query' module config option is not set, users can provide their own query, otherwise the       
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  pre-set                                                                                                
+ <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>  one will be used.                                                                                      
  <span style="font-style: italic">                 </span>                                                                                                                          
  <span style="font-style: italic">                 </span>  <span style="font-style: italic"> Inputs        </span>                                                                                                         
  <span style="font-style: italic">                 </span>  <span style="font-style: italic">               </span>   <span style="font-weight: bold"> field name    </span> <span style="font-weight: bold"> type   </span> <span style="font-weight: bold"> description                               </span> <span style="font-weight: bold"> Required </span> <span style="font-weight: bold"> Default          </span>    

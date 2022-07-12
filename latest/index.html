@@ -656,6 +656,20 @@
   
   
     <li class="md-nav__item">
+      <a href="reference/kiara_plugin/tabular/models/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="reference/kiara_plugin/tabular/models/db/" class="md-nav__link">
         db
       </a>
@@ -933,7 +947,7 @@
 <h3 id="module_types">module_types<a class="headerlink" href="#module_types" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.load.array"><code>load.array</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.load.array"><code>load.array</code></a>: Deserialize array data.</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.load.database"><code>load.database</code></a>: -- n/a --</p>
@@ -942,7 +956,7 @@
 <p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.load.table"><code>load.table</code></a>: -- n/a --</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.parse.date_array"><code>parse.date_array</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.parse.date_array"><code>parse.date_array</code></a>: Create an array of date objects from an array of strings.</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.create.database"><code>create.database</code></a>: -- n/a --</p>
@@ -951,10 +965,10 @@
 <p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.create.table"><code>create.table</code></a>: -- n/a --</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.query.database"><code>query.database</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.query.database"><code>query.database</code></a>: Execute a sql query against a (sqlite) database.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.export.table"><code>export.table</code></a>: Export network data items.</p>
+<p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.export.table"><code>export.table</code></a>: Export table data items.</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/module_types/#kiara_info.module_types.table.cut_column"><code>table.cut_column</code></a>: Cut off one column from a table, returning an array.</p>
@@ -981,31 +995,31 @@
 <p><a class="autorefs autorefs-internal" href="info/kiara_model_types/#kiara_info.kiara_model_types.table_metadata"><code>table_metadata</code></a>: Describes properties for the 'table' data type.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/kiara_model_types/#kiara_info.kiara_model_types.kiara_database"><code>kiara_database</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/kiara_model_types/#kiara_info.kiara_model_types.kiara_array"><code>kiara_array</code></a>: A class to manage array-like data.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/kiara_model_types/#kiara_info.kiara_model_types.kiara_array"><code>kiara_array</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/kiara_model_types/#kiara_info.kiara_model_types.kiara_database"><code>kiara_database</code></a>: A wrapper class to manage a sqlite database.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/kiara_model_types/#kiara_info.kiara_model_types.kiara_table"><code>kiara_table</code></a>: A wrapper class to manage tabular data in a hopefully memory efficient way.</p>
+<p><a class="autorefs autorefs-internal" href="info/kiara_model_types/#kiara_info.kiara_model_types.kiara_table"><code>kiara_table</code></a>: A wrapper class to manage tabular data in a memory efficient way.</p>
 </li>
 </ul>
 <h3 id="operations">operations<a class="headerlink" href="#operations" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.database.from.csv_file"><code>create.database.from.csv_file</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.database.from.csv_file"><code>create.database.from.csv_file</code></a>: Create a database from a csv_file value.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.database.from.csv_file_bundle"><code>create.database.from.csv_file_bundle</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.database.from.csv_file_bundle"><code>create.database.from.csv_file_bundle</code></a>: Create a database from a csv_file_bundle value.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.database.from.table"><code>create.database.from.table</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.database.from.table"><code>create.database.from.table</code></a>: Create a database value from a table.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.table.from.csv_file"><code>create.table.from.csv_file</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.table.from.csv_file"><code>create.table.from.csv_file</code></a>: Create a table from a csv_file value.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.table.from.text_file_bundle"><code>create.table.from.text_file_bundle</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.create.table.from.text_file_bundle"><code>create.table.from.text_file_bundle</code></a>: Create a table value from a text file_bundle.</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.deserialize.array.as.python_object"><code>deserialize.array.as.python_object</code></a>: -- n/a --</p>
@@ -1017,7 +1031,7 @@
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.deserialize.table.as.python_object"><code>deserialize.table.as.python_object</code></a>: -- n/a --</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.export.table.as.csv_file"><code>export.table.as.csv_file</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.export.table.as.csv_file"><code>export.table.as.csv_file</code></a>: Export a table as csv file.</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.extract.date_array.from.table"><code>extract.date_array.from.table</code></a>: Extract a date array from a table column.</p>
@@ -1029,10 +1043,10 @@
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.import.table.from.text_file_bundle"><code>import.table.from.text_file_bundle</code></a>: Load a table from a bundle of text files.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.parse.date_array"><code>parse.date_array</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.parse.date_array"><code>parse.date_array</code></a>: Create an array of date objects from an array of strings.</p>
 </li>
 <li>
-<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.query.database"><code>query.database</code></a>: -- n/a --</p>
+<p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.query.database"><code>query.database</code></a>: Execute a sql query against a (sqlite) database.</p>
 </li>
 <li>
 <p><a class="autorefs autorefs-internal" href="info/operations/#kiara_info.operations.query.table"><code>query.table</code></a>: Execute a sql query against an (Arrow) table.</p>

@@ -573,6 +573,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../models/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../models/db/" class="md-nav__link">
         db
       </a>
@@ -735,6 +749,19 @@
     </nav>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModule-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModule.create__database__from__csv_file" class="md-nav__link">
@@ -1140,6 +1167,19 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModule-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModule.create__database__from__csv_file" class="md-nav__link">
     create__database__from__csv_file()
@@ -1451,6 +1491,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CreateDatabaseModuleConfig</span>
 
     <span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a database from a csv_file value.&quot;&quot;&quot;</span>
 
         <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
         <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
@@ -1496,6 +1537,12 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="k">return</span> <span class="n">db_path</span>
 
     <span class="k">def</span> <span class="nf">create__database__from__csv_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a database from a csv_file_bundle value.</span>
+
+<span class="sd">        Unless &#39;merge_into_single_table&#39; is set to &#39;True&#39;, each csv file will create one table</span>
+<span class="sd">        in the resulting database. If this option is set, only a single table with all the values of all</span>
+<span class="sd">        csv files will be created. For this to work, all csv files should follow the same schema.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">merge_into_single_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;merge_into_single_table&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
@@ -1569,6 +1616,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
     <span class="k">def</span> <span class="nf">create__database__from__table</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span> <span class="n">ValueMap</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a database value from a table.&quot;&quot;&quot;</span>
 
         <span class="n">table_name</span> <span class="o">=</span> <span class="n">optional</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;table_name&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
@@ -1765,7 +1813,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
 
 
-
+<h4 id="kiara_plugin.tabular.modules.db.CreateDatabaseModule-methods">Methods<a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModule-methods" class="headerlink" title="Permanent link">&para;</a></h4>
 
   <div class="doc doc-object doc-method">
 
@@ -1779,10 +1827,12 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <div class="doc doc-contents ">
 
+      <p>Create a database from a csv_file value.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a database from a csv_file value.&quot;&quot;&quot;</span>
 
     <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
     <span class="n">db_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_f</span><span class="p">,</span> <span class="s2">&quot;db.sqlite&quot;</span><span class="p">)</span>
@@ -1846,10 +1896,20 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <div class="doc doc-contents ">
 
+      <p>Create a database from a csv_file_bundle value.</p>
+<p>Unless 'merge_into_single_table' is set to 'True', each csv file will create one table
+in the resulting database. If this option is set, only a single table with all the values of all
+csv files will be created. For this to work, all csv files should follow the same schema.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__csv_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a database from a csv_file_bundle value.</span>
+
+<span class="sd">    Unless &#39;merge_into_single_table&#39; is set to &#39;True&#39;, each csv file will create one table</span>
+<span class="sd">    in the resulting database. If this option is set, only a single table with all the values of all</span>
+<span class="sd">    csv files will be created. For this to work, all csv files should follow the same schema.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">merge_into_single_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;merge_into_single_table&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
@@ -1923,12 +1983,14 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <div class="doc doc-contents ">
 
+      <p>Create a database value from a table.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__table</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span> <span class="n">ValueMap</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a database value from a table.&quot;&quot;&quot;</span>
 
     <span class="n">table_name</span> <span class="o">=</span> <span class="n">optional</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;table_name&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
@@ -2452,10 +2514,12 @@ QueryDatabaseModule            (<a class="autorefs autorefs-external" title="kia
 
     <div class="doc doc-contents ">
 
+      <p>Execute a sql query against a (sqlite) database.</p>
 
         <details class="quote">
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Execute a sql query against a (sqlite) database.&quot;&quot;&quot;</span>
 
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">QueryDatabaseConfig</span>
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;query.database&quot;</span>
