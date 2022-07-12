@@ -16,7 +16,8 @@ from kiara_plugin.tabular.models.db import KiaraDatabase
 class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
     """A database, containing one or several tables.
 
-    This is backed by a sqlite database file.
+    This is backed by the [KiaraDatabase][kiara_plugin.tabular.models.db.KiaraDatabase] class to manage
+    the stored data.
     """
 
     _data_type_name = "database"

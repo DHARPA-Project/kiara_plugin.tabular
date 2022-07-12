@@ -23,7 +23,8 @@ from kiara.modules.included_core_modules.serialization import DeserializeValueMo
 from pydantic import Field
 
 from kiara_plugin.tabular.defaults import RESERVED_SQL_KEYWORDS
-from kiara_plugin.tabular.models.table import KiaraArray, KiaraTable, KiaraTableMetadata
+from kiara_plugin.tabular.models.array import KiaraArray
+from kiara_plugin.tabular.models.table import KiaraTable, KiaraTableMetadata
 
 if TYPE_CHECKING:
     pass
@@ -45,6 +46,7 @@ class CreateTableModule(CreateFromModule):
     _config_cls = CreateTableModuleConfig
 
     def create__table__from__csv_file(self, source_value: Value) -> Any:
+        """Create a table from a csv_file value."""
 
         from pyarrow import csv
 
@@ -53,6 +55,13 @@ class CreateTableModule(CreateFromModule):
         return imported_data
 
     def create__table__from__text_file_bundle(self, source_value: Value) -> Any:
+        """Create a table value from a text file_bundle.
+
+        The resulting table will have (at a minimum) the following collumns:
+        - id: an auto-assigned index
+        - rel_path: the relative path of the file (from the provided base path)
+        - content: the text file content
+        """
 
         import pyarrow as pa
 
@@ -190,7 +199,16 @@ class MergeTableConfig(KiaraModuleConfig):
 
 
 class MergeTableModule(KiaraModule):
-    """Create a table from other tables and/or arrays."""
+    """Create a table from other tables and/or arrays.
+
+    This module needs configuration to be set (for now). It's currently not possible to merge an arbitrary
+    number of tables/arrays, all tables to be merged must be specified in the module configuration.
+
+    Column names of the resulting table can be controlled by the 'column_map' configuration, which takes the
+    desired column name as key, and a field-name in the following format as value:
+    - '[inputs_schema key]' for inputs of type 'array'
+    - '[inputs_schema_key].orig_column_name' for inputs of type 'table'
+    """
 
     _module_type_name = "table.merge"
     _config_cls = MergeTableConfig
@@ -319,7 +337,13 @@ class QueryTableSQLModuleConfig(KiaraModuleConfig):
 
 
 class QueryTableSQL(KiaraModule):
-    """Execute a sql query against an (Arrow) table."""
+    """Execute a sql query against an (Arrow) table.
+
+    The default relation name for the sql query is 'data', but can be modified by the 'relation_name' config option/input.
+
+    If the 'query' module config option is not set, users can provide their own query, otherwise the pre-set
+    one will be used.
+    """
 
     _module_type_name = "query.table"
     _config_cls = QueryTableSQLModuleConfig
@@ -375,11 +399,12 @@ class QueryTableSQL(KiaraModule):
 
 
 class ExportTableModule(DataExportModule):
-    """Export network data items."""
+    """Export table data items."""
 
     _module_type_name = "export.table"
 
     def export__table__as__csv_file(self, value: KiaraTable, base_path: str, name: str):
+        """Export a table as csv file."""
 
         import pyarrow.csv as csv
 

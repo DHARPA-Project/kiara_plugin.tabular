@@ -77,6 +77,8 @@ class SqliteTableSchema(BaseModel):
 
 
 class KiaraDatabase(KiaraModel):
+    """A wrapper class to manage a sqlite database."""
+
     @classmethod
     def create_in_temp_dir(
         cls,

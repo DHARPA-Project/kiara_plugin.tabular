@@ -9,10 +9,11 @@ from kiara.modules.included_core_modules.serialization import DeserializeValueMo
 from kiara_plugin.core_types.modules import AutoInputsKiaraModule, KiaraInputsConfig
 from pydantic import Field
 
-from kiara_plugin.tabular.models.table import KiaraArray
+from kiara_plugin.tabular.models.array import KiaraArray
 
 
 class DeserializeArrayModule(DeserializeValueModule):
+    """Deserialize array data."""
 
     _module_type_name = "load.array"
 
@@ -65,6 +66,21 @@ class ExtractDateConfig(KiaraInputsConfig):
 
 
 class ExtractDateModule(AutoInputsKiaraModule):
+    """Create an array of date objects from an array of strings.
+
+    This module is very simplistic at the moment, more functionality and options will be added in the future.
+
+    At its core, this module uses the standard parser from the
+    [dateutil](https://github.com/dateutil/dateutil) package to parse strings into dates. As this parser can't handle
+     complex strings, the input strings can be pre-processed in the following ways:
+
+    - 'cut' non-relevant parts of the string (using 'min_index' & 'max_index' input/config options)
+    - remove matching tokens from the string, and replace them with a single whitespace (using the 'remove_tokens' option)
+
+    By default, if an input string can't be parsed this module will raise an exception. This can be prevented by
+    setting this modules 'force_non_null' config option or input to 'False', in which case un-parsable strings
+    will appear as 'NULL' value in the resulting array.
+    """
 
     _module_type_name = "parse.date_array"
     _config_cls = ExtractDateConfig

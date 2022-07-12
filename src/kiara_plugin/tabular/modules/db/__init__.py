@@ -55,6 +55,7 @@ class CreateDatabaseModule(CreateFromModule):
     _config_cls = CreateDatabaseModuleConfig
 
     def create__database__from__csv_file(self, source_value: Value) -> Any:
+        """Create a database from a csv_file value."""
 
         temp_f = tempfile.mkdtemp()
         db_path = os.path.join(temp_f, "db.sqlite")
@@ -100,6 +101,12 @@ class CreateDatabaseModule(CreateFromModule):
         return db_path
 
     def create__database__from__csv_file_bundle(self, source_value: Value) -> Any:
+        """Create a database from a csv_file_bundle value.
+
+        Unless 'merge_into_single_table' is set to 'True', each csv file will create one table
+        in the resulting database. If this option is set, only a single table with all the values of all
+        csv files will be created. For this to work, all csv files should follow the same schema.
+        """
 
         merge_into_single_table = self.get_config_value("merge_into_single_table")
         if merge_into_single_table:
@@ -173,6 +180,7 @@ class CreateDatabaseModule(CreateFromModule):
     def create__database__from__table(
         self, source_value: Value, optional: ValueMap
     ) -> Any:
+        """Create a database value from a table."""
 
         table_name = optional.get_value_data("table_name")
         if not table_name:
@@ -245,6 +253,7 @@ class QueryDatabaseConfig(KiaraModuleConfig):
 
 
 class QueryDatabaseModule(KiaraModule):
+    """Execute a sql query against a (sqlite) database."""
 
     _config_cls = QueryDatabaseConfig
     _module_type_name = "query.database"

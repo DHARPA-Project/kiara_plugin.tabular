@@ -12,7 +12,7 @@ from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
 from kiara.utils.output import ArrowTabularWrap
 
-from kiara_plugin.tabular.models.table import KiaraArray
+from kiara_plugin.tabular.models.array import KiaraArray
 
 
 def store_array(array_obj: "pa.Array", file_name: str, column_name: "str" = "array"):
@@ -32,7 +32,7 @@ def store_array(array_obj: "pa.Array", file_name: str, column_name: "str" = "arr
 class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
     """An array, in most cases used as a column within a table.
 
-    Internally, this type uses the [Apache Arrow](https://arrow.apache.org) [Array](https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array) to store the data in memory (and on disk).
+    Internally, this type uses the [KiaraArray][kiara_plugin.tabular.models.array.KiaraArray] wrapper class to manage array data. This wrapper class, in turn, uses an [Apache Arrow](https://arrow.apache.org) [Array](https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array) to store the data in memory (and on disk).
     """
 
     _data_type_name = "array"
