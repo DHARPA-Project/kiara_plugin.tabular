@@ -287,8 +287,11 @@ class RenderTableInstruction(RenderInstruction):
             next = {"row_offset": n_offset, "columns": self.columns}
             related_instructions["next"] = RenderTableInstruction.construct(**next)
 
+        row_offset = table.num_rows - self.number_of_rows
+        if row_offset < 0:
+            row_offset = 0
         related_instructions["last"] = RenderTableInstruction.construct(
-            **{"row_offset": table.num_rows - self.number_of_rows, "columns": columnns}
+            **{"row_offset": row_offset, "columns": columnns}
         )
 
         render_metadata = RenderMetadata(related_instructions=related_instructions)
