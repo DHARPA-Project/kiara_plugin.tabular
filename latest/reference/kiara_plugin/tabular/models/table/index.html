@@ -478,6 +478,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../data_types/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../data_types/db/" class="md-nav__link">
         db
       </a>
@@ -2299,8 +2313,11 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
             <span class="nb">next</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">n_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
             <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="nb">next</span><span class="p">)</span>
 
+        <span class="n">row_offset</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span>
+        <span class="k">if</span> <span class="n">row_offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">row_offset</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columnns</span><span class="p">}</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">row_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columnns</span><span class="p">}</span>
         <span class="p">)</span>
 
         <span class="n">render_metadata</span> <span class="o">=</span> <span class="n">RenderMetadata</span><span class="p">(</span><span class="n">related_instructions</span><span class="o">=</span><span class="n">related_instructions</span><span class="p">)</span>
@@ -2444,8 +2461,11 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
         <span class="nb">next</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">n_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
         <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="nb">next</span><span class="p">)</span>
 
+    <span class="n">row_offset</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span>
+    <span class="k">if</span> <span class="n">row_offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">row_offset</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
-        <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columnns</span><span class="p">}</span>
+        <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">row_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columnns</span><span class="p">}</span>
     <span class="p">)</span>
 
     <span class="n">render_metadata</span> <span class="o">=</span> <span class="n">RenderMetadata</span><span class="p">(</span><span class="n">related_instructions</span><span class="o">=</span><span class="n">related_instructions</span><span class="p">)</span>
