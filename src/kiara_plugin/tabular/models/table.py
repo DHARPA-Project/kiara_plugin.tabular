@@ -178,34 +178,35 @@ class RenderTableInstruction(RenderInstruction):
         result_table = query_result.fetch_arrow_table()
 
         wrap = ArrowTabularWrap(table=result_table)
-        pretty = wrap.pretty_print()
+        pretty = wrap.pretty_print(max_row_height=1)
 
         related_instructions = {}
 
-        related_instructions["first"] = RenderTableInstruction.construct(
-            **{"row_offset": 0, "columns": self.columns}
-        )
-
-        if self.row_offset > 0:
-            p_offset = self.row_offset - self.number_of_rows
-            if p_offset < 0:
-                p_offset = 0
-            previous = {"row_offset": p_offset, "columns": self.columns}
-            related_instructions["previous"] = RenderTableInstruction.construct(
-                **previous
+        row_offset = table.num_rows - self.number_of_rows
+        if row_offset > 0:
+            related_instructions["first"] = RenderTableInstruction.construct(
+                **{"row_offset": 0, "columns": self.columns}
             )
 
-        n_offset = self.row_offset + self.number_of_rows
-        if n_offset < table.num_rows:
-            next = {"row_offset": n_offset, "columns": self.columns}
-            related_instructions["next"] = RenderTableInstruction.construct(**next)
+            if self.row_offset > 0:
+                p_offset = self.row_offset - self.number_of_rows
+                if p_offset < 0:
+                    p_offset = 0
+                previous = {"row_offset": p_offset, "columns": self.columns}
+                related_instructions["previous"] = RenderTableInstruction.construct(
+                    **previous
+                )
 
-        row_offset = table.num_rows - self.number_of_rows
-        if row_offset < 0:
-            row_offset = 0
-        related_instructions["last"] = RenderTableInstruction.construct(
-            **{"row_offset": row_offset, "columns": columnns}
-        )
+            n_offset = self.row_offset + self.number_of_rows
+            if n_offset < table.num_rows:
+                next = {"row_offset": n_offset, "columns": self.columns}
+                related_instructions["next"] = RenderTableInstruction.construct(**next)
+
+            if row_offset < 0:
+                row_offset = 0
+            related_instructions["last"] = RenderTableInstruction.construct(
+                **{"row_offset": row_offset, "columns": columnns}
+            )
 
         render_metadata = RenderMetadata(related_instructions=related_instructions)
 
