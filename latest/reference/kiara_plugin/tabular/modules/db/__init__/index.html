@@ -1504,6 +1504,8 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
         <span class="n">table_name</span> <span class="o">=</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name_without_extension</span>
 
+        <span class="n">table_name</span> <span class="o">=</span> <span class="n">table_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
                 <span class="n">target_db_file</span><span class="o">=</span><span class="n">db_path</span><span class="p">,</span> <span class="n">file_item</span><span class="o">=</span><span class="n">file_item</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
@@ -1511,8 +1513,8 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;ignore_errors&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;ignore.import_file&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-
-            <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
         <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
             <span class="s2">&quot;include_source_metadata&quot;</span>
@@ -1845,6 +1847,8 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
     <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
     <span class="n">table_name</span> <span class="o">=</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name_without_extension</span>
 
+    <span class="n">table_name</span> <span class="o">=</span> <span class="n">table_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
             <span class="n">target_db_file</span><span class="o">=</span><span class="n">db_path</span><span class="p">,</span> <span class="n">file_item</span><span class="o">=</span><span class="n">file_item</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
@@ -1852,8 +1856,8 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;ignore_errors&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;ignore.import_file&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-
-        <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
     <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
         <span class="s2">&quot;include_source_metadata&quot;</span>

@@ -2036,14 +2036,19 @@ avoid adding or removing information from the data (e.g. by changing the resolut
     <span class="sd">&quot;&quot;&quot;Utility methdo to stora an array to a file.&quot;&quot;&quot;</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
+    <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">ChunkedArray</span>
 
     <span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">schema</span><span class="p">([</span><span class="n">pa</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="n">array_obj</span><span class="o">.</span><span class="n">type</span><span class="p">)])</span>
 
     <span class="c1"># TODO: support non-single chunk columns</span>
     <span class="k">with</span> <span class="n">pa</span><span class="o">.</span><span class="n">OSFile</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sink</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">pa</span><span class="o">.</span><span class="n">ipc</span><span class="o">.</span><span class="n">new_file</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
-            <span class="n">batch</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">record_batch</span><span class="p">(</span><span class="n">array_obj</span><span class="o">.</span><span class="n">chunks</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
-            <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array_obj</span><span class="p">,</span> <span class="n">ChunkedArray</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">array_obj</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
+                    <span class="n">batch</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">record_batch</span><span class="p">([</span><span class="n">chunk</span><span class="p">],</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+                    <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
@@ -5661,7 +5666,11 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
 
         <span class="k">assert</span> <span class="n">columnns</span>
 
-        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM data ORDER by </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> LIMIT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="si">}</span><span class="s2"> OFFSET </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">columnns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">columnns</span><span class="p">]</span>
+
+        <span class="c1"># query = f&quot;&quot;&quot;SELECT {&#39;, &#39;.join(columnns)} FROM data ORDER by {&#39;, &#39;.join(columnns)} LIMIT {self.number_of_rows} OFFSET {self.row_offset}&quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM data LIMIT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="si">}</span><span class="s2"> OFFSET </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
 
         <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
         <span class="n">query_result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyResult</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
@@ -5810,7 +5819,11 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
 
     <span class="k">assert</span> <span class="n">columnns</span>
 
-    <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM data ORDER by </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> LIMIT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="si">}</span><span class="s2"> OFFSET </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">columnns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">columnns</span><span class="p">]</span>
+
+    <span class="c1"># query = f&quot;&quot;&quot;SELECT {&#39;, &#39;.join(columnns)} FROM data ORDER by {&#39;, &#39;.join(columnns)} LIMIT {self.number_of_rows} OFFSET {self.row_offset}&quot;&quot;&quot;</span>
+
+    <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM data LIMIT </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="si">}</span><span class="s2"> OFFSET </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
 
     <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
     <span class="n">query_result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyResult</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
@@ -6930,6 +6943,8 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
         <span class="n">table_name</span> <span class="o">=</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name_without_extension</span>
 
+        <span class="n">table_name</span> <span class="o">=</span> <span class="n">table_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
                 <span class="n">target_db_file</span><span class="o">=</span><span class="n">db_path</span><span class="p">,</span> <span class="n">file_item</span><span class="o">=</span><span class="n">file_item</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
@@ -6937,8 +6952,8 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;ignore_errors&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;ignore.import_file&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-
-            <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
         <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
             <span class="s2">&quot;include_source_metadata&quot;</span>
@@ -7271,6 +7286,8 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
     <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
     <span class="n">table_name</span> <span class="o">=</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name_without_extension</span>
 
+    <span class="n">table_name</span> <span class="o">=</span> <span class="n">table_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="n">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
             <span class="n">target_db_file</span><span class="o">=</span><span class="n">db_path</span><span class="p">,</span> <span class="n">file_item</span><span class="o">=</span><span class="n">file_item</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span>
@@ -7278,8 +7295,8 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;ignore_errors&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;ignore.import_file&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-
-        <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
     <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
         <span class="s2">&quot;include_source_metadata&quot;</span>
@@ -8281,7 +8298,12 @@ CreateTableModule            (<a class="autorefs autorefs-external" title="kiara
 
         <span class="n">input_file</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
         <span class="n">imported_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">imported_data</span>
+
+        <span class="c1"># import pandas as pd</span>
+        <span class="c1"># df = pd.read_csv(input_file.path)</span>
+        <span class="c1"># imported_data = pa.Table.from_pandas(df)</span>
+
+        <span class="k">return</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">imported_data</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">create__table__from__text_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Create a table value from a text file_bundle.</span>
@@ -8433,7 +8455,12 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
 
     <span class="n">input_file</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
     <span class="n">imported_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">imported_data</span>
+
+    <span class="c1"># import pandas as pd</span>
+    <span class="c1"># df = pd.read_csv(input_file.path)</span>
+    <span class="c1"># imported_data = pa.Table.from_pandas(df)</span>
+
+    <span class="k">return</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">imported_data</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -10419,8 +10446,9 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
     <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
         <span class="n">table_name</span> <span class="o">=</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name_without_extension</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
 
+    <span class="k">try</span><span class="p">:</span>
         <span class="n">insert_upsert_implementation</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">target_db_file</span><span class="p">,</span>
             <span class="n">table</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span>
@@ -10453,6 +10481,10 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
             <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">bulk_sql</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>

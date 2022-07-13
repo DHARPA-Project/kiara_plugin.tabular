@@ -1196,8 +1196,9 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">table_name</span><span class="p">:</span>
         <span class="n">table_name</span> <span class="o">=</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name_without_extension</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_item</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
 
+    <span class="k">try</span><span class="p">:</span>
         <span class="n">insert_upsert_implementation</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">target_db_file</span><span class="p">,</span>
             <span class="n">table</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span>
@@ -1230,6 +1231,10 @@
             <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">bulk_sql</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
