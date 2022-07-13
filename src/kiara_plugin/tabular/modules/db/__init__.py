@@ -69,6 +69,7 @@ class CreateDatabaseModule(CreateFromModule):
         table_name = file_item.file_name_without_extension
 
         table_name = table_name.replace("-", "_")
+        table_name = table_name.replace(".", "_")
 
         try:
             create_sqlite_table_from_tabular_file(

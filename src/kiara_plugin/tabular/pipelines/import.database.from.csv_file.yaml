@@ -1,14 +1,14 @@
 {
-  "pipeline_name": "import.table.from.csv_file",
-  "doc": "Import a table from a csv file.",
+  "pipeline_name": "import.database.from.csv_file",
+  "doc": "Import a database from a csv file.",
   "steps": [
     {
       "module_type": "import.file",
       "step_id": "import_file"
     },
     {
-      "module_type": "create.table.from.csv_file",
-      "step_id": "create_table_from_file",
+      "module_type": "create.database.from.csv_file",
+      "step_id": "create_database_from_file",
       "input_links": {
         "csv_file": "import_file.file"
       }
@@ -18,6 +18,6 @@
   },
   "output_aliases": {
     "import_file.file": "imported_file",
-    "create_table_from_file.table": "table"
+    "create_database_from_file.database": "database"
   }
 }
