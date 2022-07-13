@@ -170,7 +170,11 @@ class RenderTableInstruction(RenderInstruction):
 
         assert columnns
 
-        query = f"""SELECT {', '.join(columnns)} FROM data ORDER by {', '.join(columnns)} LIMIT {self.number_of_rows} OFFSET {self.row_offset}"""
+        columnns = [f'"{x}"' if not x.startswith('"') else x for x in columnns]
+
+        # query = f"""SELECT {', '.join(columnns)} FROM data ORDER by {', '.join(columnns)} LIMIT {self.number_of_rows} OFFSET {self.row_offset}"""
+
+        query = f"""SELECT {', '.join(columnns)} FROM data LIMIT {self.number_of_rows} OFFSET {self.row_offset}"""
 
         rel_from_arrow = duckdb.arrow(table.arrow_table)
         query_result: duckdb.DuckDBPyResult = rel_from_arrow.query("data", query)

@@ -52,7 +52,12 @@ class CreateTableModule(CreateFromModule):
 
         input_file: FileModel = source_value.data
         imported_data = csv.read_csv(input_file.path)
-        return imported_data
+
+        # import pandas as pd
+        # df = pd.read_csv(input_file.path)
+        # imported_data = pa.Table.from_pandas(df)
+
+        return KiaraTable.create_table(imported_data)
 
     def create__table__from__text_file_bundle(self, source_value: Value) -> Any:
         """Create a table value from a text file_bundle.

@@ -3,6 +3,7 @@ import typing
 from typing import Dict, Iterable, Mapping, Optional
 
 from kiara.models.filesystem import FileBundle, FileModel
+from kiara.utils import log_exception
 from sqlite_utils.cli import insert_upsert_implementation
 
 from kiara_plugin.tabular.defaults import SqliteDataType
@@ -219,8 +220,9 @@ def create_sqlite_table_from_tabular_file(
     if not table_name:
         table_name = file_item.file_name_without_extension
 
-    with open(file_item.path, "rb") as f:
+    f = open(file_item.path, "rb")
 
+    try:
         insert_upsert_implementation(
             path=target_db_file,
             table=table_name,
@@ -253,3 +255,7 @@ def create_sqlite_table_from_tabular_file(
             silent=True,
             bulk_sql=None,
         )
+    except Exception as e:
+        log_exception(e)
+    finally:
+        f.close()

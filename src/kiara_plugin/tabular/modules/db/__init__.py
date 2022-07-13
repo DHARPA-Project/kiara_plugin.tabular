@@ -68,6 +68,8 @@ class CreateDatabaseModule(CreateFromModule):
         file_item: FileModel = source_value.data
         table_name = file_item.file_name_without_extension
 
+        table_name = table_name.replace("-", "_")
+
         try:
             create_sqlite_table_from_tabular_file(
                 target_db_file=db_path, file_item=file_item, table_name=table_name
@@ -75,8 +77,8 @@ class CreateDatabaseModule(CreateFromModule):
         except Exception as e:
             if self.get_config_value("ignore_errors") is True or True:
                 log_message("ignore.import_file", file=file_item.path, reason=str(e))
-
-            raise KiaraProcessingException(e)
+            else:
+                raise KiaraProcessingException(e)
 
         include_raw_content_in_file_info: bool = self.get_config_value(
             "include_source_metadata"

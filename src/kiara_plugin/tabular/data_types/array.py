@@ -19,14 +19,19 @@ def store_array(array_obj: "pa.Array", file_name: str, column_name: "str" = "arr
     """Utility methdo to stora an array to a file."""
 
     import pyarrow as pa
+    from pyarrow import ChunkedArray
 
     schema = pa.schema([pa.field(column_name, array_obj.type)])
 
     # TODO: support non-single chunk columns
     with pa.OSFile(file_name, "wb") as sink:
         with pa.ipc.new_file(sink, schema=schema) as writer:
-            batch = pa.record_batch(array_obj.chunks, schema=schema)
-            writer.write(batch)
+            if isinstance(array_obj, ChunkedArray):
+                for chunk in array_obj.chunks:
+                    batch = pa.record_batch([chunk], schema=schema)
+                    writer.write(batch)
+            else:
+                raise NotImplementedError()
 
 
 class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
