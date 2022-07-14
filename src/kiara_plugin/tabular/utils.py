@@ -22,16 +22,7 @@ def insert_db_table_from_file_bundle(
 
     # TODO: check if table with that name exists
 
-    from sqlalchemy import (
-        Column,
-        DateTime,
-        Integer,
-        MetaData,
-        String,
-        Table,
-        Text,
-        insert,
-    )
+    from sqlalchemy import Column, Integer, MetaData, String, Table, Text, insert
     from sqlalchemy.engine import Engine
 
     # if db_file_path is None:
@@ -50,7 +41,6 @@ def insert_db_table_from_file_bundle(
         metadata_obj,
         Column("id", Integer, primary_key=True),
         Column("size", Integer(), nullable=False),
-        Column("import_time", DateTime(), nullable=False),
         Column("mime_type", String(length=64), nullable=False),
         Column("rel_path", String(), nullable=False),
         Column("file_name", String(), nullable=False),
@@ -74,7 +64,6 @@ def insert_db_table_from_file_bundle(
             _values = {
                 "id": index,
                 "size": f.size,
-                "import_time": f.import_time,
                 "mime_type": f.mime_type,
                 "rel_path": rel_path,
                 "file_name": f.file_name,

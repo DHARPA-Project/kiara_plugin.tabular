@@ -3,22 +3,17 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import TYPE_CHECKING, Any, Mapping, Optional, Type
+from typing import Any, Mapping, Optional, Type
 
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
-from kiara.utils.hashing import compute_cid
 from kiara.utils.output import ArrowTabularWrap
-from mmh3 import hash_from_buffer
 
 from kiara_plugin.tabular.data_types.array import store_array
 from kiara_plugin.tabular.models.table import KiaraTable
 from kiara_plugin.tabular.modules.table import EMPTY_COLUMN_NAME_MARKER
-
-if TYPE_CHECKING:
-    pass
 
 
 class TableType(AnyType[KiaraTable, DataTypeConfig]):
@@ -47,22 +42,22 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
 
         return KiaraTable.create_table(data)
 
-    def calculate_hash(self, data: KiaraTable) -> int:
-        hashes = []
-        for column_name in data.arrow_table.column_names:
-            hashes.append(column_name)
-            column = data.arrow_table.column(column_name)
-            for chunk in column.chunks:
-                for buf in chunk.buffers():
-                    if not buf:
-                        continue
-                    h = hash_from_buffer(memoryview(buf))
-                    hashes.append(h)
-        return compute_cid(hashes)
-        # return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))
+    # def calculate_hash(self, data: KiaraTable) -> CID:
+    #     hashes = []
+    #     for column_name in data.arrow_table.column_names:
+    #         hashes.append(column_name)
+    #         column = data.arrow_table.column(column_name)
+    #         for chunk in column.chunks:
+    #             for buf in chunk.buffers():
+    #                 if not buf:
+    #                     continue
+    #                 h = hash_from_buffer(memoryview(buf))
+    #                 hashes.append(h)
+    #     return compute_cid(hashes)
+    #     return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))
 
-    def calculate_size(self, data: KiaraTable) -> int:
-        return len(data.arrow_table)
+    # def calculate_size(self, data: KiaraTable) -> int:
+    #     return len(data.arrow_table)
 
     def _validate(cls, value: Any) -> None:
 

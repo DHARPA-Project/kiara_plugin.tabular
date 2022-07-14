@@ -203,14 +203,14 @@ class CreateDatabaseModule(CreateFromModule):
         db._unlock_db()
         engine = db.get_sqlalchemy_engine()
 
-        table = sqlite_schema.create_table(table_name=table_name, engine=engine)
+        _table = sqlite_schema.create_table(table_name=table_name, engine=engine)
 
         with engine.connect() as conn:
 
             for batch in arrow_table.to_batches(
                 max_chunksize=DEFAULT_TABULAR_DATA_CHUNK_SIZE
             ):
-                conn.execute(insert(table), batch.to_pylist())
+                conn.execute(insert(_table), batch.to_pylist())
                 conn.commit()
 
         db._lock_db()

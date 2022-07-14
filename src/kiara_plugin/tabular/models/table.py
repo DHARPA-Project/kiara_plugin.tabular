@@ -189,7 +189,7 @@ class RenderTableInstruction(RenderInstruction):
         row_offset = table.num_rows - self.number_of_rows
         if row_offset > 0:
             related_instructions["first"] = RenderTableInstruction.construct(
-                **{"row_offset": 0, "columns": self.columns}
+                **{"row_offset": 0, "columns": self.columns}  # type: ignore
             )
 
             if self.row_offset > 0:
@@ -198,18 +198,18 @@ class RenderTableInstruction(RenderInstruction):
                     p_offset = 0
                 previous = {"row_offset": p_offset, "columns": self.columns}
                 related_instructions["previous"] = RenderTableInstruction.construct(
-                    **previous
+                    **previous  # type: ignore
                 )
 
             n_offset = self.row_offset + self.number_of_rows
             if n_offset < table.num_rows:
                 next = {"row_offset": n_offset, "columns": self.columns}
-                related_instructions["next"] = RenderTableInstruction.construct(**next)
+                related_instructions["next"] = RenderTableInstruction.construct(**next)  # type: ignore
 
             if row_offset < 0:
                 row_offset = 0
             related_instructions["last"] = RenderTableInstruction.construct(
-                **{"row_offset": row_offset, "columns": columnns}
+                **{"row_offset": row_offset, "columns": columnns}  # type: ignore
             )
 
         render_metadata = RenderMetadata(related_instructions=related_instructions)
