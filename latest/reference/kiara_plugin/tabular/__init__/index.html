@@ -2540,22 +2540,22 @@ in memory and on disk when saved, which enables some advanced usage to preserve 
 
         <span class="k">return</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">hashes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">column_name</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
-            <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-            <span class="n">column</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">column</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">buf</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">buffers</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
-                        <span class="k">continue</span>
-                    <span class="n">h</span> <span class="o">=</span> <span class="n">hash_from_buffer</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
-                    <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">compute_cid</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
-        <span class="c1"># return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))</span>
+    <span class="c1"># def calculate_hash(self, data: KiaraTable) -&gt; CID:</span>
+    <span class="c1">#     hashes = []</span>
+    <span class="c1">#     for column_name in data.arrow_table.column_names:</span>
+    <span class="c1">#         hashes.append(column_name)</span>
+    <span class="c1">#         column = data.arrow_table.column(column_name)</span>
+    <span class="c1">#         for chunk in column.chunks:</span>
+    <span class="c1">#             for buf in chunk.buffers():</span>
+    <span class="c1">#                 if not buf:</span>
+    <span class="c1">#                     continue</span>
+    <span class="c1">#                 h = hash_from_buffer(memoryview(buf))</span>
+    <span class="c1">#                 hashes.append(h)</span>
+    <span class="c1">#     return compute_cid(hashes)</span>
+    <span class="c1">#     return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))</span>
 
-    <span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
+    <span class="c1"># def calculate_size(self, data: KiaraTable) -&gt; int:</span>
+    <span class="c1">#     return len(data.arrow_table)</span>
 
     <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -2652,69 +2652,6 @@ in memory and on disk when saved, which enables some advanced usage to preserve 
 
 
 <h8 id="kiara_plugin.tabular.data_types.table.TableType-methods">Methods<a href="#kiara_plugin.tabular.data_types.table.TableType-methods" class="headerlink" title="Permanent link">&para;</a></h8>
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.data_types.table.TableType.calculate_hash" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.data_types.table.TableType.calculate_hash" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-      <p>Calculate the hash of the value.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/data_types/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="n">hashes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">column_name</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column_names</span><span class="p">:</span>
-        <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-        <span class="n">column</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">column</span><span class="o">.</span><span class="n">chunks</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">buf</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">buffers</span><span class="p">():</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">h</span> <span class="o">=</span> <span class="n">hash_from_buffer</span><span class="p">(</span><span class="nb">memoryview</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
-                <span class="n">hashes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">compute_cid</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span>
-    <span class="c1"># return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-method">
-
-
-
-<h9 id="kiara_plugin.tabular.data_types.table.TableType.calculate_size" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
-
-
-<a href="#kiara_plugin.tabular.data_types.table.TableType.calculate_size" class="headerlink" title="Permanent link">&para;</a></h9>
-
-    <div class="doc doc-contents ">
-
-      <p>Calculate the size of the value.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>tabular/data_types/table.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calculate_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
 
   <div class="doc doc-object doc-method">
 
@@ -5685,7 +5622,7 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
         <span class="n">row_offset</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span>
         <span class="k">if</span> <span class="n">row_offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;first&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
-                <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+                <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>  <span class="c1"># type: ignore</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -5694,18 +5631,18 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
                     <span class="n">p_offset</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">previous</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">p_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
                 <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;previous&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
-                    <span class="o">**</span><span class="n">previous</span>
+                    <span class="o">**</span><span class="n">previous</span>  <span class="c1"># type: ignore</span>
                 <span class="p">)</span>
 
             <span class="n">n_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span>
             <span class="k">if</span> <span class="n">n_offset</span> <span class="o">&lt;</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">:</span>
                 <span class="nb">next</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">n_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
-                <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="nb">next</span><span class="p">)</span>
+                <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="nb">next</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
             <span class="k">if</span> <span class="n">row_offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">row_offset</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
-                <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">row_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columnns</span><span class="p">}</span>
+                <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">row_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columnns</span><span class="p">}</span>  <span class="c1"># type: ignore</span>
             <span class="p">)</span>
 
         <span class="n">render_metadata</span> <span class="o">=</span> <span class="n">RenderMetadata</span><span class="p">(</span><span class="n">related_instructions</span><span class="o">=</span><span class="n">related_instructions</span><span class="p">)</span>
@@ -5838,7 +5775,7 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
     <span class="n">row_offset</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span>
     <span class="k">if</span> <span class="n">row_offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;first&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>  <span class="c1"># type: ignore</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -5847,18 +5784,18 @@ RenderTableInstruction            (<a class="autorefs autorefs-external" title="
                 <span class="n">p_offset</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">previous</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">p_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
             <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;previous&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
-                <span class="o">**</span><span class="n">previous</span>
+                <span class="o">**</span><span class="n">previous</span>  <span class="c1"># type: ignore</span>
             <span class="p">)</span>
 
         <span class="n">n_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_offset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span>
         <span class="k">if</span> <span class="n">n_offset</span> <span class="o">&lt;</span> <span class="n">table</span><span class="o">.</span><span class="n">num_rows</span><span class="p">:</span>
             <span class="nb">next</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">n_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
-            <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="nb">next</span><span class="p">)</span>
+            <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="o">**</span><span class="nb">next</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
         <span class="k">if</span> <span class="n">row_offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">row_offset</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">related_instructions</span><span class="p">[</span><span class="s2">&quot;last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">RenderTableInstruction</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">row_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columnns</span><span class="p">}</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;row_offset&quot;</span><span class="p">:</span> <span class="n">row_offset</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columnns</span><span class="p">}</span>  <span class="c1"># type: ignore</span>
         <span class="p">)</span>
 
     <span class="n">render_metadata</span> <span class="o">=</span> <span class="n">RenderMetadata</span><span class="p">(</span><span class="n">related_instructions</span><span class="o">=</span><span class="n">related_instructions</span><span class="p">)</span>
@@ -7078,14 +7015,14 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
         <span class="n">engine</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span>
 
-        <span class="n">table</span> <span class="o">=</span> <span class="n">sqlite_schema</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+        <span class="n">_table</span> <span class="o">=</span> <span class="n">sqlite_schema</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
 
             <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">arrow_table</span><span class="o">.</span><span class="n">to_batches</span><span class="p">(</span>
                 <span class="n">max_chunksize</span><span class="o">=</span><span class="n">DEFAULT_TABULAR_DATA_CHUNK_SIZE</span>
             <span class="p">):</span>
-                <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">),</span> <span class="n">batch</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">())</span>
+                <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert</span><span class="p">(</span><span class="n">_table</span><span class="p">),</span> <span class="n">batch</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">())</span>
                 <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
         <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
@@ -7455,14 +7392,14 @@ csv files will be created. For this to work, all csv files should follow the sam
     <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
     <span class="n">engine</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span>
 
-    <span class="n">table</span> <span class="o">=</span> <span class="n">sqlite_schema</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">_table</span> <span class="o">=</span> <span class="n">sqlite_schema</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
 
         <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">arrow_table</span><span class="o">.</span><span class="n">to_batches</span><span class="p">(</span>
             <span class="n">max_chunksize</span><span class="o">=</span><span class="n">DEFAULT_TABULAR_DATA_CHUNK_SIZE</span>
         <span class="p">):</span>
-            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert</span><span class="p">(</span><span class="n">table</span><span class="p">),</span> <span class="n">batch</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">())</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert</span><span class="p">(</span><span class="n">_table</span><span class="p">),</span> <span class="n">batch</span><span class="o">.</span><span class="n">to_pylist</span><span class="p">())</span>
             <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
     <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
@@ -10519,16 +10456,7 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
 
     <span class="c1"># TODO: check if table with that name exists</span>
 
-    <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="p">(</span>
-        <span class="n">Column</span><span class="p">,</span>
-        <span class="n">DateTime</span><span class="p">,</span>
-        <span class="n">Integer</span><span class="p">,</span>
-        <span class="n">MetaData</span><span class="p">,</span>
-        <span class="n">String</span><span class="p">,</span>
-        <span class="n">Table</span><span class="p">,</span>
-        <span class="n">Text</span><span class="p">,</span>
-        <span class="n">insert</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Table</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">insert</span>
     <span class="kn">from</span> <span class="nn">sqlalchemy.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
 
     <span class="c1"># if db_file_path is None:</span>
@@ -10547,7 +10475,6 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
         <span class="n">metadata_obj</span><span class="p">,</span>
         <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
         <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;import_time&quot;</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
         <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;mime_type&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
         <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;rel_path&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
         <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;file_name&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
@@ -10571,7 +10498,6 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
             <span class="n">_values</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span>
                 <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
-                <span class="s2">&quot;import_time&quot;</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">import_time</span><span class="p">,</span>
                 <span class="s2">&quot;mime_type&quot;</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">mime_type</span><span class="p">,</span>
                 <span class="s2">&quot;rel_path&quot;</span><span class="p">:</span> <span class="n">rel_path</span><span class="p">,</span>
                 <span class="s2">&quot;file_name&quot;</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">file_name</span><span class="p">,</span>
