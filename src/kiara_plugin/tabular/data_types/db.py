@@ -102,7 +102,7 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
             atw = SqliteTabularWrap(
                 engine=db.get_sqlalchemy_engine(), table_name=table_name
             )
-            pretty = atw.pretty_print(
+            pretty = atw.as_terminal_renderable(
                 rows_head=half_lines,
                 rows_tail=half_lines,
                 max_row_height=max_row_height,

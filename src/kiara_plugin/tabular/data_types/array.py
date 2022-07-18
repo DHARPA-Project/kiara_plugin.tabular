@@ -123,7 +123,7 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
 
         temp_table = pa.Table.from_arrays(arrays=[array], names=["array"])
         atw = ArrowTabularWrap(temp_table)
-        result = atw.pretty_print(
+        result = atw.as_terminal_renderable(
             rows_head=half_lines,
             rows_tail=half_lines,
             max_row_height=max_row_height,

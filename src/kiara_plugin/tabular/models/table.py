@@ -182,7 +182,7 @@ class RenderTableInstruction(RenderInstruction):
         result_table = query_result.fetch_arrow_table()
 
         wrap = ArrowTabularWrap(table=result_table)
-        pretty = wrap.pretty_print(max_row_height=1)
+        pretty = wrap.as_terminal_renderable(max_row_height=1)
 
         related_instructions = {}
 
