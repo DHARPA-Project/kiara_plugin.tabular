@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Iterable, List, Optional
+from typing import Any, Dict, Iterable, Optional, Union
 
 import pyarrow as pa
 from kiara.models import KiaraModel
@@ -146,72 +146,95 @@ class KiaraTableMetadata(ValueMetadata):
     table: TableMetadata = Field(description="The table schema.")
 
 
-class RenderTableInstruction(RenderInstruction):
+class BaseRenderTableInstruction(RenderInstruction):
     @classmethod
     def retrieve_source_type(cls) -> str:
         return "table"
 
-    _kiara_model_id = "instance.render_instruction.table"
     number_of_rows: int = Field(description="How many rows to display.", default=20)
     row_offset: int = Field(description="From which row to start.", default=0)
-    columns: Optional[List[str]] = Field(
-        description="Which rows do display.", default=None
-    )
 
-    def render_as__terminal_renderable(self, value: Value):
+    def preprocess_table(self, value: Value):
 
         import duckdb
 
         table: KiaraTable = value.data
 
-        columnns: Iterable[str] = self.columns  # type: ignore
-        if not columnns:
-            columnns = table.column_names
-
-        assert columnns
-
-        columnns = [f'"{x}"' if not x.startswith('"') else x for x in columnns]
+        columnns = [
+            f'"{x}"' if not x.startswith('"') else x for x in table.column_names
+        ]
 
         # query = f"""SELECT {', '.join(columnns)} FROM data ORDER by {', '.join(columnns)} LIMIT {self.number_of_rows} OFFSET {self.row_offset}"""
-
         query = f"""SELECT {', '.join(columnns)} FROM data LIMIT {self.number_of_rows} OFFSET {self.row_offset}"""
 
         rel_from_arrow = duckdb.arrow(table.arrow_table)
         query_result: duckdb.DuckDBPyResult = rel_from_arrow.query("data", query)
 
         result_table = query_result.fetch_arrow_table()
-
         wrap = ArrowTabularWrap(table=result_table)
-        pretty = wrap.as_terminal_renderable(max_row_height=1)
 
-        related_instructions = {}
+        related_instructions: Dict[str, Union[None, RenderInstruction]] = {}
 
         row_offset = table.num_rows - self.number_of_rows
         if row_offset > 0:
-            related_instructions["first"] = RenderTableInstruction.construct(
-                **{"row_offset": 0, "columns": self.columns}  # type: ignore
-            )
 
             if self.row_offset > 0:
+                related_instructions["first"] = self.__class__(
+                    **{"row_offset": 0, "number_of_rows": self.number_of_rows}  # type: ignore
+                )
+
                 p_offset = self.row_offset - self.number_of_rows
                 if p_offset < 0:
                     p_offset = 0
-                previous = {"row_offset": p_offset, "columns": self.columns}
-                related_instructions["previous"] = RenderTableInstruction.construct(
+                previous = {
+                    "row_offset": p_offset,
+                    "number_of_rows": self.number_of_rows,
+                }
+                related_instructions["previous"] = self.__class__(
                     **previous  # type: ignore
                 )
+            else:
+                related_instructions["first"] = None
+                related_instructions["previous"] = None
 
             n_offset = self.row_offset + self.number_of_rows
             if n_offset < table.num_rows:
-                next = {"row_offset": n_offset, "columns": self.columns}
-                related_instructions["next"] = RenderTableInstruction.construct(**next)  # type: ignore
+                next = {"row_offset": n_offset, "number_of_rows": self.number_of_rows}
+                related_instructions["next"] = self.__class__(**next)  # type: ignore
+            else:
+                related_instructions["next"] = None
 
-            if row_offset < 0:
-                row_offset = 0
-            related_instructions["last"] = RenderTableInstruction.construct(
-                **{"row_offset": row_offset, "columns": columnns}  # type: ignore
-            )
+            last_page = int(table.num_rows / self.number_of_rows)
+            current_start = last_page * self.number_of_rows
+            if (self.row_offset + self.number_of_rows) > table.num_rows:
+                related_instructions["last"] = None
+            else:
+                related_instructions["last"] = self.__class__(
+                    **{  # type: ignore
+                        "row_offset": current_start,  # type: ignore
+                        "number_of_rows": self.number_of_rows,  # type: ignore
+                    }
+                )
+        else:
+            related_instructions["first"] = None
+            related_instructions["previous"] = None
+            related_instructions["next"] = None
+            related_instructions["last"] = None
 
+        # render_metadata = RenderMetadata(related_instructions=related_instructions)
+
+        return wrap, related_instructions
+
+
+class RenderTableInstruction(BaseRenderTableInstruction):
+
+    _kiara_model_id = "instance.render_instruction.terminal_table"
+
+    def render_as__terminal_renderable(self, value: Value):
+
+        wrap, related_instructions = self.preprocess_table(value=value)
+
+        pretty = wrap.as_terminal_renderable(max_row_height=1)
         render_metadata = RenderMetadata(related_instructions=related_instructions)
 
         return RenderValueResult(rendered=pretty, metadata=render_metadata)
