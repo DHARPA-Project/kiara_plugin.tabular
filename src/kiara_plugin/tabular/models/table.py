@@ -3,17 +3,14 @@ from typing import Any, Dict, Iterable, Optional, Union
 
 import pyarrow as pa
 from kiara.models import KiaraModel
-from kiara.models.render_value import (
-    RenderInstruction,
-    RenderMetadata,
-    RenderValueResult,
-)
+from kiara.models.render_value import RenderMetadata, RenderScene, RenderValueResult
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
 from kiara.utils.output import ArrowTabularWrap
 from pydantic import Field, PrivateAttr
 
 from kiara_plugin.tabular.models import TableMetadata
+from kiara_plugin.tabular.models.array import KiaraArray
 
 
 class KiaraTable(KiaraModel):
@@ -146,11 +143,14 @@ class KiaraTableMetadata(ValueMetadata):
     table: TableMetadata = Field(description="The table schema.")
 
 
-class BaseRenderTableInstruction(RenderInstruction):
+class BaseRenderTableScene(RenderScene):
     @classmethod
     def retrieve_source_type(cls) -> str:
         return "table"
 
+    render_metadata: bool = Field(
+        description="Render the table value metadata.", default=False
+    )
     number_of_rows: int = Field(description="How many rows to display.", default=20)
     row_offset: int = Field(description="From which row to start.", default=0)
 
@@ -158,28 +158,34 @@ class BaseRenderTableInstruction(RenderInstruction):
 
         import duckdb
 
-        table: KiaraTable = value.data
+        if value.data_type_name == "array":
+            array: KiaraArray = value.data
+            arrow_table = pa.table(data=[array.arrow_array], names=["array"])
+            column_names: Iterable[str] = ["array"]
+        else:
+            table: KiaraTable = value.data
+            arrow_table = table.arrow_table
+            column_names = table.column_names
 
-        columnns = [
-            f'"{x}"' if not x.startswith('"') else x for x in table.column_names
-        ]
+        columnns = [f'"{x}"' if not x.startswith('"') else x for x in column_names]
 
         # query = f"""SELECT {', '.join(columnns)} FROM data ORDER by {', '.join(columnns)} LIMIT {self.number_of_rows} OFFSET {self.row_offset}"""
         query = f"""SELECT {', '.join(columnns)} FROM data LIMIT {self.number_of_rows} OFFSET {self.row_offset}"""
 
-        rel_from_arrow = duckdb.arrow(table.arrow_table)
+        rel_from_arrow = duckdb.arrow(arrow_table)
         query_result: duckdb.DuckDBPyResult = rel_from_arrow.query("data", query)
 
         result_table = query_result.fetch_arrow_table()
         wrap = ArrowTabularWrap(table=result_table)
 
-        related_instructions: Dict[str, Union[None, RenderInstruction]] = {}
+        related_scenes: Dict[str, Union[None, RenderScene]] = {}
 
-        row_offset = table.num_rows - self.number_of_rows
+        row_offset = arrow_table.num_rows - self.number_of_rows
+
         if row_offset > 0:
 
             if self.row_offset > 0:
-                related_instructions["first"] = self.__class__(
+                related_scenes["first"] = self.__class__(
                     **{"row_offset": 0, "number_of_rows": self.number_of_rows}  # type: ignore
                 )
 
@@ -190,51 +196,64 @@ class BaseRenderTableInstruction(RenderInstruction):
                     "row_offset": p_offset,
                     "number_of_rows": self.number_of_rows,
                 }
-                related_instructions["previous"] = self.__class__(
-                    **previous  # type: ignore
-                )
+                related_scenes["previous"] = self.__class__(**previous)  # type: ignore
             else:
-                related_instructions["first"] = None
-                related_instructions["previous"] = None
+                related_scenes["first"] = None
+                related_scenes["previous"] = None
 
             n_offset = self.row_offset + self.number_of_rows
-            if n_offset < table.num_rows:
+            if n_offset < arrow_table.num_rows:
                 next = {"row_offset": n_offset, "number_of_rows": self.number_of_rows}
-                related_instructions["next"] = self.__class__(**next)  # type: ignore
+                related_scenes["next"] = self.__class__(**next)  # type: ignore
             else:
-                related_instructions["next"] = None
+                related_scenes["next"] = None
 
-            last_page = int(table.num_rows / self.number_of_rows)
+            last_page = int(arrow_table.num_rows / self.number_of_rows)
             current_start = last_page * self.number_of_rows
-            if (self.row_offset + self.number_of_rows) > table.num_rows:
-                related_instructions["last"] = None
+            if (self.row_offset + self.number_of_rows) > arrow_table.num_rows:
+                related_scenes["last"] = None
             else:
-                related_instructions["last"] = self.__class__(
+                related_scenes["last"] = self.__class__(
                     **{  # type: ignore
                         "row_offset": current_start,  # type: ignore
                         "number_of_rows": self.number_of_rows,  # type: ignore
                     }
                 )
         else:
-            related_instructions["first"] = None
-            related_instructions["previous"] = None
-            related_instructions["next"] = None
-            related_instructions["last"] = None
+            related_scenes["first"] = None
+            related_scenes["previous"] = None
+            related_scenes["next"] = None
+            related_scenes["last"] = None
 
-        # render_metadata = RenderMetadata(related_instructions=related_instructions)
-
-        return wrap, related_instructions
+        return wrap, related_scenes
 
 
-class RenderTableInstruction(BaseRenderTableInstruction):
+class RenderTableScene(BaseRenderTableScene):
 
-    _kiara_model_id = "instance.render_instruction.terminal_table"
+    _kiara_model_id = "instance.render_scene.terminal_table"
 
     def render_as__terminal_renderable(self, value: Value):
 
-        wrap, related_instructions = self.preprocess_table(value=value)
+        render_config = {
+            "show_pedigree": False,
+            "show_serialized": False,
+            "show_data_preview": False,
+            "show_properties": True,
+            "show_destinies": True,
+            "show_destiny_backlinks": True,
+            "show_lineage": True,
+            "show_environment_hashes": False,
+            "show_environment_data": False,
+        }
 
-        pretty = wrap.as_terminal_renderable(max_row_height=1)
-        render_metadata = RenderMetadata(related_instructions=related_instructions)
+        if self.render_metadata:
+            pretty = value.create_info().create_renderable(**render_config)
+            related_scenes = {"data": RenderTableScene()}
+        else:
+            wrap, related_scenes = self.preprocess_table(value=value)
+            related_scenes["metadata"] = RenderTableScene(render_metadata=True)
+            pretty = wrap.as_terminal_renderable(max_row_height=1)
+
+        render_metadata = RenderMetadata(related_scenes=related_scenes, this_scene=self)
 
         return RenderValueResult(rendered=pretty, metadata=render_metadata)
