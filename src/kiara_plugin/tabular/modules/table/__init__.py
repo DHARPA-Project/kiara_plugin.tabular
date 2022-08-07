@@ -2,7 +2,6 @@
 import os
 from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Type
 
-from kiara import KiaraModule
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import (
     FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS,
@@ -13,7 +12,7 @@ from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.jobs import JobLog
 from kiara.models.values.value import SerializedData, Value, ValueMap
 from kiara.models.values.value_schema import ValueSchema
-from kiara.modules import ValueSetSchema
+from kiara.modules import KiaraModule, ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,

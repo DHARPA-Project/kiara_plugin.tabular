@@ -2,7 +2,7 @@
 import os
 
 import mkdocs_gen_files
-from kiara import Kiara
+from kiara.context import Kiara
 
 kiara = Kiara.instance()
 kiara.available_module_types

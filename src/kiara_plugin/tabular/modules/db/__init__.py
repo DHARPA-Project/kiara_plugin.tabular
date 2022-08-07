@@ -5,12 +5,11 @@ import shutil
 import tempfile
 from typing import Any, Dict, List, Mapping, Optional, Type
 
-from kiara import KiaraModule
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import FileBundle, FileModel
 from kiara.models.module import KiaraModuleConfig
 from kiara.models.values.value import SerializedData, Value, ValueMap
-from kiara.modules import ValueSetSchema
+from kiara.modules import KiaraModule, ValueSetSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
