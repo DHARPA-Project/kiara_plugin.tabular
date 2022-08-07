@@ -5,7 +5,6 @@ import mkdocs_gen_files
 from kiara.context import Kiara
 
 kiara = Kiara.instance()
-kiara.available_module_types
 
 modules_file_path = os.path.join("modules_list.md")
 modules_page_content = """# Available module types
