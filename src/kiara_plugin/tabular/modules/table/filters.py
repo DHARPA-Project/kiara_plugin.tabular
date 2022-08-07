@@ -3,7 +3,7 @@ from typing import Any, Dict, Mapping, Union
 
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.values.value import Value
-from kiara.modules import ValueSetSchema
+from kiara.modules import ValueMapSchema
 from kiara.modules.included_core_modules.filter import FilterModule
 
 from kiara_plugin.tabular.models.table import KiaraTable
@@ -18,7 +18,7 @@ class TableFiltersModule(FilterModule):
 
         return "table"
 
-    def create_filter_inputs(self, filter_name: str) -> Union[None, ValueSetSchema]:
+    def create_filter_inputs(self, filter_name: str) -> Union[None, ValueMapSchema]:
 
         if filter_name in ["select_columns", "drop_columns"]:
 

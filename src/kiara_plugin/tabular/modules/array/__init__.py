@@ -4,7 +4,7 @@ from typing import Any, Iterable, List, Mapping, Type, Union
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.module.jobs import JobLog
 from kiara.models.values.value import SerializedData, ValueMap
-from kiara.modules import ValueSetSchema
+from kiara.modules import ValueMapSchema
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara_plugin.core_types.modules import AutoInputsKiaraModule, KiaraInputsConfig
 from pydantic import Field
@@ -87,14 +87,14 @@ class ExtractDateModule(AutoInputsKiaraModule):
 
     def create_inputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         inputs = {"array": {"type": "array", "doc": "The input array."}}
         return inputs
 
     def create_outputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         return {
             "date_array": {

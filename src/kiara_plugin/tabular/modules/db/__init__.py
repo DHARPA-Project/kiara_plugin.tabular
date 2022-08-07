@@ -9,7 +9,7 @@ from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import FileBundle, FileModel
 from kiara.models.module import KiaraModuleConfig
 from kiara.models.values.value import SerializedData, Value, ValueMap
-from kiara.modules import KiaraModule, ValueSetSchema
+from kiara.modules import KiaraModule, ValueMapSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
@@ -262,7 +262,7 @@ class QueryDatabaseModule(KiaraModule):
 
     def create_inputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         result: Dict[str, Dict[str, Any]] = {
             "database": {"type": "database", "doc": "The database to query."}
@@ -275,7 +275,7 @@ class QueryDatabaseModule(KiaraModule):
 
     def create_outputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         return {"query_result": {"type": "table", "doc": "The query result."}}
 

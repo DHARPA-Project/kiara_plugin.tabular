@@ -12,7 +12,7 @@ from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.jobs import JobLog
 from kiara.models.values.value import SerializedData, Value, ValueMap
 from kiara.models.values.value_schema import ValueSchema
-from kiara.modules import KiaraModule, ValueSetSchema
+from kiara.modules import KiaraModule, ValueMapSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
@@ -150,7 +150,7 @@ class CutColumnModule(KiaraModule):
 
     def create_inputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         inputs: Mapping[str, Any] = {
             "table": {"type": "table", "doc": "A table."},
@@ -163,7 +163,7 @@ class CutColumnModule(KiaraModule):
 
     def create_outputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         outputs: Mapping[str, Any] = {"array": {"type": "array", "doc": "The column."}}
         return outputs
@@ -219,14 +219,14 @@ class MergeTableModule(KiaraModule):
 
     def create_inputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         input_schema_dict = self.get_config_value("inputs_schema")
         return input_schema_dict
 
     def create_outputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         outputs = {
             "table": {
@@ -354,7 +354,7 @@ class QueryTableSQL(KiaraModule):
 
     def create_inputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         inputs = {
             "table": {
@@ -375,7 +375,7 @@ class QueryTableSQL(KiaraModule):
 
     def create_outputs_schema(
         self,
-    ) -> ValueSetSchema:
+    ) -> ValueMapSchema:
 
         return {"query_result": {"type": "table", "doc": "The query result."}}
 
