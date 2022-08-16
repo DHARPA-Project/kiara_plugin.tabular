@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
-from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Type
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Type,
+    Union,
+)
 
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import (
@@ -10,6 +20,7 @@ from kiara.models.filesystem import (
 )
 from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.jobs import JobLog
+from kiara.models.rendering import RenderScene, RenderValueResult
 from kiara.models.values.value import SerializedData, Value, ValueMap
 from kiara.models.values.value_schema import ValueSchema
 from kiara.modules import KiaraModule, ValueMapSchema
@@ -18,7 +29,9 @@ from kiara.modules.included_core_modules.create_from import (
     CreateFromModuleConfig,
 )
 from kiara.modules.included_core_modules.export_as import DataExportModule
+from kiara.modules.included_core_modules.render_value import RenderValueModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
+from kiara.utils.output import ArrowTabularWrap
 from pydantic import Field
 
 from kiara_plugin.tabular.defaults import RESERVED_SQL_KEYWORDS
@@ -428,3 +441,200 @@ class ExportTableModule(DataExportModule):
     #     # shutil.copy2(value.db_file_path, target_path)
     #
     #     return {"files": target_path}
+
+
+class RenderTableModuleBase(RenderValueModule):
+
+    _module_type_name: str = None  # type: ignore
+
+    def preprocess_table(
+        self, value: Value, input_number_of_rows: int, input_row_offset: int
+    ):
+
+        import duckdb
+        import pyarrow as pa
+
+        if value.data_type_name == "array":
+            array: KiaraArray = value.data
+            arrow_table = pa.table(data=[array.arrow_array], names=["array"])
+            column_names: Iterable[str] = ["array"]
+        else:
+            table: KiaraTable = value.data
+            arrow_table = table.arrow_table
+            column_names = table.column_names
+
+        columnns = [f'"{x}"' if not x.startswith('"') else x for x in column_names]
+
+        query = f"""SELECT {', '.join(columnns)} FROM data LIMIT {input_number_of_rows} OFFSET {input_row_offset}"""
+
+        rel_from_arrow = duckdb.arrow(arrow_table)
+        query_result: duckdb.DuckDBPyResult = rel_from_arrow.query("data", query)
+
+        result_table = query_result.fetch_arrow_table()
+        wrap = ArrowTabularWrap(table=result_table)
+
+        related_scenes: Dict[str, Union[None, RenderScene]] = {}
+
+        row_offset = arrow_table.num_rows - input_number_of_rows
+
+        if row_offset > 0:
+
+            if input_row_offset > 0:
+                related_scenes["first"] = RenderScene.construct(
+                    title="first",
+                    description=f"Display the first {input_number_of_rows} rows of this table.",
+                    manifest_hash=self.manifest.manifest_hash,
+                    render_config={
+                        "row_offset": 0,
+                        "number_of_rows": input_number_of_rows,
+                    },
+                )
+
+                p_offset = input_row_offset - input_number_of_rows
+                if p_offset < 0:
+                    p_offset = 0
+                previous = {
+                    "row_offset": p_offset,
+                    "number_of_rows": input_number_of_rows,
+                }
+                related_scenes["previous"] = RenderScene.construct(title="previous", description=f"Display the previous {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=previous)  # type: ignore
+            else:
+                related_scenes["first"] = None
+                related_scenes["previous"] = None
+
+            n_offset = input_row_offset + input_number_of_rows
+            if n_offset < arrow_table.num_rows:
+                next = {"row_offset": n_offset, "number_of_rows": input_number_of_rows}
+                related_scenes["next"] = RenderScene.construct(title="next", description=f"Display the next {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=next)  # type: ignore
+            else:
+                related_scenes["next"] = None
+
+            last_page = int(arrow_table.num_rows / input_number_of_rows)
+            current_start = last_page * input_number_of_rows
+            if (input_row_offset + input_number_of_rows) > arrow_table.num_rows:
+                related_scenes["last"] = None
+            else:
+                related_scenes["last"] = RenderScene.construct(
+                    title="last",
+                    description="Display the final rows of this table.",
+                    manifest_hash=self.manifest.manifest_hash,
+                    render_config={
+                        "row_offset": current_start,  # type: ignore
+                        "number_of_rows": input_number_of_rows,  # type: ignore
+                    },
+                )
+        else:
+            related_scenes["first"] = None
+            related_scenes["previous"] = None
+            related_scenes["next"] = None
+            related_scenes["last"] = None
+
+        return wrap, related_scenes
+
+
+class RenderTableModule(RenderTableModuleBase):
+    _module_type_name = "render.table"
+
+    def render__table__as__string(self, value: Value, render_config: Mapping[str, Any]):
+
+        metadata_render_config = {
+            "show_pedigree": False,
+            "show_serialized": False,
+            "show_data_preview": False,
+            "show_properties": True,
+            "show_destinies": True,
+            "show_destiny_backlinks": True,
+            "show_lineage": True,
+            "show_environment_hashes": False,
+            "show_environment_data": False,
+        }
+
+        render_metadata = render_config.get("render_metadata", False)
+
+        if render_metadata:
+            pretty = value.create_info().create_renderable(**metadata_render_config)
+            data_related_scenes = {}
+        else:
+            input_number_of_rows = render_config.get("number_of_rows", 20)
+            input_row_offset = render_config.get("row_offset", 0)
+
+            wrap, data_related_scenes = self.preprocess_table(
+                value=value,
+                input_number_of_rows=input_number_of_rows,
+                input_row_offset=input_row_offset,
+            )
+            pretty = wrap.as_string(max_row_height=1)
+
+        data_scene = RenderScene(
+            title="data",
+            description="Display the table data.",
+            manifest_hash=self.manifest.manifest_hash,
+            render_config={"render_metadata": False},
+            disabled=not render_metadata,
+            related_scenes=data_related_scenes,
+        )
+        metadata_scene = RenderScene(
+            title="metadata",
+            description="Display the table metadata.",
+            manifest_hash=self.manifest.manifest_hash,
+            render_config={"render_metadata": True},
+            disabled=render_metadata,
+        )
+
+        return RenderValueResult(
+            rendered=pretty,
+            related_scenes={"data": data_scene, "metadata": metadata_scene},
+        )
+
+    def render__table__as__terminal_renderable(
+        self, value: Value, render_config: Mapping[str, Any]
+    ):
+
+        metadata_render_config = {
+            "show_pedigree": False,
+            "show_serialized": False,
+            "show_data_preview": False,
+            "show_properties": True,
+            "show_destinies": True,
+            "show_destiny_backlinks": True,
+            "show_lineage": True,
+            "show_environment_hashes": False,
+            "show_environment_data": False,
+        }
+
+        render_metadata = render_config.get("render_metadata", False)
+
+        if render_metadata:
+            pretty = value.create_info().create_renderable(**metadata_render_config)
+            data_related_scenes = {}
+        else:
+            input_number_of_rows = render_config.get("number_of_rows", 20)
+            input_row_offset = render_config.get("row_offset", 0)
+
+            wrap, data_related_scenes = self.preprocess_table(
+                value=value,
+                input_number_of_rows=input_number_of_rows,
+                input_row_offset=input_row_offset,
+            )
+            pretty = wrap.as_terminal_renderable(max_row_height=1)
+
+        data_scene = RenderScene(
+            title="data",
+            description="Display the table data.",
+            manifest_hash=self.manifest.manifest_hash,
+            render_config={"render_metadata": False},
+            disabled=not render_metadata,
+            related_scenes=data_related_scenes,
+        )
+        metadata_scene = RenderScene(
+            title="metadata",
+            description="Display the table metadata.",
+            manifest_hash=self.manifest.manifest_hash,
+            render_config={"render_metadata": True},
+            disabled=render_metadata,
+        )
+
+        return RenderValueResult(
+            rendered=pretty,
+            related_scenes={"data": data_scene, "metadata": metadata_scene},
+        )
