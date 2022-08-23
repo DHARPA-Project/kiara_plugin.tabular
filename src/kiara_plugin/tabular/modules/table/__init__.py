@@ -537,104 +537,42 @@ class RenderTableModule(RenderTableModuleBase):
 
     def render__table__as__string(self, value: Value, render_config: Mapping[str, Any]):
 
-        metadata_render_config = {
-            "show_pedigree": False,
-            "show_serialized": False,
-            "show_data_preview": False,
-            "show_properties": True,
-            "show_destinies": True,
-            "show_destiny_backlinks": True,
-            "show_lineage": True,
-            "show_environment_hashes": False,
-            "show_environment_data": False,
-        }
+        input_number_of_rows = render_config.get("number_of_rows", 20)
+        input_row_offset = render_config.get("row_offset", 0)
 
-        render_metadata = render_config.get("render_metadata", False)
-
-        if render_metadata:
-            pretty = value.create_info().create_renderable(**metadata_render_config)
-            data_related_scenes = {}
-        else:
-            input_number_of_rows = render_config.get("number_of_rows", 20)
-            input_row_offset = render_config.get("row_offset", 0)
-
-            wrap, data_related_scenes = self.preprocess_table(
-                value=value,
-                input_number_of_rows=input_number_of_rows,
-                input_row_offset=input_row_offset,
-            )
-            pretty = wrap.as_string(max_row_height=1)
-
-        data_scene = RenderScene(
-            title="data",
-            description="Display the table data.",
-            manifest_hash=self.manifest.manifest_hash,
-            render_config={"render_metadata": False},
-            disabled=not render_metadata,
-            related_scenes=data_related_scenes,
+        wrap, data_related_scenes = self.preprocess_table(
+            value=value,
+            input_number_of_rows=input_number_of_rows,
+            input_row_offset=input_row_offset,
         )
-        metadata_scene = RenderScene(
-            title="metadata",
-            description="Display the table metadata.",
-            manifest_hash=self.manifest.manifest_hash,
-            render_config={"render_metadata": True},
-            disabled=render_metadata,
-        )
+        pretty = wrap.as_string(max_row_height=1)
 
         return RenderValueResult(
+            value_id=value.value_id,
+            render_config=render_config,
+            render_manifest=self.manifest.manifest_hash,
             rendered=pretty,
-            related_scenes={"data": data_scene, "metadata": metadata_scene},
+            related_scenes=data_related_scenes,
         )
 
     def render__table__as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
     ):
 
-        metadata_render_config = {
-            "show_pedigree": False,
-            "show_serialized": False,
-            "show_data_preview": False,
-            "show_properties": True,
-            "show_destinies": True,
-            "show_destiny_backlinks": True,
-            "show_lineage": True,
-            "show_environment_hashes": False,
-            "show_environment_data": False,
-        }
+        input_number_of_rows = render_config.get("number_of_rows", 20)
+        input_row_offset = render_config.get("row_offset", 0)
 
-        render_metadata = render_config.get("render_metadata", False)
-
-        if render_metadata:
-            pretty = value.create_info().create_renderable(**metadata_render_config)
-            data_related_scenes = {}
-        else:
-            input_number_of_rows = render_config.get("number_of_rows", 20)
-            input_row_offset = render_config.get("row_offset", 0)
-
-            wrap, data_related_scenes = self.preprocess_table(
-                value=value,
-                input_number_of_rows=input_number_of_rows,
-                input_row_offset=input_row_offset,
-            )
-            pretty = wrap.as_terminal_renderable(max_row_height=1)
-
-        data_scene = RenderScene(
-            title="data",
-            description="Display the table data.",
-            manifest_hash=self.manifest.manifest_hash,
-            render_config={"render_metadata": False},
-            disabled=not render_metadata,
-            related_scenes=data_related_scenes,
+        wrap, data_related_scenes = self.preprocess_table(
+            value=value,
+            input_number_of_rows=input_number_of_rows,
+            input_row_offset=input_row_offset,
         )
-        metadata_scene = RenderScene(
-            title="metadata",
-            description="Display the table metadata.",
-            manifest_hash=self.manifest.manifest_hash,
-            render_config={"render_metadata": True},
-            disabled=render_metadata,
-        )
+        pretty = wrap.as_terminal_renderable(max_row_height=1)
 
         return RenderValueResult(
+            value_id=value.value_id,
+            render_config=render_config,
+            render_manifest=self.manifest.manifest_hash,
             rendered=pretty,
-            related_scenes={"data": data_scene, "metadata": metadata_scene},
+            related_scenes=data_related_scenes,
         )

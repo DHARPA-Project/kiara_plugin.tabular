@@ -3,19 +3,22 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, Dict, List, Mapping, Optional, Type
+from typing import Any, Dict, List, Mapping, Optional, Type, Union
 
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import FileBundle, FileModel
 from kiara.models.module import KiaraModuleConfig
+from kiara.models.rendering import RenderScene, RenderValueResult
 from kiara.models.values.value import SerializedData, Value, ValueMap
 from kiara.modules import KiaraModule, ValueMapSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
 )
+from kiara.modules.included_core_modules.render_value import RenderValueModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils import find_free_id, log_message
+from kiara.utils.output import DictTabularWrap
 from pydantic import Field
 from sqlalchemy import insert, text
 
@@ -299,3 +302,154 @@ class QueryDatabaseModule(KiaraModule):
 
         table = pa.Table.from_pydict(result_columns)
         outputs.set_value("query_result", table)
+
+
+class RenderDatabaseModuleBase(RenderValueModule):
+
+    _module_type_name: str = None  # type: ignore
+
+    def preprocess_database(
+        self,
+        value: Value,
+        table_name: Union[str, None],
+        input_number_of_rows: int,
+        input_row_offset: int,
+    ):
+
+        database: KiaraDatabase = value.data
+        table_names = database.table_names
+
+        if not table_name:
+            table_name = list(table_names)[0]
+
+        if table_name not in table_names:
+            raise Exception(
+                f"Invalid table name: {table_name}. Available: {', '.join(table_names)}"
+            )
+
+        related_scenes_tables: Dict[str, Union[RenderScene, None]] = {
+            t: RenderScene.construct(
+                title=t,
+                description=f"Display the '{t}' table.",
+                manifest_hash=self.manifest.manifest_hash,
+                render_config={"table_name": t},
+            )
+            for t in database.table_names
+        }
+
+        query = f"""SELECT * FROM {table_name} LIMIT {input_number_of_rows} OFFSET {input_row_offset}"""
+        result: Dict[str, List[Any]] = {}
+        # TODO: this could be written much more efficient
+        with database.get_sqlalchemy_engine().connect() as con:
+            num_rows_result = con.execute(text(f"SELECT count(*) from {table_name}"))
+            table_num_rows = num_rows_result.fetchone()[0]
+            rs = con.execute(text(query))
+            for r in rs:
+                for k, v in dict(r).items():
+                    result.setdefault(k, []).append(v)
+
+        wrap = DictTabularWrap(data=result)
+
+        row_offset = table_num_rows - input_number_of_rows
+        related_scenes: Dict[str, Union[RenderScene, None]] = {}
+        if row_offset > 0:
+
+            if input_row_offset > 0:
+                related_scenes["first"] = RenderScene.construct(
+                    title="first",
+                    description=f"Display the first {input_number_of_rows} rows of this table.",
+                    manifest_hash=self.manifest.manifest_hash,
+                    render_config={
+                        "row_offset": 0,
+                        "number_of_rows": input_number_of_rows,
+                        "table_name": table_name,
+                    },
+                )
+
+                p_offset = input_row_offset - input_number_of_rows
+                if p_offset < 0:
+                    p_offset = 0
+                previous = {
+                    "row_offset": p_offset,
+                    "number_of_rows": input_number_of_rows,
+                    "table_name": table_name,
+                }
+                related_scenes["previous"] = RenderScene.construct(title="previous", description=f"Display the previous {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=previous)  # type: ignore
+            else:
+                related_scenes["first"] = None
+                related_scenes["previous"] = None
+
+            n_offset = input_row_offset + input_number_of_rows
+            if n_offset < table_num_rows:
+                next = {
+                    "row_offset": n_offset,
+                    "number_of_rows": input_number_of_rows,
+                    "table_name": table_name,
+                }
+                related_scenes["next"] = RenderScene.construct(title="next", description=f"Display the next {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=next)  # type: ignore
+            else:
+                related_scenes["next"] = None
+
+            last_page = int(table_num_rows / input_number_of_rows)
+            current_start = last_page * input_number_of_rows
+            if (input_row_offset + input_number_of_rows) > table_num_rows:
+                related_scenes["last"] = None
+            else:
+                related_scenes["last"] = RenderScene.construct(
+                    title="last",
+                    description="Display the final rows of this table.",
+                    manifest_hash=self.manifest.manifest_hash,
+                    render_config={
+                        "row_offset": current_start,  # type: ignore
+                        "number_of_rows": input_number_of_rows,  # type: ignore
+                        "table_name": table_name,
+                    },
+                )
+        related_scenes_tables[table_name].disabled = True  # type: ignore
+        related_scenes_tables[table_name].related_scenes = related_scenes  # type: ignore
+        return wrap, related_scenes_tables
+
+
+class RenderDatabaseModule(RenderDatabaseModuleBase):
+    _module_type_name = "render.database"
+
+    def render__database__as__string(
+        self, value: Value, render_config: Mapping[str, Any]
+    ):
+
+        input_number_of_rows = render_config.get("number_of_rows", 20)
+        input_row_offset = render_config.get("row_offset", 0)
+
+        table_name = render_config.get("table_name", None)
+
+        wrap, data_related_scenes = self.preprocess_database(
+            value=value,
+            table_name=table_name,
+            input_number_of_rows=input_number_of_rows,
+            input_row_offset=input_row_offset,
+        )
+        pretty = wrap.as_string(max_row_height=1)
+
+        return RenderValueResult(rendered=pretty, related_scenes=data_related_scenes)
+
+    def render__database__as__terminal_renderable(
+        self, value: Value, render_config: Mapping[str, Any]
+    ):
+
+        input_number_of_rows = render_config.get("number_of_rows", 20)
+        input_row_offset = render_config.get("row_offset", 0)
+
+        table_name = render_config.get("table_name", None)
+
+        wrap, data_related_scenes = self.preprocess_database(
+            value=value,
+            table_name=table_name,
+            input_number_of_rows=input_number_of_rows,
+            input_row_offset=input_row_offset,
+        )
+        pretty = wrap.as_terminal_renderable(max_row_height=1)
+
+        return RenderValueResult(
+            rendered=pretty,
+            related_scenes=data_related_scenes,
+        )
