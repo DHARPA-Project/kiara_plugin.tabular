@@ -24,8 +24,8 @@ requirements:
   run:
     - polars>=0.13.52
     - python
-    - kiara>=0.4.17
-    - kiara_plugin.core_types>=0.4.10
+    - kiara>=0.4.18
+    - kiara_plugin.core_types>=0.4.11
     - pyarrow>=7.0.0
     - sqlite-utils>=3.20
 
