@@ -1,0 +1,2758 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Markus Binsteiner">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.4.2">
+    
+    
+      
+        <title>module_types - kiara_plugin.tabular</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.69437709.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kiara_info.module_types.table.filters" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="kiara_plugin.tabular" class="md-header__button md-logo" aria-label="kiara_plugin.tabular" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            kiara_plugin.tabular
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              module_types
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/DHARPA-Project/kiara_plugin.tabular" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="kiara_plugin.tabular" class="md-nav__button md-logo" aria-label="kiara_plugin.tabular" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    kiara_plugin.tabular
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/DHARPA-Project/kiara_plugin.tabular" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../usage/" class="md-nav__link">
+        Usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development.md" class="md-nav__link">
+        Development
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Package contents
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Package contents" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Package contents
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_types/" class="md-nav__link">
+        data_types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          module_types
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        module_types
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.table.filters" class="md-nav__link">
+    table.filters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.render.database" class="md-nav__link">
+    render.database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.render.table" class="md-nav__link">
+    render.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.export.table" class="md-nav__link">
+    export.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.load.array" class="md-nav__link">
+    load.array
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.load.database" class="md-nav__link">
+    load.database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.load.table" class="md-nav__link">
+    load.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.parse.date_array" class="md-nav__link">
+    parse.date_array
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.create.database" class="md-nav__link">
+    create.database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.create.table" class="md-nav__link">
+    create.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.query.database" class="md-nav__link">
+    query.database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.table.cut_column" class="md-nav__link">
+    table.cut_column
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.table.merge" class="md-nav__link">
+    table.merge
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.query.table" class="md-nav__link">
+    query.table
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kiara_model_types/" class="md-nav__link">
+        kiara_model_types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/" class="md-nav__link">
+        operations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          API reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          API reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_1">
+          kiara_plugin
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="kiara_plugin" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          kiara_plugin
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_1" type="checkbox" id="__nav_5_1_1" >
+      
+      
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../reference/kiara_plugin/tabular/__init__/">tabular</a>
+          
+            <label for="__nav_5_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="tabular" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          tabular
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_1_1" type="checkbox" id="__nav_5_1_1_1" >
+      
+      
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../reference/kiara_plugin/tabular/data_types/__init__/">data_types</a>
+          
+            <label for="__nav_5_1_1_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="data_types" data-md-level="4">
+        <label class="md-nav__title" for="__nav_5_1_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          data_types
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/data_types/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/data_types/db/" class="md-nav__link">
+        db
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/data_types/table/" class="md-nav__link">
+        table
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/defaults/" class="md-nav__link">
+        defaults
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_1_3" type="checkbox" id="__nav_5_1_1_3" >
+      
+      
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../reference/kiara_plugin/tabular/models/__init__/">models</a>
+          
+            <label for="__nav_5_1_1_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="models" data-md-level="4">
+        <label class="md-nav__title" for="__nav_5_1_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/models/array/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/models/db/" class="md-nav__link">
+        db
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/models/table/" class="md-nav__link">
+        table
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_1_4" type="checkbox" id="__nav_5_1_1_4" >
+      
+      
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../reference/kiara_plugin/tabular/modules/__init__/">modules</a>
+          
+            <label for="__nav_5_1_1_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="modules" data-md-level="4">
+        <label class="md-nav__title" for="__nav_5_1_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          modules
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/modules/array/__init__/" class="md-nav__link">
+        array
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/modules/db/__init__/" class="md-nav__link">
+        db
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_1_4_3" type="checkbox" id="__nav_5_1_1_4_3" >
+      
+      
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../reference/kiara_plugin/tabular/modules/table/__init__/">table</a>
+          
+            <label for="__nav_5_1_1_4_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="table" data-md-level="5">
+        <label class="md-nav__title" for="__nav_5_1_1_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          table
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/modules/table/filters/" class="md-nav__link">
+        filters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/pipelines/__init__/" class="md-nav__link">
+        pipelines
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/utils/" class="md-nav__link">
+        utils
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.table.filters" class="md-nav__link">
+    table.filters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.render.database" class="md-nav__link">
+    render.database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.render.table" class="md-nav__link">
+    render.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.export.table" class="md-nav__link">
+    export.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.load.array" class="md-nav__link">
+    load.array
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.load.database" class="md-nav__link">
+    load.database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.load.table" class="md-nav__link">
+    load.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.parse.date_array" class="md-nav__link">
+    parse.date_array
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.create.database" class="md-nav__link">
+    create.database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.create.table" class="md-nav__link">
+    create.table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.query.database" class="md-nav__link">
+    query.database
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.table.cut_column" class="md-nav__link">
+    table.cut_column
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.table.merge" class="md-nav__link">
+    table.merge
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.module_types.query.table" class="md-nav__link">
+    query.table
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+  <h1>module_types</h1>
+
+<h3 id="kiara_info.module_types.table.filters"><code>table.filters</code><a class="headerlink" href="#kiara_info.module_types.table.filters" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>table.filters</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>-- n/a --</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>TableFiltersModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.table.filters</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.table.filters.TableFiltersModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    filter_name: str = self.get_config_value("filter_name")
+    data_type_data = self.__class__.get_supported_type()
+    data_type = data_type_data["type"]
+    # data_type_config = data_type_data["type_config"]
+    # TODO: ensure value is of the right type?
+
+    source_obj = inputs.get_value_obj("value")
+
+    func_name = f"filter__{filter_name}"
+    if not hasattr(self, func_name):
+        raise Exception(
+            f"Can't apply filter '{filter_name}': missing function '{func_name}' in class '{self.__class__.__name__}'. Please check this modules documentation or source code to determine which filters are supported."
+        )
+
+    func = getattr(self, func_name)
+    # TODO: check signature?
+
+    filter_inputs = {}
+    for k, v in inputs.items():
+        if k == data_type:
+            continue
+        filter_inputs[k] = v.data
+
+    result = func(value=source_obj, filter_inputs=filter_inputs)
+
+    if result is None:
+        outputs.set_value("value", source_obj)
+    else:
+        outputs.set_value("value", result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.render.database"><code>render.database</code><a class="headerlink" href="#kiara_info.module_types.render.database" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>render.database</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>-- n/a --</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>RenderDatabaseModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.db</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.db.RenderDatabaseModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    source_type = self.get_config_value("source_type")
+    target_type = self.get_config_value("target_type")
+
+    value: Value = inputs.get_value_obj("value")
+
+    render_scene: DictModel = inputs.get_value_data("render_config")
+
+    func_name = f"render__{source_type}__as__{target_type}"
+
+    func = getattr(self, func_name)
+    result = func(value=value, render_config=render_scene.dict_data)
+    if isinstance(result, RenderValueResult):
+        render_scene_result: RenderValueResult = result
+    else:
+        render_scene_result = RenderValueResult(
+            value_id=value.value_id,
+            render_config=render_scene,
+            render_manifest=self.manifest.manifest_hash,
+            rendered=result,
+            related_scenes={},
+        )
+    render_scene_result.manifest_lookup[self.manifest.manifest_hash] = self.manifest
+
+    outputs.set_value("render_value_result", render_scene_result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.render.table"><code>render.table</code><a class="headerlink" href="#kiara_info.module_types.render.table" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>render.table</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>-- n/a --</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>RenderTableModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.table</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.table.RenderTableModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    source_type = self.get_config_value("source_type")
+    target_type = self.get_config_value("target_type")
+
+    value: Value = inputs.get_value_obj("value")
+
+    render_scene: DictModel = inputs.get_value_data("render_config")
+
+    func_name = f"render__{source_type}__as__{target_type}"
+
+    func = getattr(self, func_name)
+    result = func(value=value, render_config=render_scene.dict_data)
+    if isinstance(result, RenderValueResult):
+        render_scene_result: RenderValueResult = result
+    else:
+        render_scene_result = RenderValueResult(
+            value_id=value.value_id,
+            render_config=render_scene,
+            render_manifest=self.manifest.manifest_hash,
+            rendered=result,
+            related_scenes={},
+        )
+    render_scene_result.manifest_lookup[self.manifest.manifest_hash] = self.manifest
+
+    outputs.set_value("render_value_result", render_scene_result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.export.table"><code>export.table</code><a class="headerlink" href="#kiara_info.module_types.export.table" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>export.table</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>Export table data items.</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>ExportTableModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.table</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.table.ExportTableModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    target_profile: str = self.get_config_value("target_profile")
+    source_type: str = self.get_config_value("source_type")
+
+    export_metadata = inputs.get_value_data("export_metadata")
+
+    source_obj = inputs.get_value_obj(source_type)
+    source = source_obj.data
+
+    func_name = f"export__{source_type}__as__{target_profile}"
+    if not hasattr(self, func_name):
+        raise Exception(
+            f"Can't export '{source_type}' value: missing function '{func_name}' in class '{self.__class__.__name__}'. Please check this modules documentation or source code to determine which source types and profiles are supported."
+        )
+
+    base_path = inputs.get_value_data("base_path")
+    if base_path is None:
+        base_path = os.getcwd()
+    name = inputs.get_value_data("name")
+    if not name:
+        name = str(source_obj.value_id)
+
+    func = getattr(self, func_name)
+    # TODO: check signature?
+
+    base_path = os.path.abspath(base_path)
+    os.makedirs(base_path, exist_ok=True)
+    result = func(value=source, base_path=base_path, name=name)
+
+    if isinstance(result, Mapping):
+        result = DataExportResult(**result)
+    elif isinstance(result, str):
+        result = DataExportResult(files=[result])
+
+    if not isinstance(result, DataExportResult):
+        raise KiaraProcessingException(
+            f"Can't export value: invalid result type '{type(result)}' from internal method. This is most likely a bug in the '{self.module_type_name}' module code."
+        )
+
+    if export_metadata:
+        metadata_file = Path(os.path.join(base_path, f"{name}.metadata"))
+        value_info = source_obj.create_info()
+        value_json = value_info.json()
+        metadata_file.write_text(value_json)
+
+        result.files.append(metadata_file.as_posix())
+
+    # schema = ValueSchema(type=self.get_target_value_type(), doc="Imported dataset.")
+
+    # value_lineage = ValueLineage.from_module_and_inputs(
+    #     module=self, output_name=output_key, inputs=inputs
+    # )
+    # value: Value = self._kiara.data_registry.register_data(
+    #     value_data=result, value_schema=schema, lineage=None
+    # )
+
+    outputs.set_value("export_details", result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.load.array"><code>load.array</code><a class="headerlink" href="#kiara_info.module_types.load.array" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>load.array</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>Deserialize array data.</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>DeserializeArrayModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.array</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.array.DeserializeArrayModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    value_type = self.get_config_value("value_type")
+    serialized_value = inputs.get_value_obj(value_type)
+    config = inputs.get_value_obj("deserialization_config")
+
+    target_profile = self.get_config_value("target_profile")
+    func_name = f"to__{target_profile}"
+    func = getattr(self, func_name)
+
+    if config.is_set:
+        _config = config.data
+    else:
+        _config = {}
+
+    result: Any = func(data=serialized_value.serialized_data, **_config)
+    outputs.set_value("python_object", result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.load.database"><code>load.database</code><a class="headerlink" href="#kiara_info.module_types.load.database" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>load.database</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>-- n/a --</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>LoadDatabaseFromDiskModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.db</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.db.LoadDatabaseFromDiskModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    value_type = self.get_config_value("value_type")
+    serialized_value = inputs.get_value_obj(value_type)
+    config = inputs.get_value_obj("deserialization_config")
+
+    target_profile = self.get_config_value("target_profile")
+    func_name = f"to__{target_profile}"
+    func = getattr(self, func_name)
+
+    if config.is_set:
+        _config = config.data
+    else:
+        _config = {}
+
+    result: Any = func(data=serialized_value.serialized_data, **_config)
+    outputs.set_value("python_object", result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.load.table"><code>load.table</code><a class="headerlink" href="#kiara_info.module_types.load.table" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>load.table</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>-- n/a --</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>DeserializeTableModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.table</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.table.DeserializeTableModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    value_type = self.get_config_value("value_type")
+    serialized_value = inputs.get_value_obj(value_type)
+    config = inputs.get_value_obj("deserialization_config")
+
+    target_profile = self.get_config_value("target_profile")
+    func_name = f"to__{target_profile}"
+    func = getattr(self, func_name)
+
+    if config.is_set:
+        _config = config.data
+    else:
+        _config = {}
+
+    result: Any = func(data=serialized_value.serialized_data, **_config)
+    outputs.set_value("python_object", result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.parse.date_array"><code>parse.date_array</code><a class="headerlink" href="#kiara_info.module_types.parse.date_array" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>parse.date_array</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>Create an array of date objects from an array of strings.</p>
+<p>This module is very simplistic at the moment, more functionality and options will be added in the future.</p>
+<p>At its core, this module uses the standard parser from the
+<a href="https://github.com/dateutil/dateutil">dateutil</a> package to parse strings into dates. As this parser can't handle
+ complex strings, the input strings can be pre-processed in the following ways:</p>
+<ul>
+<li>'cut' non-relevant parts of the string (using 'min_index' &amp; 'max_index' input/config options)</li>
+<li>remove matching tokens from the string, and replace them with a single whitespace (using the 'remove_tokens' option)</li>
+</ul>
+<p>By default, if an input string can't be parsed this module will raise an exception. This can be prevented by
+setting this modules 'force_non_null' config option or input to 'False', in which case un-parsable strings
+will appear as 'NULL' value in the resulting array.</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>ExtractDateModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.array</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.array.ExtractDateModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap, job_log: JobLog):
+
+    import polars as pl
+    import pyarrow as pa
+    from dateutil import parser
+
+    force_non_null: bool = self.get_data_for_field(
+        field_name="force_non_null", inputs=inputs
+    )
+    min_pos: Union[None, int] = self.get_data_for_field(
+        field_name="min_index", inputs=inputs
+    )
+    if min_pos is None:
+        min_pos = 0
+    max_pos: Union[None, int] = self.get_data_for_field(
+        field_name="max_index", inputs=inputs
+    )
+    remove_tokens: Iterable[str] = self.get_data_for_field(
+        field_name="remove_tokens", inputs=inputs
+    )
+
+    def parse_date(_text: str):
+
+        text = _text
+        if min_pos:
+            try:
+                text = text[min_pos:]  # type: ignore
+            except Exception:
+                return None
+        if max_pos:
+            try:
+                text = text[0 : max_pos - min_pos]  # type: ignore  # noqa
+            except Exception:
+                pass
+
+        if remove_tokens:
+            for t in remove_tokens:
+                text = text.replace(t, " ")
+
+        try:
+            d_obj = parser.parse(text, fuzzy=True)
+        except Exception as e:
+            if force_non_null:
+                raise KiaraProcessingException(e)
+            return None
+
+        if d_obj is None:
+            if force_non_null:
+                raise KiaraProcessingException(
+                    f"Can't parse date from string: {text}"
+                )
+            return None
+
+        return d_obj
+
+    value = inputs.get_value_obj("array")
+    array: KiaraArray = value.data
+
+    series = pl.Series(name="tokens", values=array.arrow_array)
+    job_log.add_log(f"start parsing date for {len(array)} items")
+    result = series.apply(parse_date)
+    job_log.add_log(f"finished parsing date for {len(array)} items")
+    result_array = result.to_arrow()
+
+    # TODO: remove this cast once the array data type can handle non-chunked arrays
+    chunked = pa.chunked_array(result_array)
+    outputs.set_values(date_array=chunked)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.create.database"><code>create.database</code><a class="headerlink" href="#kiara_info.module_types.create.database" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>create.database</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>-- n/a --</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>CreateDatabaseModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.db</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.db.CreateDatabaseModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    source_type = self.get_config_value("source_type")
+    target_type = self.get_config_value("target_type")
+
+    func_name = f"create__{target_type}__from__{source_type}"
+    func = getattr(self, func_name)
+
+    source_value = inputs.get_value_obj(source_type)
+
+    signature = inspect.signature(func)
+    if "optional" in signature.parameters:
+        optional: Dict[str, Value] = {}
+        op_schemas = {}
+        for field, schema in self.inputs_schema.items():
+            if field == source_type:
+                continue
+            optional[field] = inputs.get_value_obj(field)
+            op_schemas[field] = schema
+        result = func(
+            source_value=source_value,
+            optional=ValueMapReadOnly(
+                value_items=optional, values_schema=op_schemas
+            ),
+        )
+    else:
+        result = func(source_value=source_value)
+    outputs.set_value(target_type, result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.create.table"><code>create.table</code><a class="headerlink" href="#kiara_info.module_types.create.table" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>create.table</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>-- n/a --</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>CreateTableModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.table</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.table.CreateTableModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    source_type = self.get_config_value("source_type")
+    target_type = self.get_config_value("target_type")
+
+    func_name = f"create__{target_type}__from__{source_type}"
+    func = getattr(self, func_name)
+
+    source_value = inputs.get_value_obj(source_type)
+
+    signature = inspect.signature(func)
+    if "optional" in signature.parameters:
+        optional: Dict[str, Value] = {}
+        op_schemas = {}
+        for field, schema in self.inputs_schema.items():
+            if field == source_type:
+                continue
+            optional[field] = inputs.get_value_obj(field)
+            op_schemas[field] = schema
+        result = func(
+            source_value=source_value,
+            optional=ValueMapReadOnly(
+                value_items=optional, values_schema=op_schemas
+            ),
+        )
+    else:
+        result = func(source_value=source_value)
+    outputs.set_value(target_type, result)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.query.database"><code>query.database</code><a class="headerlink" href="#kiara_info.module_types.query.database" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>query.database</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>Execute a sql query against a (sqlite) database.</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>QueryDatabaseModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.db</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.db.QueryDatabaseModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap):
+
+    import pyarrow as pa
+
+    database: KiaraDatabase = inputs.get_value_data("database")
+    query = self.get_config_value("query")
+    if query is None:
+        query = inputs.get_value_data("query")
+
+    # TODO: make this memory efficent
+
+    result_columns: Dict[str, List[Any]] = {}
+    with database.get_sqlalchemy_engine().connect() as con:
+        result = con.execute(text(query))
+        for r in result:
+            for k, v in dict(r).items():
+                result_columns.setdefault(k, []).append(v)
+
+    table = pa.Table.from_pydict(result_columns)
+    outputs.set_value("query_result", table)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.table.cut_column"><code>table.cut_column</code><a class="headerlink" href="#kiara_info.module_types.table.cut_column" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>table.cut_column</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>Cut off one column from a table, returning an array.</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>CutColumnModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.table</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.table.CutColumnModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    import pyarrow as pa
+
+    column_name: str = inputs.get_value_data("column_name")
+
+    table_value: Value = inputs.get_value_obj("table")
+    table_metadata: KiaraTableMetadata = table_value.get_property_data(
+        "metadata.table"
+    )
+
+    available = table_metadata.table.column_names
+
+    if column_name not in available:
+        raise KiaraProcessingException(
+            f"Invalid column name '{column_name}'. Available column names: {', '.join(available)}"
+        )
+
+    table: pa.Table = table_value.data.arrow_table
+    column = table.column(column_name)
+
+    outputs.set_value("array", column)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.table.merge"><code>table.merge</code><a class="headerlink" href="#kiara_info.module_types.table.merge" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>table.merge</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>Create a table from other tables and/or arrays.</p>
+<p>This module needs configuration to be set (for now). It's currently not possible to merge an arbitrary
+number of tables/arrays, all tables to be merged must be specified in the module configuration.</p>
+<p>Column names of the resulting table can be controlled by the 'column_map' configuration, which takes the
+desired column name as key, and a field-name in the following format as value:</p>
+<ul>
+<li>'[inputs_schema key]' for inputs of type 'array'</li>
+<li>'[inputs_schema_key].orig_column_name' for inputs of type 'table'</li>
+</ul>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>MergeTableModule</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.table</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.table.MergeTableModule</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap, job_log: JobLog) -> None:
+
+    import pyarrow as pa
+
+    inputs_schema: Dict[str, Any] = self.get_config_value("inputs_schema")
+    column_map: Dict[str, str] = self.get_config_value("column_map")
+
+    sources = {}
+    for field_name in inputs_schema.keys():
+        sources[field_name] = inputs.get_value_data(field_name)
+
+    len_dict = {}
+    arrays = {}
+
+    column_map_final = dict(column_map)
+
+    for source_key, table_or_array in sources.items():
+
+        if isinstance(table_or_array, KiaraTable):
+            rows = table_or_array.num_rows
+            for name in table_or_array.column_names:
+                array_name = f"{source_key}.{name}"
+                if column_map and array_name not in column_map.values():
+                    job_log.add_log(
+                        f"Ignoring column '{name}' of input table '{source_key}': not listed in column_map."
+                    )
+                    continue
+
+                column = table_or_array.arrow_table.column(name)
+                arrays[array_name] = column
+                if not column_map:
+                    if name in column_map_final:
+                        raise Exception(
+                            f"Can't merge table, duplicate column name: {name}."
+                        )
+                    column_map_final[name] = array_name
+
+        elif isinstance(table_or_array, KiaraArray):
+
+            if column_map and source_key not in column_map.values():
+                job_log.add_log(
+                    f"Ignoring array '{source_key}': not listed in column_map."
+                )
+                continue
+
+            rows = len(table_or_array)
+            arrays[source_key] = table_or_array.arrow_array
+
+            if not column_map:
+                if source_key in column_map_final.keys():
+                    raise Exception(
+                        f"Can't merge table, duplicate column name: {source_key}."
+                    )
+                column_map_final[source_key] = source_key
+
+        else:
+            raise KiaraProcessingException(
+                f"Can't merge table: invalid type '{type(table_or_array)}' for source '{source_key}'."
+            )
+
+        len_dict[source_key] = rows
+
+    all_rows = None
+    for source_key, rows in len_dict.items():
+        if all_rows is None:
+            all_rows = rows
+        else:
+            if all_rows != rows:
+                all_rows = None
+                break
+
+    if all_rows is None:
+        len_str = ""
+        for name, rows in len_dict.items():
+            len_str = f" {name} ({rows})"
+
+        raise KiaraProcessingException(
+            f"Can't merge table, sources have different lengths: {len_str}"
+        )
+
+    column_names = []
+    columns = []
+    for column_name, ref in column_map_final.items():
+        column_names.append(column_name)
+        column = arrays[ref]
+        columns.append(column)
+
+    table = pa.Table.from_arrays(arrays=columns, names=column_names)
+
+    outputs.set_value("table", table)
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table><h3 id="kiara_info.module_types.query.table"><code>query.table</code><a class="headerlink" href="#kiara_info.module_types.query.table" title="Permanent link">&para;</a></h3>
+<table>
+  <tr>
+    <td>type_name</td>
+    <td>query.table</td>
+    <td>The registered name for this item type.</td>
+  </tr>
+  <tr>
+    <td>documentation</td>
+    <td><p>Execute a sql query against an (Arrow) table.</p>
+<p>The default relation name for the sql query is 'data', but can be modified by the 'relation_name' config option/input.</p>
+<p>If the 'query' module config option is not set, users can provide their own query, otherwise the pre-set
+one will be used.</p>
+</td>
+    <td>Documentation for the item.</td>
+  </tr>
+  <tr>
+    <td>authors</td>
+    <td><ul>
+
+    <li>Markus Binsteiner ( <a href="mailto:markus@frkl.io">markus@frkl.io</a> )</li>
+
+</ul></td>
+    <td>Information about authorship for the item.</td>
+  </tr>
+  <tr>
+    <td>context</td>
+    <td><table xmlns="http://www.w3.org/1999/html">
+    <tbody>
+    <tr>
+    <td>tags</td>
+    <td>tabular</td>
+    </tr>
+    <tr>
+        <td>labels</td>
+        <td>
+            <ul>
+        
+        <li>package: kiara_plugin.tabular</li>
+        
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>references</td>
+        <td>
+        <ul>
+            
+            <li><a href="https://github.com/DHARPA-Project/kiara_plugin.tabular">source_repo</a>: The module package git repository.</li>
+            
+            <li><a href="https://DHARPA-Project.github.io/kiara_plugin.tabular/">documentation</a>: The url for the module package documentation.</li>
+            
+        </ul>
+        </td>
+    </tr>
+    </tbody>
+</table></td>
+    <td>Generic properties of this item (description, tags, labels, references, ...).</td>
+  </tr>
+  <tr>
+    <td>python_class</td>
+    <td><table>
+  <tr>
+    <td>python_class_name</td>
+    <td>QueryTableSQL</td>
+    <td>The name of the Python class.</td>
+  </tr>
+  <tr>
+    <td>python_module_name</td>
+    <td>kiara_plugin.tabular.modules.table</td>
+    <td>The name of the Python module this class lives in.</td>
+  </tr>
+  <tr>
+    <td>full_name</td>
+    <td>kiara_plugin.tabular.modules.table.QueryTableSQL</td>
+    <td>The full class namespace.</td>
+  </tr>
+</table></td>
+    <td>The python class that implements this module type.</td>
+  </tr>
+  <tr>
+    <td>process_src</td>
+    <td>def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
+
+    import duckdb
+
+    if self.get_config_value("query") is None:
+        _query: str = inputs.get_value_data("query")
+        _relation_name: str = inputs.get_value_data("relation_name")
+    else:
+        _query = self.get_config_value("query")
+        _relation_name = self.get_config_value("relation_name")
+
+    if _relation_name.upper() in RESERVED_SQL_KEYWORDS:
+        raise KiaraProcessingException(
+            f"Invalid relation name '{_relation_name}': this is a reserved sql keyword, please select a different name."
+        )
+
+    _table: KiaraTable = inputs.get_value_data("table")
+    rel_from_arrow = duckdb.arrow(_table.arrow_table)
+    result: duckdb.DuckDBPyResult = rel_from_arrow.query(_relation_name, _query)
+
+    outputs.set_value("query_result", result.fetch_arrow_table())
+</td>
+    <td>The source code of the process method of the module.</td>
+  </tr>
+</table>
+
+
+
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../data_types/" class="md-footer__link md-footer__link--prev" aria-label="Previous: data_types" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              data_types
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../kiara_model_types/" class="md-footer__link md-footer__link--next" aria-label="Next: kiara_model_types" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              kiara_model_types
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.9c69f0bc.min.js"></script>
+      
+    
+  </body>
+</html>
