@@ -155,7 +155,7 @@ jobs:
     if: ${{ startsWith(github.ref, 'refs/tags') != true }}
     strategy:
       matrix:
-        python_version: ["3.8", "3.9"]   # '3.10' currently does not work, missing vaex conda packages
+        python_version: ["3.8", "3.9", "3.10"]
     steps:
       - uses: actions/checkout@v1
       - uses: conda-incubator/setup-miniconda@v2
