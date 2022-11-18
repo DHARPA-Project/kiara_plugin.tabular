@@ -27,7 +27,7 @@ requirements:
     - kiara>=0.4.20
     - kiara_plugin.core_types>=0.4.11
     - pandas>=1.4.0
-    - pyarrow>=7.0.0
+    - pyarrow>=9.0.0
     - sqlite-utils>=3.20
 
 about:

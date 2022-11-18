@@ -410,9 +410,9 @@ class QueryTableSQL(KiaraModule):
 
         _table: KiaraTable = inputs.get_value_data("table")
         rel_from_arrow = duckdb.arrow(_table.arrow_table)
-        result: duckdb.DuckDBPyResult = rel_from_arrow.query(_relation_name, _query)
+        result: duckdb.DuckDBPyRelation = rel_from_arrow.query(_relation_name, _query)
 
-        outputs.set_value("query_result", result.fetch_arrow_table())
+        outputs.set_value("query_result", result.arrow())
 
 
 class ExportTableModule(DataExportModule):
