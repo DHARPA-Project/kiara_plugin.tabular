@@ -21,10 +21,10 @@ jobs:
         python_version: ["3.8", "3.9", "3.10", "3.11"]
     steps:
       - name: "Set up Python ${{ matrix.python_version }}"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "${{ matrix.python_version }}"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: install kiara_plugin.tabular
         run: pip install -U --extra-index-url https://pypi.fury.io/dharpa/ .[all,dev_testing]
       - name: display installed kiara and module package versions
@@ -37,10 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Set up Python 3.9"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: install kiara
         run: pip install -U --extra-index-url https://pypi.fury.io/dharpa/ .[all,dev_testing]
       - name: display installed kiara and module package versions
@@ -60,10 +60,10 @@ jobs:
         python_version: ["3.8", "3.9", "3.10", "3.11"]
     steps:
       - name: "Set up Python ${{ matrix.python_version }}"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "${{ matrix.python_version }}"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: install kiara_plugin.tabular
         run: pip install -U --extra-index-url https://pypi.fury.io/dharpa/ .[all,dev_testing]
       - name: Test with mypy
@@ -74,10 +74,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: install kiara_plugin.tabular
         run: pip install -U --extra-index-url https://pypi.fury.io/dharpa/ .[all,dev_testing]
       - name: Test with flake8
@@ -93,7 +93,7 @@ jobs:
       - flake8-linux
     steps:
       - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
       - uses: actions/checkout@v3
@@ -124,7 +124,7 @@ jobs:
         GEMFURY_PUSH_TOKEN: ${{ secrets.GEMFURY_PUSH_TOKEN }}
     steps:
       - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
       - uses: actions/checkout@v3
@@ -158,12 +158,12 @@ jobs:
       - flake8-linux
     steps:
       - name: "Set up Python 3.9"
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
       - name: pip cache
         id: pip-cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.*') }}
@@ -190,7 +190,7 @@ jobs:
       - mypy-linux
       - flake8-linux
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - run: git config --global user.email "markus@frkl.io"
