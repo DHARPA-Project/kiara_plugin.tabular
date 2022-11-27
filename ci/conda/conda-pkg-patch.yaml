@@ -8,7 +8,7 @@ host_requirements:
   - setuptools<=63
   - setuptools_scm
   - setuptools_scm_git_archive
-  -
+
 requirements:
   duckdb: "python-duckdb>=0.6.0"
 
