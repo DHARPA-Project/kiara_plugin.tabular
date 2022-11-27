@@ -1,19 +1,30 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from typing import Any, List, Mapping, Optional, Type, TYPE_CHECKING, Iterable, Union, Dict
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Type,
+    Union,
+)
 
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
-from kiara.utils.output import TabularWrap, DictTabularWrap
+from kiara.utils.output import DictTabularWrap, TabularWrap
 from rich.console import Group
 
 from kiara_plugin.tabular.models.db import KiaraDatabase
 
 if TYPE_CHECKING:
     from sqlalchemy.engine import Engine
+
 
 class SqliteTabularWrap(TabularWrap):
     def __init__(self, engine: "Engine", table_name: str):
@@ -79,6 +90,7 @@ class SqliteTabularWrap(TabularWrap):
                     result_dict[cn].append(r[i])
 
         return result_dict
+
 
 class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
     """A database, containing one or several tables.
