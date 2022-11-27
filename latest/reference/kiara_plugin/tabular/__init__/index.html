@@ -1828,7 +1828,7 @@ ArrayType            (<a class="autorefs autorefs-external" title="kiara.data_ty
             <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">half_lines</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
             <span class="n">half_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -1955,7 +1955,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
         <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
-    <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">half_lines</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
         <span class="n">half_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -2261,7 +2261,7 @@ the stored data.</p>
             <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">half_lines</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
             <span class="n">half_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -2401,7 +2401,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
         <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
-    <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">half_lines</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
         <span class="n">half_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -2950,7 +2950,7 @@ in memory and on disk when saved, which enables some advanced usage to preserve 
             <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">half_lines</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
             <span class="n">half_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -3070,7 +3070,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
         <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
-    <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">half_lines</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
         <span class="n">half_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -3581,7 +3581,9 @@ TableMetadata            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The schema description of the table.&quot;</span>
     <span class="p">)</span>
     <span class="n">rows</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The number of rows the table contains.&quot;</span><span class="p">)</span>
-    <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The tables size in bytes.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The tables size in bytes.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_retrieve_data_to_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 
@@ -3808,7 +3810,7 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
         <span class="n">obj</span><span class="o">.</span><span class="n">_array_obj</span> <span class="o">=</span> <span class="n">array_obj</span>
         <span class="k">return</span> <span class="n">obj</span>
 
-    <span class="n">data_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The path to the (feather) file backing this array.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span>
 
@@ -4109,7 +4111,7 @@ DatabaseMetadata            (<a class="autorefs autorefs-external" title="kiara.
                             <span class="sa">f</span><span class="s1">&#39;SELECT SUM(&quot;pgsize&quot;) FROM &quot;dbstat&quot; WHERE name=&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
-                    <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -4216,7 +4218,7 @@ DatabaseMetadata            (<a class="autorefs autorefs-external" title="kiara.
                         <span class="sa">f</span><span class="s1">&#39;SELECT SUM(&quot;pgsize&quot;) FROM &quot;dbstat&quot; WHERE name=&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -4320,7 +4322,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="k">def</span> <span class="nf">create_in_temp_dir</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">init_statement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;TextClause&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">init_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">init_data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 
         <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
@@ -4347,10 +4349,10 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="n">_cached_inspector</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_table_names</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_tables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Table</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
-    <span class="n">_metadata_obj</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MetaData</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_metadata_obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">MetaData</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="c1"># _table_schemas: Optional[Dict[str, SqliteTableSchema]] = PrivateAttr(default=None)</span>
     <span class="c1"># _file_hash: Optional[str] = PrivateAttr(default=None)</span>
-    <span class="n">_file_cid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CID</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_file_cid</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CID</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">_lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">_immutable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
@@ -4416,7 +4418,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
     <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">statement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;TextClause&quot;</span><span class="p">],</span>
-        <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">invalidate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute an sql script.</span>
@@ -4689,7 +4691,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 <span class="k">def</span> <span class="nf">create_in_temp_dir</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">init_statement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;TextClause&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">init_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">init_data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 
     <span class="n">temp_f</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
@@ -4800,7 +4802,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">statement</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;TextClause&quot;</span><span class="p">],</span>
-    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">invalidate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Execute an sql script.</span>
@@ -5014,7 +5016,7 @@ SqliteTableSchema            (<span title="pydantic.main.BaseModel">BaseModel</s
     <span class="n">unique_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The columns that should be marked &#39;UNIQUE&#39;.&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span>
     <span class="p">)</span>
-    <span class="n">primary_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">primary_key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The primary key for this table.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span>
 
@@ -6961,7 +6963,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not supported (yet).&quot;</span><span class="p">)</span>
 
-        <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
+        <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
             <span class="s2">&quot;include_source_metadata&quot;</span>
         <span class="p">)</span>
 
@@ -7012,7 +7014,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
 
     <span class="k">def</span> <span class="nf">create_optional_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">]:</span>
 
         <span class="k">if</span> <span class="n">target_type</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span> <span class="ow">and</span> <span class="n">source_type</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
 
@@ -7105,7 +7107,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
     <span class="n">merge_into_single_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to merge all csv files into a single table.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to include a table with metadata about the source files.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
@@ -7331,7 +7333,7 @@ csv files will be created. For this to work, all csv files should follow the sam
     <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not supported (yet).&quot;</span><span class="p">)</span>
 
-    <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
+    <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
         <span class="s2">&quot;include_source_metadata&quot;</span>
     <span class="p">)</span>
 
@@ -7463,7 +7465,7 @@ csv files will be created. For this to work, all csv files should follow the sam
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_optional_inputs</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">source_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">]:</span>
 
     <span class="k">if</span> <span class="n">target_type</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span> <span class="ow">and</span> <span class="n">source_type</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
 
@@ -7524,7 +7526,7 @@ CreateDatabaseModuleConfig            (<a class="autorefs autorefs-external" tit
     <span class="n">merge_into_single_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to merge all csv files into a single table.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to include a table with metadata about the source files.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
@@ -7867,7 +7869,7 @@ QueryDatabaseConfig            (<a class="autorefs autorefs-external" title="kia
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -8016,7 +8018,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -10251,11 +10253,11 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQLModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query to execute. If not specified, the user will be able to provide their own.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">relation_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">relation_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name the table is referred to in the sql query. If not specified, the user will be able to provide their own.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -10480,11 +10482,11 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQLModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query to execute. If not specified, the user will be able to provide their own.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">relation_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">relation_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name the table is referred to in the sql query. If not specified, the user will be able to provide their own.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -11555,11 +11557,11 @@ TableFiltersModule            (<a class="autorefs autorefs-external" title="kiar
           <summary>Source code in <code>tabular/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_sqlite_schema_data_from_arrow_table</span><span class="p">(</span>
     <span class="n">table</span><span class="p">:</span> <span class="s2">&quot;pa.Table&quot;</span><span class="p">,</span>
-    <span class="n">column_map</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">index_columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">nullable_columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">unique_columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">primary_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">column_map</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">index_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nullable_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">unique_columns</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">primary_key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SqliteTableSchema</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Create a sql schema statement from an Arrow table object.</span>
 
@@ -11650,11 +11652,11 @@ TableFiltersModule            (<a class="autorefs autorefs-external" title="kiar
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
     <span class="n">target_db_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span><span class="p">,</span>
-    <span class="n">table_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">table_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">is_csv</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">is_tsv</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">is_nl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">primary_key_column_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">primary_key_column_names</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">flatten_nested_json_objects</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">csv_delimiter</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">quotechar</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -11774,7 +11776,7 @@ TableFiltersModule            (<a class="autorefs autorefs-external" title="kiar
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">rel_path</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">file_bundle</span><span class="o">.</span><span class="n">included_files</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
             <span class="n">f</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">file_bundle</span><span class="o">.</span><span class="n">included_files</span><span class="p">[</span><span class="n">rel_path</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">include_content</span><span class="p">:</span>
-                <span class="n">content</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                <span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">content</span> <span class="o">=</span> <span class="kc">None</span>
 

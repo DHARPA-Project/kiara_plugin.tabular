@@ -1160,7 +1160,7 @@ in memory and on disk when saved, which enables some advanced usage to preserve 
             <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">half_lines</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
             <span class="n">half_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -1280,7 +1280,7 @@ avoid adding or removing information from the data (e.g. by changing the resolut
         <span class="s2">&quot;max_cell_length&quot;</span><span class="p">,</span> <span class="n">DEFAULT_PRETTY_PRINT_CONFIG</span><span class="p">[</span><span class="s2">&quot;max_cell_length&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
-    <span class="n">half_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">half_lines</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">max_rows</span><span class="p">:</span>
         <span class="n">half_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_rows</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 

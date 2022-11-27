@@ -1680,7 +1680,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
         <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not supported (yet).&quot;</span><span class="p">)</span>
 
-        <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
+        <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
             <span class="s2">&quot;include_source_metadata&quot;</span>
         <span class="p">)</span>
 
@@ -1731,7 +1731,7 @@ CreateDatabaseModule            (<a class="autorefs autorefs-external" title="ki
 
     <span class="k">def</span> <span class="nf">create_optional_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">]:</span>
 
         <span class="k">if</span> <span class="n">target_type</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span> <span class="ow">and</span> <span class="n">source_type</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
 
@@ -1824,7 +1824,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.modul
     <span class="n">merge_into_single_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to merge all csv files into a single table.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to include a table with metadata about the source files.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
@@ -2050,7 +2050,7 @@ csv files will be created. For this to work, all csv files should follow the sam
     <span class="k">if</span> <span class="n">merge_into_single_table</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Not supported (yet).&quot;</span><span class="p">)</span>
 
-    <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
+    <span class="n">include_raw_content_in_file_info</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span>
         <span class="s2">&quot;include_source_metadata&quot;</span>
     <span class="p">)</span>
 
@@ -2182,7 +2182,7 @@ csv files will be created. For this to work, all csv files should follow the sam
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_optional_inputs</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">source_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">target_type</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="kc">None</span><span class="p">]:</span>
 
     <span class="k">if</span> <span class="n">target_type</span> <span class="o">==</span> <span class="s2">&quot;database&quot;</span> <span class="ow">and</span> <span class="n">source_type</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">:</span>
 
@@ -2243,7 +2243,7 @@ CreateDatabaseModuleConfig            (<a class="autorefs autorefs-external" tit
     <span class="n">merge_into_single_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to merge all csv files into a single table.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to include a table with metadata about the source files.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
@@ -2586,7 +2586,7 @@ QueryDatabaseConfig            (<a class="autorefs autorefs-external" title="kia
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -2735,7 +2735,7 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
           <summary>Source code in <code>tabular/modules/db/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryDatabaseConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
         </details>
 

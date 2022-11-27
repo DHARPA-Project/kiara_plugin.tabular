@@ -1109,7 +1109,7 @@ KiaraArray            (<a class="autorefs autorefs-external" title="kiara.models
         <span class="n">obj</span><span class="o">.</span><span class="n">_array_obj</span> <span class="o">=</span> <span class="n">array_obj</span>
         <span class="k">return</span> <span class="n">obj</span>
 
-    <span class="n">data_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The path to the (feather) file backing this array.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span>
 

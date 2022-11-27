@@ -2980,11 +2980,11 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQLModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query to execute. If not specified, the user will be able to provide their own.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">relation_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">relation_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name the table is referred to in the sql query. If not specified, the user will be able to provide their own.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -3209,11 +3209,11 @@ QueryTableSQLModuleConfig            (<a class="autorefs autorefs-external" titl
           <summary>Source code in <code>tabular/modules/table/__init__.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQLModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 
-    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The query to execute. If not specified, the user will be able to provide their own.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">relation_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">relation_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The name the table is referred to in the sql query. If not specified, the user will be able to provide their own.&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
     <span class="p">)</span>
