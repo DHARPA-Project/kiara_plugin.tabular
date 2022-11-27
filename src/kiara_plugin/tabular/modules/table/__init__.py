@@ -1,16 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Dict,
-    Iterable,
-    List,
-    Mapping,
-    Optional,
-    Type,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Type, Union
 
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import (
@@ -343,11 +333,11 @@ class MergeTableModule(KiaraModule):
 
 class QueryTableSQLModuleConfig(KiaraModuleConfig):
 
-    query: Optional[str] = Field(
+    query: Union[str, None] = Field(
         description="The query to execute. If not specified, the user will be able to provide their own.",
         default=None,
     )
-    relation_name: Optional[str] = Field(
+    relation_name: Union[str, None] = Field(
         description="The name the table is referred to in the sql query. If not specified, the user will be able to provide their own.",
         default="data",
     )

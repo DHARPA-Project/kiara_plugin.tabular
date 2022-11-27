@@ -1,17 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Dict,
-    Iterable,
-    List,
-    Mapping,
-    Optional,
-    Type,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Type, Union
 
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
@@ -170,7 +160,7 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
             "max_cell_length", DEFAULT_PRETTY_PRINT_CONFIG["max_cell_length"]
         )
 
-        half_lines: Optional[int] = None
+        half_lines: Union[int, None] = None
         if max_rows:
             half_lines = int(max_rows / 2)
 

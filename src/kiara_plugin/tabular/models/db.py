@@ -3,7 +3,7 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, Dict, Iterable, List, Mapping, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Mapping, Tuple, Union
 
 from kiara.models import KiaraModel
 from kiara.models.values.value import Value
@@ -39,7 +39,7 @@ class SqliteTableSchema(BaseModel):
     unique_columns: List[str] = Field(
         description="The columns that should be marked 'UNIQUE'.", default_factory=list
     )
-    primary_key: Optional[str] = Field(
+    primary_key: Union[str, None] = Field(
         description="The primary key for this table.", default=None
     )
 
@@ -83,7 +83,7 @@ class KiaraDatabase(KiaraModel):
     def create_in_temp_dir(
         cls,
         init_statement: Union[None, str, "TextClause"] = None,
-        init_data: Optional[Mapping[str, Any]] = None,
+        init_data: Union[Mapping[str, Any], None] = None,
     ):
 
         temp_f = tempfile.mkdtemp()
@@ -110,10 +110,10 @@ class KiaraDatabase(KiaraModel):
     _cached_inspector = PrivateAttr(default=None)
     _table_names = PrivateAttr(default=None)
     _tables: Dict[str, Table] = PrivateAttr(default_factory=dict)
-    _metadata_obj: Optional[MetaData] = PrivateAttr(default=None)
+    _metadata_obj: Union[MetaData, None] = PrivateAttr(default=None)
     # _table_schemas: Optional[Dict[str, SqliteTableSchema]] = PrivateAttr(default=None)
     # _file_hash: Optional[str] = PrivateAttr(default=None)
-    _file_cid: Optional[CID] = PrivateAttr(default=None)
+    _file_cid: Union[CID, None] = PrivateAttr(default=None)
     _lock: bool = PrivateAttr(default=True)
     _immutable: bool = PrivateAttr(default=None)
 
@@ -179,7 +179,7 @@ class KiaraDatabase(KiaraModel):
     def execute_sql(
         self,
         statement: Union[str, "TextClause"],
-        data: Optional[Mapping[str, Any]] = None,
+        data: Union[Mapping[str, Any], None] = None,
         invalidate: bool = False,
     ):
         """Execute an sql script.
@@ -296,7 +296,7 @@ class DatabaseMetadata(ValueMetadata):
                             f'SELECT SUM("pgsize") FROM "dbstat" WHERE name="{table_name}"'
                         )
                     )
-                    size: Optional[int] = result.fetchone()[0]
+                    size: Union[int, None] = result.fetchone()[0]
                 except Exception:
                     size = None
 

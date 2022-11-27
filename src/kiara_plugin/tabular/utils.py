@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import typing
-from typing import Dict, Iterable, Mapping, Optional, Union
+from typing import Dict, Iterable, Mapping, Union
 
 from kiara.models.filesystem import FileBundle, FileModel
 from kiara.utils import log_exception
@@ -57,7 +57,7 @@ def insert_db_table_from_file_bundle(
         for index, rel_path in enumerate(sorted(file_bundle.included_files.keys())):
             f: FileModel = file_bundle.included_files[rel_path]
             if not include_content:
-                content: Optional[str] = f.read_text()  # type: ignore
+                content: Union[str, None] = f.read_text()  # type: ignore
             else:
                 content = None
 
@@ -117,11 +117,11 @@ def convert_arrow_column_types_to_sqlite(
 
 def create_sqlite_schema_data_from_arrow_table(
     table: "pa.Table",
-    column_map: Optional[Mapping[str, str]] = None,
-    index_columns: Optional[Iterable[str]] = None,
-    nullable_columns: Optional[Iterable[str]] = None,
-    unique_columns: Optional[Iterable[str]] = None,
-    primary_key: Optional[str] = None,
+    column_map: Union[Mapping[str, str], None] = None,
+    index_columns: Union[Iterable[str], None] = None,
+    nullable_columns: Union[Iterable[str], None] = None,
+    unique_columns: Union[Iterable[str], None] = None,
+    primary_key: Union[str, None] = None,
 ) -> SqliteTableSchema:
     """Create a sql schema statement from an Arrow table object.
 
@@ -191,11 +191,11 @@ def create_sqlite_schema_data_from_arrow_table(
 def create_sqlite_table_from_tabular_file(
     target_db_file: str,
     file_item: FileModel,
-    table_name: Optional[str] = None,
+    table_name: Union[str, None] = None,
     is_csv: bool = True,
     is_tsv: bool = False,
     is_nl: bool = False,
-    primary_key_column_names: Optional[Iterable[str]] = None,
+    primary_key_column_names: Union[Iterable[str], None] = None,
     flatten_nested_json_objects: bool = False,
     csv_delimiter: Union[str, None] = None,
     quotechar: Union[str, None] = None,

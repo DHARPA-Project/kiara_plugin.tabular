@@ -3,7 +3,7 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, Mapping, Optional, Type
+from typing import Any, Mapping, Type, Union
 
 import pyarrow as pa
 from kiara.data_types import DataTypeConfig
@@ -113,7 +113,7 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
             "max_cell_length", DEFAULT_PRETTY_PRINT_CONFIG["max_cell_length"]
         )
 
-        half_lines: Optional[int] = None
+        half_lines: Union[int, None] = None
         if max_rows:
             half_lines = int(max_rows / 2)
 

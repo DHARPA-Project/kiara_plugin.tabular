@@ -39,7 +39,7 @@ jobs:
       - name: "Set up Python 3.9"
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.9"
       - uses: actions/checkout@v2
       - name: install kiara
         run: pip install -U --extra-index-url https://pypi.fury.io/dharpa/ .[all,dev_testing]
@@ -76,7 +76,7 @@ jobs:
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.9"
       - uses: actions/checkout@v2
       - name: install kiara_plugin.tabular
         run: pip install -U --extra-index-url https://pypi.fury.io/dharpa/ .[all,dev_testing]
@@ -95,7 +95,7 @@ jobs:
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.9"
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -126,7 +126,7 @@ jobs:
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: "3.9"
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -154,8 +154,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - test-linux
-      - mypy-linux
-      - flake8-linux
+#      - mypy-linux
+#      - flake8-linux
     steps:
       - name: "Set up Python 3.9"
         uses: actions/setup-python@v2

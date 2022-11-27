@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Optional
+from typing import Any, Union
 
 import pyarrow as pa
 from kiara.models import KiaraModel
@@ -58,7 +58,7 @@ class KiaraArray(KiaraModel):
         obj._array_obj = array_obj
         return obj
 
-    data_path: Optional[str] = Field(
+    data_path: Union[str, None] = Field(
         description="The path to the (feather) file backing this array.", default=None
     )
 

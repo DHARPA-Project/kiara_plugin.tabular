@@ -3,7 +3,7 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, Dict, List, Mapping, Optional, Type, Union
+from typing import Any, Dict, List, Mapping, Type, Union
 
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import FileBundle, FileModel
@@ -41,7 +41,7 @@ class CreateDatabaseModuleConfig(CreateFromModuleConfig):
     merge_into_single_table: bool = Field(
         description="Whether to merge all csv files into a single table.", default=False
     )
-    include_source_metadata: Optional[bool] = Field(
+    include_source_metadata: Union[bool, None] = Field(
         description="Whether to include a table with metadata about the source files.",
         default=None,
     )
@@ -117,7 +117,7 @@ class CreateDatabaseModule(CreateFromModule):
         if merge_into_single_table:
             raise NotImplementedError("Not supported (yet).")
 
-        include_raw_content_in_file_info: Optional[bool] = self.get_config_value(
+        include_raw_content_in_file_info: Union[bool, None] = self.get_config_value(
             "include_source_metadata"
         )
 
@@ -168,7 +168,7 @@ class CreateDatabaseModule(CreateFromModule):
 
     def create_optional_inputs(
         self, source_type: str, target_type
-    ) -> Optional[Mapping[str, Mapping[str, Any]]]:
+    ) -> Union[Mapping[str, Mapping[str, Any]], None]:
 
         if target_type == "database" and source_type == "table":
 
@@ -254,7 +254,7 @@ class LoadDatabaseFromDiskModule(DeserializeValueModule):
 
 class QueryDatabaseConfig(KiaraModuleConfig):
 
-    query: Optional[str] = Field(description="The query.", default=None)
+    query: Union[str, None] = Field(description="The query.", default=None)
 
 
 class QueryDatabaseModule(KiaraModule):
