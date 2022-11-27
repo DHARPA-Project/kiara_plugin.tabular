@@ -1,10 +1,67 @@
 [build-system]
 requires = [
-    "setuptools",
-    "setuptools_scm",
-    "wheel",
+    "setuptools>=63",
+    "setuptools_scm[toml]>7.0.0",
+    "wheel"
 ]
-build-backend = 'setuptools.build_meta'
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kiara_plugin.tabular"
+description = "kiara data-types and modules for working with tables and databases."
+authors = [
+    {name = "Markus Binsteiner", email = "markus@frkl.io"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["kiara"]
+license = {text = "MPL-2.0"}
+classifiers = [
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"
+]
+dependencies = [
+    "kiara>=0.4.22",
+    "kiara_plugin.core_types>=0.4.11",
+    "duckdb>=0.6.0",
+    "kiara_plugin.core_types>=0.4.12",
+    "pandas>=1.4.0",
+    "polars>=0.15.0",
+    "pyarrow>=10.0.0",
+    "sqlalchemy>=1.4.0",
+    "sqlalchemy-utc>=0.10.0",
+    "sqlalchemy-utils>=0.38.0",
+    "sqlite-utils>=3.20"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev_documentation = [
+    "kiara[dev_documentation]"
+]
+dev_testing = [
+    "kiara[dev_testing]"
+]
+dev_utils = [
+    "kiara[dev_utils]"
+]
+dev_all = [
+    "kiara[dev_all]"
+]
+
+[project.urls]
+homepage = "https://github.com/DHARPA-Project/kiara_plugin.tabular"
+documentation = "https://DHARPA-Project.github.io/kiara_plugin.tabular"
+repository = "https://github.com/DHARPA-Project/kiara_plugin.tabular"
 
 [tool.black]
 include = '\.pyi?$'
@@ -23,5 +80,5 @@ exclude = '''
 )/
 '''
 
-[tool.dephell.main]
-from = {format = "setuppy", path = "setup.py"}
+[tool.setuptools_scm]
+write_to = "src/kiara_plugin/tabular/version.txt"
