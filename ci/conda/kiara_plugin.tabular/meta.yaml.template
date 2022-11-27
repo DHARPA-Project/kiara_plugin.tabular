@@ -24,6 +24,7 @@ requirements:
   run:
     - polars>=0.13.52
     - python
+    - python-duckdb>=0.6.0
     - kiara>=0.4.20
     - kiara_plugin.core_types>=0.4.11
     - pandas>=1.4.0

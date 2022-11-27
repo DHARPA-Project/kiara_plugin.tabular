@@ -470,7 +470,7 @@ class RenderTableModuleBase(RenderValueModule):
         rel_from_arrow = duckdb.arrow(arrow_table)
         query_result: duckdb.DuckDBPyResult = rel_from_arrow.query("data", query)
 
-        result_table = query_result.fetch_arrow_table()
+        result_table = query_result.arrow()
         wrap = ArrowTabularWrap(table=result_table)
 
         related_scenes: Dict[str, Union[None, RenderScene]] = {}

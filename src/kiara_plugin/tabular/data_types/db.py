@@ -1,17 +1,84 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from typing import Any, List, Mapping, Optional, Type
+from typing import Any, List, Mapping, Optional, Type, TYPE_CHECKING, Iterable, Union, Dict
 
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
-from kiara.utils.output import SqliteTabularWrap
+from kiara.utils.output import TabularWrap, DictTabularWrap
 from rich.console import Group
 
 from kiara_plugin.tabular.models.db import KiaraDatabase
 
+if TYPE_CHECKING:
+    from sqlalchemy.engine import Engine
+
+class SqliteTabularWrap(TabularWrap):
+    def __init__(self, engine: "Engine", table_name: str):
+        self._engine: Engine = engine
+        self._table_name: str = table_name
+        super().__init__()
+
+    def retrieve_number_of_rows(self) -> int:
+
+        from sqlalchemy import text
+
+        with self._engine.connect() as con:
+            result = con.execute(text(f"SELECT count(*) from {self._table_name}"))
+            num_rows = result.fetchone()[0]
+
+        return num_rows
+
+    def retrieve_column_names(self) -> Iterable[str]:
+
+        from sqlalchemy import inspect
+
+        engine = self._engine
+        inspector = inspect(engine)
+        columns = inspector.get_columns(self._table_name)
+        result = [column["name"] for column in columns]
+        return result
+
+    def slice(self, offset: int = 0, length: Union[int, None] = None) -> "TabularWrap":
+
+        from sqlalchemy import text
+
+        query = f"SELECT * FROM {self._table_name}"
+        if length:
+            query = f"{query} LIMIT {length}"
+        else:
+            query = f"{query} LIMIT {self.num_rows}"
+        if offset > 0:
+            query = f"{query} OFFSET {offset}"
+        with self._engine.connect() as con:
+            result = con.execute(text(query))
+            result_dict: Dict[str, List[Any]] = {}
+            for cn in self.column_names:
+                result_dict[cn] = []
+            for r in result:
+                for i, cn in enumerate(self.column_names):
+                    result_dict[cn].append(r[i])
+
+        return DictTabularWrap(result_dict)
+
+    def to_pydict(self) -> Mapping:
+
+        from sqlalchemy import text
+
+        query = f"SELECT * FROM {self._table_name}"
+
+        with self._engine.connect() as con:
+            result = con.execute(text(query))
+            result_dict: Dict[str, List[Any]] = {}
+            for cn in self.column_names:
+                result_dict[cn] = []
+            for r in result:
+                for i, cn in enumerate(self.column_names):
+                    result_dict[cn].append(r[i])
+
+        return result_dict
 
 class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
     """A database, containing one or several tables.
