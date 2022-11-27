@@ -11,7 +11,7 @@
       
       
       <link rel="icon" href="../../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
     
     
       
@@ -19,10 +19,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../../assets/stylesheets/main.20d9efc8.min.css">
+      <link rel="stylesheet" href="../../../../../../assets/stylesheets/main.472b142f.min.css">
       
         
-        <link rel="stylesheet" href="../../../../../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../../../../../assets/stylesheets/palette.08040f6c.min.css">
         
       
       
@@ -58,7 +58,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="None" data-md-color-accent="None">
   
     
     
@@ -2941,7 +2941,13 @@ RenderDatabaseModule            (<a class="autorefs autorefs-internal" title="ki
         <span class="p">)</span>
         <span class="n">pretty</span> <span class="o">=</span> <span class="n">wrap</span><span class="o">.</span><span class="n">as_string</span><span class="p">(</span><span class="n">max_row_height</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">RenderValueResult</span><span class="p">(</span><span class="n">rendered</span><span class="o">=</span><span class="n">pretty</span><span class="p">,</span> <span class="n">related_scenes</span><span class="o">=</span><span class="n">data_related_scenes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RenderValueResult</span><span class="p">(</span>
+            <span class="n">value_id</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value_id</span><span class="p">,</span>
+            <span class="n">rendered</span><span class="o">=</span><span class="n">pretty</span><span class="p">,</span>
+            <span class="n">related_scenes</span><span class="o">=</span><span class="n">data_related_scenes</span><span class="p">,</span>
+            <span class="n">render_config</span><span class="o">=</span><span class="n">render_config</span><span class="p">,</span>
+            <span class="n">render_manifest</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">manifest_hash</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">render__database__as__terminal_renderable</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">render_config</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
@@ -2961,8 +2967,11 @@ RenderDatabaseModule            (<a class="autorefs autorefs-internal" title="ki
         <span class="n">pretty</span> <span class="o">=</span> <span class="n">wrap</span><span class="o">.</span><span class="n">as_terminal_renderable</span><span class="p">(</span><span class="n">max_row_height</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">RenderValueResult</span><span class="p">(</span>
+            <span class="n">value_id</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value_id</span><span class="p">,</span>
+            <span class="n">render_config</span><span class="o">=</span><span class="n">render_config</span><span class="p">,</span>
             <span class="n">rendered</span><span class="o">=</span><span class="n">pretty</span><span class="p">,</span>
             <span class="n">related_scenes</span><span class="o">=</span><span class="n">data_related_scenes</span><span class="p">,</span>
+            <span class="n">render_manifest</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">manifest_hash</span><span class="p">,</span>
         <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3011,7 +3020,13 @@ RenderDatabaseModule            (<a class="autorefs autorefs-internal" title="ki
     <span class="p">)</span>
     <span class="n">pretty</span> <span class="o">=</span> <span class="n">wrap</span><span class="o">.</span><span class="n">as_string</span><span class="p">(</span><span class="n">max_row_height</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">RenderValueResult</span><span class="p">(</span><span class="n">rendered</span><span class="o">=</span><span class="n">pretty</span><span class="p">,</span> <span class="n">related_scenes</span><span class="o">=</span><span class="n">data_related_scenes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">RenderValueResult</span><span class="p">(</span>
+        <span class="n">value_id</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value_id</span><span class="p">,</span>
+        <span class="n">rendered</span><span class="o">=</span><span class="n">pretty</span><span class="p">,</span>
+        <span class="n">related_scenes</span><span class="o">=</span><span class="n">data_related_scenes</span><span class="p">,</span>
+        <span class="n">render_config</span><span class="o">=</span><span class="n">render_config</span><span class="p">,</span>
+        <span class="n">render_manifest</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">manifest_hash</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -3053,8 +3068,11 @@ RenderDatabaseModule            (<a class="autorefs autorefs-internal" title="ki
     <span class="n">pretty</span> <span class="o">=</span> <span class="n">wrap</span><span class="o">.</span><span class="n">as_terminal_renderable</span><span class="p">(</span><span class="n">max_row_height</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">RenderValueResult</span><span class="p">(</span>
+        <span class="n">value_id</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">value_id</span><span class="p">,</span>
+        <span class="n">render_config</span><span class="o">=</span><span class="n">render_config</span><span class="p">,</span>
         <span class="n">rendered</span><span class="o">=</span><span class="n">pretty</span><span class="p">,</span>
         <span class="n">related_scenes</span><span class="o">=</span><span class="n">data_related_scenes</span><span class="p">,</span>
+        <span class="n">render_manifest</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manifest</span><span class="o">.</span><span class="n">manifest_hash</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div>
         </details>
@@ -3426,10 +3444,10 @@ RenderDatabaseModuleBase            (<a class="autorefs autorefs-external" title
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../../../assets/javascripts/bundle.078830c0.min.js"></script>
+      <script src="../../../../../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>

@@ -11,7 +11,7 @@
       
       
       <link rel="icon" href="../../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
     
     
       
@@ -19,10 +19,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../../assets/stylesheets/main.20d9efc8.min.css">
+      <link rel="stylesheet" href="../../../../../../assets/stylesheets/main.472b142f.min.css">
       
         
-        <link rel="stylesheet" href="../../../../../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../../../../../assets/stylesheets/palette.08040f6c.min.css">
         
       
       
@@ -58,7 +58,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="None" data-md-color-accent="None">
   
     
     
@@ -2940,9 +2940,9 @@ one will be used.</p>
 
         <span class="n">_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
         <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">_table</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
-        <span class="n">result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyResult</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_relation_name</span><span class="p">,</span> <span class="n">_query</span><span class="p">)</span>
+        <span class="n">result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyRelation</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_relation_name</span><span class="p">,</span> <span class="n">_query</span><span class="p">)</span>
 
-        <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;query_result&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">fetch_arrow_table</span><span class="p">())</span>
+        <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;query_result&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">arrow</span><span class="p">())</span>
 </code></pre></div>
         </details>
 
@@ -3165,9 +3165,9 @@ _config_cls            (<a class="autorefs autorefs-external" title="kiara.model
 
     <span class="n">_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">get_value_data</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">)</span>
     <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">_table</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
-    <span class="n">result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyResult</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_relation_name</span><span class="p">,</span> <span class="n">_query</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyRelation</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_relation_name</span><span class="p">,</span> <span class="n">_query</span><span class="p">)</span>
 
-    <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;query_result&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">fetch_arrow_table</span><span class="p">())</span>
+    <span class="n">outputs</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="s2">&quot;query_result&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">arrow</span><span class="p">())</span>
 </code></pre></div>
         </details>
     </div>
@@ -3502,9 +3502,9 @@ RenderTableModuleBase            (<a class="autorefs autorefs-external" title="k
         <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM data LIMIT </span><span class="si">{</span><span class="n">input_number_of_rows</span><span class="si">}</span><span class="s2"> OFFSET </span><span class="si">{</span><span class="n">input_row_offset</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
 
         <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">arrow_table</span><span class="p">)</span>
-        <span class="n">query_result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyResult</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+        <span class="n">query_result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyRelation</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
 
-        <span class="n">result_table</span> <span class="o">=</span> <span class="n">query_result</span><span class="o">.</span><span class="n">fetch_arrow_table</span><span class="p">()</span>
+        <span class="n">result_table</span> <span class="o">=</span> <span class="n">query_result</span><span class="o">.</span><span class="n">arrow</span><span class="p">()</span>
         <span class="n">wrap</span> <span class="o">=</span> <span class="n">ArrowTabularWrap</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">result_table</span><span class="p">)</span>
 
         <span class="n">related_scenes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">RenderScene</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -3615,9 +3615,9 @@ RenderTableModuleBase            (<a class="autorefs autorefs-external" title="k
     <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">columnns</span><span class="p">)</span><span class="si">}</span><span class="s2"> FROM data LIMIT </span><span class="si">{</span><span class="n">input_number_of_rows</span><span class="si">}</span><span class="s2"> OFFSET </span><span class="si">{</span><span class="n">input_row_offset</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
 
     <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">arrow_table</span><span class="p">)</span>
-    <span class="n">query_result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyResult</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+    <span class="n">query_result</span><span class="p">:</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">DuckDBPyRelation</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
 
-    <span class="n">result_table</span> <span class="o">=</span> <span class="n">query_result</span><span class="o">.</span><span class="n">fetch_arrow_table</span><span class="p">()</span>
+    <span class="n">result_table</span> <span class="o">=</span> <span class="n">query_result</span><span class="o">.</span><span class="n">arrow</span><span class="p">()</span>
     <span class="n">wrap</span> <span class="o">=</span> <span class="n">ArrowTabularWrap</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">result_table</span><span class="p">)</span>
 
     <span class="n">related_scenes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">RenderScene</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -4158,10 +4158,10 @@ TableFiltersModule            (<a class="autorefs autorefs-external" title="kiar
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../../../assets/javascripts/bundle.078830c0.min.js"></script>
+      <script src="../../../../../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>
