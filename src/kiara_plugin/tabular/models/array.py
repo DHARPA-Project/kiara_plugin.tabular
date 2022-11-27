@@ -59,7 +59,7 @@ class KiaraArray(KiaraModel):
         return obj
 
     data_path: Optional[str] = Field(
-        description="The path to the (feather) file backing this array."
+        description="The path to the (feather) file backing this array.", default=None
     )
 
     _array_obj: pa.Array = PrivateAttr(default=None)

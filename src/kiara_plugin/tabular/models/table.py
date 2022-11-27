@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Iterable, Optional
+from typing import Any, Iterable, Union
 
 import pyarrow as pa
 from kiara.models import KiaraModel
@@ -38,8 +38,8 @@ class KiaraTable(KiaraModel):
         obj._table_obj = table_obj
         return obj
 
-    data_path: Optional[str] = Field(
-        description="The path to the (feather) file backing this array."
+    data_path: Union[None, str] = Field(
+        description="The path to the (feather) file backing this array.", default=None
     )
     """The path where the table object is store (for internal or read-only use)."""
     _table_obj: pa.Table = PrivateAttr(default=None)

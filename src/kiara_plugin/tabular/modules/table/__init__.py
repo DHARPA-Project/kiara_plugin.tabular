@@ -468,7 +468,7 @@ class RenderTableModuleBase(RenderValueModule):
         query = f"""SELECT {', '.join(columnns)} FROM data LIMIT {input_number_of_rows} OFFSET {input_row_offset}"""
 
         rel_from_arrow = duckdb.arrow(arrow_table)
-        query_result: duckdb.DuckDBPyResult = rel_from_arrow.query("data", query)
+        query_result: duckdb.DuckDBPyRelation = rel_from_arrow.query("data", query)
 
         result_table = query_result.arrow()
         wrap = ArrowTabularWrap(table=result_table)

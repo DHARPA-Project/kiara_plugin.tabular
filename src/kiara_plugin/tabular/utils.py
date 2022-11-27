@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import typing
-from typing import Dict, Iterable, Mapping, Optional
+from typing import Dict, Iterable, Mapping, Optional, Union
 
 from kiara.models.filesystem import FileBundle, FileModel
 from kiara.utils import log_exception
@@ -197,8 +197,8 @@ def create_sqlite_table_from_tabular_file(
     is_nl: bool = False,
     primary_key_column_names: Optional[Iterable[str]] = None,
     flatten_nested_json_objects: bool = False,
-    csv_delimiter: str = None,
-    quotechar: str = None,
+    csv_delimiter: Union[str, None] = None,
+    quotechar: Union[str, None] = None,
     sniff: bool = True,
     no_headers: bool = False,
     encoding: str = "utf-8",

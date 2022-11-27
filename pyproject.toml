@@ -31,9 +31,8 @@ classifiers = [
 ]
 dependencies = [
     "kiara>=0.4.22",
-    "kiara_plugin.core_types>=0.4.11",
-    "duckdb>=0.6.0",
     "kiara_plugin.core_types>=0.4.12",
+    "duckdb>=0.6.0",
     "pandas>=1.4.0",
     "polars>=0.15.0",
     "pyarrow>=10.0.0",
@@ -49,10 +48,12 @@ dev_documentation = [
     "kiara[dev_documentation]"
 ]
 dev_testing = [
-    "kiara[dev_testing]"
+    "kiara[dev_testing]",
+    "sqlalchemy-stubs"
 ]
 dev_utils = [
-    "kiara[dev_utils]"
+    "kiara[dev_utils]",
+    "sqlalchemy-stubs"
 ]
 dev_all = [
     "kiara[dev_all]"

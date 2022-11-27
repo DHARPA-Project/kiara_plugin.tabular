@@ -430,7 +430,13 @@ class RenderDatabaseModule(RenderDatabaseModuleBase):
         )
         pretty = wrap.as_string(max_row_height=1)
 
-        return RenderValueResult(rendered=pretty, related_scenes=data_related_scenes)
+        return RenderValueResult(
+            value_id=value.value_id,
+            rendered=pretty,
+            related_scenes=data_related_scenes,
+            render_config=render_config,
+            render_manifest=self.manifest.manifest_hash,
+        )
 
     def render__database__as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
@@ -450,6 +456,9 @@ class RenderDatabaseModule(RenderDatabaseModuleBase):
         pretty = wrap.as_terminal_renderable(max_row_height=1)
 
         return RenderValueResult(
+            value_id=value.value_id,
+            render_config=render_config,
             rendered=pretty,
             related_scenes=data_related_scenes,
+            render_manifest=self.manifest.manifest_hash,
         )
