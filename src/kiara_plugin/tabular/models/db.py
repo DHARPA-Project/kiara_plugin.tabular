@@ -265,28 +265,15 @@ class KiaraDatabase(KiaraModel):
         self._tables[table_name] = table
         return table
 
+    def create_metadata(self) -> "DatabaseMetadata":
 
-class DatabaseMetadata(ValueMetadata):
-    """Database and table properties."""
-
-    _metadata_key = "database"
-
-    @classmethod
-    def retrieve_supported_data_types(cls) -> Iterable[str]:
-        return ["database"]
-
-    @classmethod
-    def create_value_metadata(cls, value: Value) -> "DatabaseMetadata":
-
-        database: KiaraDatabase = value.data
-
-        insp = database.get_sqlalchemy_inspector()
+        insp = self.get_sqlalchemy_inspector()
 
         mds = {}
 
         for table_name in insp.get_table_names():
 
-            with database.get_sqlalchemy_engine().connect() as con:
+            with self.get_sqlalchemy_engine().connect() as con:
                 result = con.execute(text(f"SELECT count(*) from {table_name}"))
                 num_rows = result.fetchone()[0]
 
@@ -324,5 +311,21 @@ class DatabaseMetadata(ValueMetadata):
             mds[table_name] = md
 
         return DatabaseMetadata.construct(tables=mds)
+
+
+class DatabaseMetadata(ValueMetadata):
+    """Database and table properties."""
+
+    _metadata_key = "database"
+
+    @classmethod
+    def retrieve_supported_data_types(cls) -> Iterable[str]:
+        return ["database"]
+
+    @classmethod
+    def create_value_metadata(cls, value: Value) -> "DatabaseMetadata":
+
+        database: KiaraDatabase = value.data
+        return database.create_metadata()
 
     tables: Dict[str, TableMetadata] = Field(description="The table schema.")

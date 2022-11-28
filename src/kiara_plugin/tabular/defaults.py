@@ -25,11 +25,12 @@ TEMPLATES_FOLDER = os.path.join(KIARA_PLUGIN_TABULAR_RESOURCES_FOLDER, "template
 
 DEFAULT_TABULAR_DATA_CHUNK_SIZE = 1024
 
-SqliteDataType = Literal["NULL", "INTEGER", "REAL", "TEXT", "BLOB"]
+SqliteDataType = Literal["NULL", "INTEGER", "REAL", "TEXT", "BLOB", "FLOAT"]
 SQLITE_DATA_TYPE: Tuple[SqliteDataType, ...] = typing.get_args(SqliteDataType)
 
 SQLITE_SQLALCHEMY_TYPE_MAP: Dict[SqliteDataType, Type] = {
     "INTEGER": INTEGER,
+    "FLOAT": FLOAT,
     "REAL": FLOAT,
     "TEXT": TEXT,
     "BLOB": BLOB,
