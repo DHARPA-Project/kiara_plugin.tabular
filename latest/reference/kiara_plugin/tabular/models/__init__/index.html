@@ -1837,51 +1837,7 @@ DatabaseMetadata            (<a class="autorefs autorefs-external" title="kiara.
     <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
 
         <span class="n">database</span><span class="p">:</span> <span class="n">KiaraDatabase</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
-
-        <span class="n">insp</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
-
-        <span class="n">mds</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
-
-            <span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
-                <span class="n">num_rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                        <span class="n">text</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s1">&#39;SELECT SUM(&quot;pgsize&quot;) FROM &quot;dbstat&quot; WHERE name=&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-                        <span class="p">)</span>
-                    <span class="p">)</span>
-                    <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                    <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="n">columns</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">):</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-                <span class="n">_type</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-                <span class="n">type_name</span> <span class="o">=</span> <span class="n">SQLALCHEMY_SQLITE_TYPE_MAP</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">_type</span><span class="p">)]</span>
-                <span class="n">columns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;type_name&quot;</span><span class="p">:</span> <span class="n">type_name</span><span class="p">,</span>
-                    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;nullable&quot;</span><span class="p">],</span>
-                        <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;primary_key&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
-                    <span class="p">},</span>
-                <span class="p">}</span>
-
-            <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;column_names&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
-                <span class="s2">&quot;column_schema&quot;</span><span class="p">:</span> <span class="n">columns</span><span class="p">,</span>
-                <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">num_rows</span><span class="p">,</span>
-                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span>
-            <span class="p">}</span>
-
-            <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
-            <span class="n">mds</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
-
-        <span class="k">return</span> <span class="n">DatabaseMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">tables</span><span class="o">=</span><span class="n">mds</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">create_metadata</span><span class="p">()</span>
 
     <span class="n">tables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TableMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The table schema.&quot;</span><span class="p">)</span>
 </code></pre></div>
@@ -1944,51 +1900,7 @@ DatabaseMetadata            (<a class="autorefs autorefs-external" title="kiara.
 <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
 
     <span class="n">database</span><span class="p">:</span> <span class="n">KiaraDatabase</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
-
-    <span class="n">insp</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
-
-    <span class="n">mds</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
-
-        <span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
-            <span class="n">num_rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                    <span class="n">text</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;SELECT SUM(&quot;pgsize&quot;) FROM &quot;dbstat&quot; WHERE name=&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-                <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">):</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-            <span class="n">_type</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-            <span class="n">type_name</span> <span class="o">=</span> <span class="n">SQLALCHEMY_SQLITE_TYPE_MAP</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">_type</span><span class="p">)]</span>
-            <span class="n">columns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;type_name&quot;</span><span class="p">:</span> <span class="n">type_name</span><span class="p">,</span>
-                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;nullable&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;primary_key&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
-                <span class="p">},</span>
-            <span class="p">}</span>
-
-        <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;column_names&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
-            <span class="s2">&quot;column_schema&quot;</span><span class="p">:</span> <span class="n">columns</span><span class="p">,</span>
-            <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">num_rows</span><span class="p">,</span>
-            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span>
-        <span class="p">}</span>
-
-        <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
-        <span class="n">mds</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
-
-    <span class="k">return</span> <span class="n">DatabaseMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">tables</span><span class="o">=</span><span class="n">mds</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">create_metadata</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
@@ -2246,6 +2158,53 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tables</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span>
         <span class="k">return</span> <span class="n">table</span>
+
+    <span class="k">def</span> <span class="nf">create_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
+
+        <span class="n">insp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
+
+        <span class="n">mds</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
+
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+                <span class="n">num_rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                        <span class="n">text</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s1">&#39;SELECT SUM(&quot;pgsize&quot;) FROM &quot;dbstat&quot; WHERE name=&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">columns</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="n">_type</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+                <span class="n">type_name</span> <span class="o">=</span> <span class="n">SQLALCHEMY_SQLITE_TYPE_MAP</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">_type</span><span class="p">)]</span>
+                <span class="n">columns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;type_name&quot;</span><span class="p">:</span> <span class="n">type_name</span><span class="p">,</span>
+                    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;nullable&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;primary_key&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">}</span>
+
+            <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;column_names&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+                <span class="s2">&quot;column_schema&quot;</span><span class="p">:</span> <span class="n">columns</span><span class="p">,</span>
+                <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">num_rows</span><span class="p">,</span>
+                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
+            <span class="n">mds</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+
+        <span class="k">return</span> <span class="n">DatabaseMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">tables</span><span class="o">=</span><span class="n">mds</span><span class="p">)</span>
 </code></pre></div>
         </details>
 
@@ -2454,6 +2413,75 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
         <span class="n">db</span><span class="o">.</span><span class="n">_lock_db</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">db</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h7 id="kiara_plugin.tabular.models.db.KiaraDatabase.create_metadata" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+<a href="#kiara_plugin.tabular.models.db.KiaraDatabase.create_metadata" class="headerlink" title="Permanent link">&para;</a></h7>
+
+    <div class="doc doc-contents ">
+
+
+        <details class="quote">
+          <summary>Source code in <code>tabular/models/db.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
+
+    <span class="n">insp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
+
+    <span class="n">mds</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+            <span class="n">num_rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                    <span class="n">text</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;SELECT SUM(&quot;pgsize&quot;) FROM &quot;dbstat&quot; WHERE name=&quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_columns</span><span class="p">(</span><span class="n">table_name</span><span class="o">=</span><span class="n">table_name</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">_type</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+            <span class="n">type_name</span> <span class="o">=</span> <span class="n">SQLALCHEMY_SQLITE_TYPE_MAP</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">_type</span><span class="p">)]</span>
+            <span class="n">columns</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;type_name&quot;</span><span class="p">:</span> <span class="n">type_name</span><span class="p">,</span>
+                <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;nullable&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;primary_key&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">}</span>
+
+        <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;column_names&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="s2">&quot;column_schema&quot;</span><span class="p">:</span> <span class="n">columns</span><span class="p">,</span>
+            <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="n">num_rows</span><span class="p">,</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">md</span> <span class="o">=</span> <span class="n">TableMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">mds</span><span class="p">[</span><span class="n">table_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+
+    <span class="k">return</span> <span class="n">DatabaseMetadata</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">tables</span><span class="o">=</span><span class="n">mds</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2811,7 +2839,7 @@ SqliteTableSchema            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 <h7 id="kiara_plugin.tabular.models.db.SqliteTableSchema.columns" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">columns</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="s1">&#39;REAL&#39;</span><span class="p">,</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">,</span> <span class="s1">&#39;BLOB&#39;</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">columns</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="s1">&#39;REAL&#39;</span><span class="p">,</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">,</span> <span class="s1">&#39;BLOB&#39;</span><span class="p">,</span> <span class="s1">&#39;FLOAT&#39;</span><span class="p">]]</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
