@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Type, Union
+from typing import Any, Dict, Iterable, List, Mapping, Type, Union
 
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import (
@@ -27,9 +27,6 @@ from pydantic import Field
 from kiara_plugin.tabular.defaults import RESERVED_SQL_KEYWORDS
 from kiara_plugin.tabular.models.array import KiaraArray
 from kiara_plugin.tabular.models.table import KiaraTable, KiaraTableMetadata
-
-if TYPE_CHECKING:
-    pass
 
 EMPTY_COLUMN_NAME_MARKER = "__no_column_name__"
 
@@ -146,22 +143,37 @@ class DeserializeTableModule(DeserializeValueModule):
         return table
 
 
+class CutColumnModuleConfig(KiaraModuleConfig):
+    """Configuration for the 'table.cut_column' kiara module.
+
+    Technically this is not necessary, because we could just use the 'constants' field to
+    set the 'column_name'. But this module is used in the documentation as example, as it's easy enough to understand,
+    and I wanted to show how implement kiara module configuration.
+    """
+
+    column_name: Union[str, None] = Field(
+        description="A hardcoded column name to cut.", default=None
+    )
+
+
 class CutColumnModule(KiaraModule):
     """Cut off one column from a table, returning an array."""
 
     _module_type_name = "table.cut_column"
+    _config_cls = CutColumnModuleConfig
 
     def create_inputs_schema(
         self,
     ) -> ValueMapSchema:
 
-        inputs: Mapping[str, Any] = {
-            "table": {"type": "table", "doc": "A table."},
-            "column_name": {
+        inputs: Dict[str, Any] = {"table": {"type": "table", "doc": "A table."}}
+        column_name = self.get_config_value("column_name")
+        if not column_name:
+            inputs["column_name"] = {
                 "type": "string",
                 "doc": "The name of the column to extract.",
-            },
-        }
+            }
+
         return inputs
 
     def create_outputs_schema(
@@ -175,13 +187,19 @@ class CutColumnModule(KiaraModule):
 
         import pyarrow as pa
 
-        column_name: str = inputs.get_value_data("column_name")
+        column_name: Union[str, None] = self.get_config_value("column_name")
+        if not column_name:
+            column_name = inputs.get_value_data("column_name")
+
+        if not column_name:
+            raise KiaraProcessingException(
+                "Could not cut column from table: column_name not provided or empty string."
+            )
 
         table_value: Value = inputs.get_value_obj("table")
         table_metadata: KiaraTableMetadata = table_value.get_property_data(
             "metadata.table"
         )
-
         available = table_metadata.table.column_names
 
         if column_name not in available:
