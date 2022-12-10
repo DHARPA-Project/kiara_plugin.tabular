@@ -49,6 +49,7 @@ dev_documentation = [
 ]
 dev_testing = [
     "kiara[dev_testing]",
+    "types-setuptools",
     "sqlalchemy-stubs"
 ]
 dev_utils = [
