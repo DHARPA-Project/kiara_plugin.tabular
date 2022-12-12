@@ -7003,6 +7003,19 @@ TableFiltersModule            (<a class="autorefs autorefs-external" title="kiar
                     <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">}</span>
+        <span class="k">elif</span> <span class="n">filter_name</span> <span class="o">==</span> <span class="s2">&quot;select_rows&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The string token to match.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;optional&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;case_insensitive&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;Whether to ignore case.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">}</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
@@ -7073,7 +7086,31 @@ TableFiltersModule            (<a class="autorefs autorefs-external" title="kiar
 
     <span class="k">def</span> <span class="nf">filter__select_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">filter_inputs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 
-        <span class="k">pass</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">filter_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;match&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+        <span class="n">case_insensitive</span> <span class="o">=</span> <span class="n">filter_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;case_insensitive&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="kn">import</span> <span class="nn">duckdb</span>
+
+        <span class="n">_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">_table</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">case_insensitive</span><span class="p">:</span>
+            <span class="c1"># query_tokens = [f&quot;LOWER({c}) GLOB LOWER(&#39;{match}&#39;)&quot; for c in rel_from_arrow.columns]</span>
+            <span class="n">query_tokens</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;regexp_matches(LOWER(</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">), LOWER(&#39;</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&#39;))&quot;</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">columns</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query_tokens</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="sa">f</span><span class="s2">&quot;regexp_matches(</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">, &#39;</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&#39;)&quot;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">columns</span>
+            <span class="p">]</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_tokens</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">arrow</span><span class="p">()</span>
 </code></pre></div>
         </details>
 
@@ -7147,6 +7184,19 @@ TableFiltersModule            (<a class="autorefs autorefs-external" title="kiar
             <span class="s2">&quot;ignore_invalid_column_names&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;Whether to ignore invalid column names.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+    <span class="k">elif</span> <span class="n">filter_name</span> <span class="o">==</span> <span class="s2">&quot;select_rows&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;The string token to match.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;optional&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;case_insensitive&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="s2">&quot;Whether to ignore case.&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">}</span>
@@ -7286,7 +7336,31 @@ TableFiltersModule            (<a class="autorefs autorefs-external" title="kiar
           <summary>Source code in <code>tabular/modules/table/filters.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">filter__select_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">filter_inputs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 
-    <span class="k">pass</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">filter_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;match&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="n">case_insensitive</span> <span class="o">=</span> <span class="n">filter_inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;case_insensitive&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="kn">import</span> <span class="nn">duckdb</span>
+
+    <span class="n">_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">rel_from_arrow</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">_table</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">case_insensitive</span><span class="p">:</span>
+        <span class="c1"># query_tokens = [f&quot;LOWER({c}) GLOB LOWER(&#39;{match}&#39;)&quot; for c in rel_from_arrow.columns]</span>
+        <span class="n">query_tokens</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;regexp_matches(LOWER(</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">), LOWER(&#39;</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&#39;))&quot;</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">columns</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">query_tokens</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;regexp_matches(</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">, &#39;</span><span class="si">{</span><span class="n">match</span><span class="si">}</span><span class="s2">&#39;)&quot;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">columns</span>
+        <span class="p">]</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">query_tokens</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">rel_from_arrow</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">arrow</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
@@ -9989,7 +10063,7 @@ SqliteTableSchema            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 <h9 id="kiara_plugin.tabular.models.db.SqliteTableSchema.create_table" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">Table</span> <span class="n">at</span> <span class="mh">0x7f528a6a3040</span><span class="o">&gt;</span></code>
+<code class="highlight language-python"><span class="n">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="n">Engine</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">Table</span> <span class="n">at</span> <span class="mh">0x7fee431e94c0</span><span class="o">&gt;</span></code>
 
 
 <a href="#kiara_plugin.tabular.models.db.SqliteTableSchema.create_table" class="headerlink" title="Permanent link">&para;</a></h9>
@@ -10715,7 +10789,7 @@ KiaraDatabase            (<a class="autorefs autorefs-external" title="kiara.mod
 
 
 <h9 id="kiara_plugin.tabular.models.db.KiaraDatabase.get_sqlalchemy_table" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_sqlalchemy_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">Table</span> <span class="n">at</span> <span class="mh">0x7f528a6a3040</span><span class="o">&gt;</span></code>
+<code class="highlight language-python"><span class="n">get_sqlalchemy_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">Table</span> <span class="n">at</span> <span class="mh">0x7fee431e94c0</span><span class="o">&gt;</span></code>
 
 
 <a href="#kiara_plugin.tabular.models.db.KiaraDatabase.get_sqlalchemy_table" class="headerlink" title="Permanent link">&para;</a></h9>
