@@ -34,6 +34,19 @@ class TableFiltersModule(FilterModule):
                     "default": True,
                 },
             }
+        elif filter_name == "select_rows":
+            return {
+                "match": {
+                    "type": "string",
+                    "doc": "The string token to match.",
+                    "optional": True,
+                },
+                "case_insensitive": {
+                    "type": "boolean",
+                    "doc": "Whether to ignore case.",
+                    "default": True,
+                },
+            }
 
         return None
 
@@ -104,4 +117,28 @@ class TableFiltersModule(FilterModule):
 
     def filter__select_rows(self, value: Value, filter_inputs: Mapping[str, Any]):
 
-        pass
+        match = filter_inputs.get("match", None)
+        if not match:
+            return value
+
+        case_insensitive = filter_inputs.get("case_insensitive", True)
+
+        import duckdb
+
+        _table: KiaraTable = value.data
+        rel_from_arrow = duckdb.arrow(_table.arrow_table)
+
+        if case_insensitive:
+            # query_tokens = [f"LOWER({c}) GLOB LOWER('{match}')" for c in rel_from_arrow.columns]
+            query_tokens = [
+                f"regexp_matches(LOWER({c}), LOWER('{match}'))"
+                for c in rel_from_arrow.columns
+            ]
+        else:
+            query_tokens = [
+                f"regexp_matches({c}, '{match}')" for c in rel_from_arrow.columns
+            ]
+        query = " OR ".join(query_tokens)
+
+        result = rel_from_arrow.filter(query)
+        return result.arrow()
