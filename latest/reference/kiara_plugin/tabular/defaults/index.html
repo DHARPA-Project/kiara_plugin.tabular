@@ -566,13 +566,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.DEFAULT_TABULAR_DATA_CHUNK_SIZE" class="md-nav__link">
-    DEFAULT_TABULAR_DATA_CHUNK_SIZE
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.defaults.KIARA_PLUGIN_TABULAR_BASE_FOLDER" class="md-nav__link">
     KIARA_PLUGIN_TABULAR_BASE_FOLDER
   </a>
@@ -587,15 +580,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.RESERVED_SQL_KEYWORDS" class="md-nav__link">
-    RESERVED_SQL_KEYWORDS
+  <a href="#kiara_plugin.tabular.defaults.TEMPLATES_FOLDER" class="md-nav__link">
+    TEMPLATES_FOLDER
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.SQLALCHEMY_SQLITE_TYPE_MAP" class="md-nav__link">
-    SQLALCHEMY_SQLITE_TYPE_MAP
+  <a href="#kiara_plugin.tabular.defaults.DEFAULT_TABULAR_DATA_CHUNK_SIZE" class="md-nav__link">
+    DEFAULT_TABULAR_DATA_CHUNK_SIZE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.defaults.SqliteDataType" class="md-nav__link">
+    SqliteDataType
   </a>
   
 </li>
@@ -615,15 +615,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.SqliteDataType" class="md-nav__link">
-    SqliteDataType
+  <a href="#kiara_plugin.tabular.defaults.SQLALCHEMY_SQLITE_TYPE_MAP" class="md-nav__link">
+    SQLALCHEMY_SQLITE_TYPE_MAP
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.TEMPLATES_FOLDER" class="md-nav__link">
-    TEMPLATES_FOLDER
+  <a href="#kiara_plugin.tabular.defaults.RESERVED_SQL_KEYWORDS" class="md-nav__link">
+    RESERVED_SQL_KEYWORDS
   </a>
   
 </li>
@@ -931,13 +931,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.DEFAULT_TABULAR_DATA_CHUNK_SIZE" class="md-nav__link">
-    DEFAULT_TABULAR_DATA_CHUNK_SIZE
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.defaults.KIARA_PLUGIN_TABULAR_BASE_FOLDER" class="md-nav__link">
     KIARA_PLUGIN_TABULAR_BASE_FOLDER
   </a>
@@ -952,15 +945,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.RESERVED_SQL_KEYWORDS" class="md-nav__link">
-    RESERVED_SQL_KEYWORDS
+  <a href="#kiara_plugin.tabular.defaults.TEMPLATES_FOLDER" class="md-nav__link">
+    TEMPLATES_FOLDER
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.SQLALCHEMY_SQLITE_TYPE_MAP" class="md-nav__link">
-    SQLALCHEMY_SQLITE_TYPE_MAP
+  <a href="#kiara_plugin.tabular.defaults.DEFAULT_TABULAR_DATA_CHUNK_SIZE" class="md-nav__link">
+    DEFAULT_TABULAR_DATA_CHUNK_SIZE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.defaults.SqliteDataType" class="md-nav__link">
+    SqliteDataType
   </a>
   
 </li>
@@ -980,15 +980,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.SqliteDataType" class="md-nav__link">
-    SqliteDataType
+  <a href="#kiara_plugin.tabular.defaults.SQLALCHEMY_SQLITE_TYPE_MAP" class="md-nav__link">
+    SQLALCHEMY_SQLITE_TYPE_MAP
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.defaults.TEMPLATES_FOLDER" class="md-nav__link">
-    TEMPLATES_FOLDER
+  <a href="#kiara_plugin.tabular.defaults.RESERVED_SQL_KEYWORDS" class="md-nav__link">
+    RESERVED_SQL_KEYWORDS
   </a>
   
 </li>
@@ -1022,193 +1022,204 @@
 
 <div class="doc doc-object doc-module">
 
+
 <a id="kiara_plugin.tabular.defaults"></a>
-    <div class="doc doc-contents first">
+  <div class="doc doc-contents first">
 
-
-
+  
 
   <div class="doc doc-children">
 
 
 
 
+
 <h2 id="kiara_plugin.tabular.defaults-attributes">Attributes<a href="#kiara_plugin.tabular.defaults-attributes" class="headerlink" title="Permanent link">&para;</a></h2>
 
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="kiara_plugin.tabular.defaults.DEFAULT_TABULAR_DATA_CHUNK_SIZE" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">DEFAULT_TABULAR_DATA_CHUNK_SIZE</span></code>
-
-
-<a href="#kiara_plugin.tabular.defaults.DEFAULT_TABULAR_DATA_CHUNK_SIZE" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="kiara_plugin.tabular.defaults.KIARA_PLUGIN_TABULAR_BASE_FOLDER" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">KIARA_PLUGIN_TABULAR_BASE_FOLDER</span></code>
-
+<code class="highlight language-python"><span class="n">KIARA_PLUGIN_TABULAR_BASE_FOLDER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
 
 <a href="#kiara_plugin.tabular.defaults.KIARA_PLUGIN_TABULAR_BASE_FOLDER" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Marker to indicate the base folder for the kiara network module package.</p>
-    </div>
-
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="kiara_plugin.tabular.defaults.KIARA_PLUGIN_TABULAR_RESOURCES_FOLDER" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">KIARA_PLUGIN_TABULAR_RESOURCES_FOLDER</span></code>
-
+<code class="highlight language-python"><span class="n">KIARA_PLUGIN_TABULAR_RESOURCES_FOLDER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">KIARA_PLUGIN_TABULAR_BASE_FOLDER</span><span class="p">,</span> <span class="s1">&#39;resources&#39;</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
 
 <a href="#kiara_plugin.tabular.defaults.KIARA_PLUGIN_TABULAR_RESOURCES_FOLDER" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Default resources folder for this package.</p>
-    </div>
-
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="kiara_plugin.tabular.defaults.RESERVED_SQL_KEYWORDS" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">RESERVED_SQL_KEYWORDS</span></code>
-
-
-<a href="#kiara_plugin.tabular.defaults.RESERVED_SQL_KEYWORDS" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="kiara_plugin.tabular.defaults.SQLALCHEMY_SQLITE_TYPE_MAP" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">SQLALCHEMY_SQLITE_TYPE_MAP</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="s1">&#39;REAL&#39;</span><span class="p">,</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">,</span> <span class="s1">&#39;BLOB&#39;</span><span class="p">,</span> <span class="s1">&#39;FLOAT&#39;</span><span class="p">]]</span></code>
-
-
-<a href="#kiara_plugin.tabular.defaults.SQLALCHEMY_SQLITE_TYPE_MAP" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="kiara_plugin.tabular.defaults.SQLITE_DATA_TYPE" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">SQLITE_DATA_TYPE</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="s1">&#39;REAL&#39;</span><span class="p">,</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">,</span> <span class="s1">&#39;BLOB&#39;</span><span class="p">,</span> <span class="s1">&#39;FLOAT&#39;</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span></code>
-
-
-<a href="#kiara_plugin.tabular.defaults.SQLITE_DATA_TYPE" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="kiara_plugin.tabular.defaults.SQLITE_SQLALCHEMY_TYPE_MAP" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">SQLITE_SQLALCHEMY_TYPE_MAP</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="s1">&#39;REAL&#39;</span><span class="p">,</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">,</span> <span class="s1">&#39;BLOB&#39;</span><span class="p">,</span> <span class="s1">&#39;FLOAT&#39;</span><span class="p">],</span> <span class="n">Type</span><span class="p">]</span></code>
-
-
-<a href="#kiara_plugin.tabular.defaults.SQLITE_SQLALCHEMY_TYPE_MAP" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h3 id="kiara_plugin.tabular.defaults.SqliteDataType" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">SqliteDataType</span></code>
-
-
-<a href="#kiara_plugin.tabular.defaults.SqliteDataType" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-attribute">
 
 
 
 <h3 id="kiara_plugin.tabular.defaults.TEMPLATES_FOLDER" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">TEMPLATES_FOLDER</span></code>
-
+<code class="highlight language-python"><span class="n">TEMPLATES_FOLDER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">KIARA_PLUGIN_TABULAR_RESOURCES_FOLDER</span><span class="p">,</span> <span class="s1">&#39;templates&#39;</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
 
 <a href="#kiara_plugin.tabular.defaults.TEMPLATES_FOLDER" class="headerlink" title="Permanent link">&para;</a></h3>
 
-    <div class="doc doc-contents ">
 
-    </div>
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="kiara_plugin.tabular.defaults.DEFAULT_TABULAR_DATA_CHUNK_SIZE" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">DEFAULT_TABULAR_DATA_CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.defaults.DEFAULT_TABULAR_DATA_CHUNK_SIZE" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="kiara_plugin.tabular.defaults.SqliteDataType" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">SqliteDataType</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="s1">&#39;REAL&#39;</span><span class="p">,</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">,</span> <span class="s1">&#39;BLOB&#39;</span><span class="p">,</span> <span class="s1">&#39;FLOAT&#39;</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.defaults.SqliteDataType" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="kiara_plugin.tabular.defaults.SQLITE_DATA_TYPE" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">SQLITE_DATA_TYPE</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SqliteDataType</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">typing</span><span class="o">.</span><span class="n">get_args</span><span class="p">(</span><span class="n">SqliteDataType</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.defaults.SQLITE_DATA_TYPE" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="kiara_plugin.tabular.defaults.SQLITE_SQLALCHEMY_TYPE_MAP" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">SQLITE_SQLALCHEMY_TYPE_MAP</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">SqliteDataType</span><span class="p">,</span> <span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;INTEGER&#39;</span><span class="p">:</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="s1">&#39;FLOAT&#39;</span><span class="p">:</span> <span class="n">FLOAT</span><span class="p">,</span> <span class="s1">&#39;REAL&#39;</span><span class="p">:</span> <span class="n">FLOAT</span><span class="p">,</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span> <span class="s1">&#39;BLOB&#39;</span><span class="p">:</span> <span class="n">BLOB</span><span class="p">}</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.defaults.SQLITE_SQLALCHEMY_TYPE_MAP" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="kiara_plugin.tabular.defaults.SQLALCHEMY_SQLITE_TYPE_MAP" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">SQLALCHEMY_SQLITE_TYPE_MAP</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">SqliteDataType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">INTEGER</span><span class="p">:</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">FLOAT</span><span class="p">:</span> <span class="s1">&#39;REAL&#39;</span><span class="p">,</span> <span class="n">TEXT</span><span class="p">:</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">,</span> <span class="n">BLOB</span><span class="p">:</span> <span class="s1">&#39;BLOB&#39;</span><span class="p">,</span> <span class="n">VARCHAR</span><span class="p">:</span> <span class="s1">&#39;TEXT&#39;</span><span class="p">}</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.defaults.SQLALCHEMY_SQLITE_TYPE_MAP" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="kiara_plugin.tabular.defaults.RESERVED_SQL_KEYWORDS" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">RESERVED_SQL_KEYWORDS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ALL&#39;</span><span class="p">,</span> <span class="s1">&#39;AND&#39;</span><span class="p">,</span> <span class="s1">&#39;ARRAY&#39;</span><span class="p">,</span> <span class="s1">&#39;AS&#39;</span><span class="p">,</span> <span class="s1">&#39;BETWEEN&#39;</span><span class="p">,</span> <span class="s1">&#39;BOTH&#39;</span><span class="p">,</span> <span class="s1">&#39;CASE&#39;</span><span class="p">,</span> <span class="s1">&#39;CHECK&#39;</span><span class="p">,</span> <span class="s1">&#39;CONSTRAINT&#39;</span><span class="p">,</span> <span class="s1">&#39;CROSS&#39;</span><span class="p">,</span> <span class="s1">&#39;CURRENT&#39;</span><span class="p">,</span> <span class="s1">&#39;CURRENT&#39;</span><span class="p">,</span> <span class="s1">&#39;CURRENT&#39;</span><span class="p">,</span> <span class="s1">&#39;CURRENT&#39;</span><span class="p">,</span> <span class="s1">&#39;CURRENT&#39;</span><span class="p">,</span> <span class="s1">&#39;CURRENT&#39;</span><span class="p">,</span> <span class="s1">&#39;DISTINCT&#39;</span><span class="p">,</span> <span class="s1">&#39;EXCEPT&#39;</span><span class="p">,</span> <span class="s1">&#39;EXISTS&#39;</span><span class="p">,</span> <span class="s1">&#39;FALSE&#39;</span><span class="p">,</span> <span class="s1">&#39;FETCH&#39;</span><span class="p">,</span> <span class="s1">&#39;FILTER&#39;</span><span class="p">,</span> <span class="s1">&#39;FOR&#39;</span><span class="p">,</span> <span class="s1">&#39;FOREIGN&#39;</span><span class="p">,</span> <span class="s1">&#39;FROM&#39;</span><span class="p">,</span> <span class="s1">&#39;FULL&#39;</span><span class="p">,</span> <span class="s1">&#39;GROUP&#39;</span><span class="p">,</span> <span class="s1">&#39;GROUPS&#39;</span><span class="p">,</span> <span class="s1">&#39;HAVING&#39;</span><span class="p">,</span> <span class="s1">&#39;IF&#39;</span><span class="p">,</span> <span class="s1">&#39;ILIKE&#39;</span><span class="p">,</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span> <span class="s1">&#39;INNER&#39;</span><span class="p">,</span> <span class="s1">&#39;INTERSECT&#39;</span><span class="p">,</span> <span class="s1">&#39;INTERSECTS&#39;</span><span class="p">,</span> <span class="s1">&#39;INTERVAL&#39;</span><span class="p">,</span> <span class="s1">&#39;IS&#39;</span><span class="p">,</span> <span class="s1">&#39;JOIN&#39;</span><span class="p">,</span> <span class="s1">&#39;LEADING&#39;</span><span class="p">,</span> <span class="s1">&#39;LEFT&#39;</span><span class="p">,</span> <span class="s1">&#39;LIKE&#39;</span><span class="p">,</span> <span class="s1">&#39;LIMIT&#39;</span><span class="p">,</span> <span class="s1">&#39;LOCALTIME&#39;</span><span class="p">,</span> <span class="s1">&#39;LOCALTIMESTAMP&#39;</span><span class="p">,</span> <span class="s1">&#39;MINUS&#39;</span><span class="p">,</span> <span class="s1">&#39;NATURAL&#39;</span><span class="p">,</span> <span class="s1">&#39;NOT&#39;</span><span class="p">,</span> <span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;OFFSET&#39;</span><span class="p">,</span> <span class="s1">&#39;ON&#39;</span><span class="p">,</span> <span class="s1">&#39;OR&#39;</span><span class="p">,</span> <span class="s1">&#39;ORDER&#39;</span><span class="p">,</span> <span class="s1">&#39;OVER&#39;</span><span class="p">,</span> <span class="s1">&#39;PARTITION&#39;</span><span class="p">,</span> <span class="s1">&#39;PRIMARY&#39;</span><span class="p">,</span> <span class="s1">&#39;QUALIFY&#39;</span><span class="p">,</span> <span class="s1">&#39;RANGE&#39;</span><span class="p">,</span> <span class="s1">&#39;REGEXP&#39;</span><span class="p">,</span> <span class="s1">&#39;RIGHT&#39;</span><span class="p">,</span> <span class="s1">&#39;ROW&#39;</span><span class="p">,</span> <span class="s1">&#39;_ROWID&#39;</span><span class="p">,</span> <span class="s1">&#39;ROWNUM&#39;</span><span class="p">,</span> <span class="s1">&#39;ROWS&#39;</span><span class="p">,</span> <span class="s1">&#39;SELECT&#39;</span><span class="p">,</span> <span class="s1">&#39;SYSDATE&#39;</span><span class="p">,</span> <span class="s1">&#39;SYSTIME&#39;</span><span class="p">,</span> <span class="s1">&#39;SYSTIMESTAMP&#39;</span><span class="p">,</span> <span class="s1">&#39;TABLE&#39;</span><span class="p">,</span> <span class="s1">&#39;TODAY&#39;</span><span class="p">,</span> <span class="s1">&#39;TOP&#39;</span><span class="p">,</span> <span class="s1">&#39;TRAILING&#39;</span><span class="p">,</span> <span class="s1">&#39;TRUE&#39;</span><span class="p">,</span> <span class="s1">&#39;UNION&#39;</span><span class="p">,</span> <span class="s1">&#39;UNIQUE&#39;</span><span class="p">,</span> <span class="s1">&#39;UNKNOWN&#39;</span><span class="p">,</span> <span class="s1">&#39;USING&#39;</span><span class="p">,</span> <span class="s1">&#39;VALUES&#39;</span><span class="p">,</span> <span class="s1">&#39;WHERE&#39;</span><span class="p">,</span> <span class="s1">&#39;WINDOW&#39;</span><span class="p">,</span> <span class="s1">&#39;WITH&#39;</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#kiara_plugin.tabular.defaults.RESERVED_SQL_KEYWORDS" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+
+
+
 
   </div>
 
-
-
-
-
-
-
-
   </div>
 
-    </div>
-
-  </div>
+</div>
 
 
 
