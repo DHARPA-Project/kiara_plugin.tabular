@@ -10,8 +10,14 @@
         <meta name="author" content="Markus Binsteiner">
       
       
+      
+        <link rel="prev" href="../../db/__init__/">
+      
+      
+        <link rel="next" href="../filters/">
+      
       <link rel="icon" href="../../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.2">
     
     
       
@@ -19,11 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../../../assets/stylesheets/main.975780f9.min.css">
+      <link rel="stylesheet" href="../../../../../../assets/stylesheets/main.f56500e0.min.css">
       
         
         <link rel="stylesheet" href="../../../../../../assets/stylesheets/palette.2505c338.min.css">
-        
       
       
 
@@ -58,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="None" data-md-color-accent="None">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
   
     
     
@@ -1427,10 +1432,9 @@
                 
                   
 
-  <a href="https://github.com/DHARPA-Project/kiara_plugin.tabular/edit/master/docs/src/kiara_plugin/tabular/modules/table/__init__.py" title="Edit this page" class="md-content__button md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+  
+  
+
 
 
   <h1>table</h1>
@@ -1623,7 +1627,7 @@
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CreateTableModuleConfig</span>
 
     <span class="k">def</span> <span class="nf">create__table__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
 
         <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
 
@@ -1637,7 +1641,7 @@
         <span class="k">return</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">imported_data</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">create__table__from__text_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create a table value from a text file_bundle.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a table value from a text file_bundle.</span>
 
 <span class="sd">        The resulting table will have (at a minimum) the following collumns:</span>
 <span class="sd">        - id: an auto-assigned index</span>
@@ -1736,7 +1740,7 @@
 <span class="normal">57</span>
 <span class="normal">58</span>
 <span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create__table__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
 
@@ -1811,7 +1815,7 @@
 <span class="normal">95</span>
 <span class="normal">96</span>
 <span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create__table__from__text_file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Create a table value from a text file_bundle.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a table value from a text file_bundle.</span>
 
 <span class="sd">    The resulting table will have (at a minimum) the following collumns:</span>
 <span class="sd">    - id: an auto-assigned index</span>
@@ -2187,7 +2191,7 @@ and I wanted to show how implement kiara module configuration.</p>
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CutColumnModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Configuration for the &#39;table.cut_column&#39; kiara module.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the &#39;table.cut_column&#39; kiara module.</span>
 
 <span class="sd">    Technically this is not necessary, because we could just use the &#39;constants&#39; field to</span>
 <span class="sd">    set the &#39;column_name&#39;. But this module is used in the documentation as example, as it&#39;s easy enough to understand,</span>
@@ -2315,7 +2319,7 @@ and I wanted to show how implement kiara module configuration.</p>
 <span class="normal">211</span>
 <span class="normal">212</span>
 <span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CutColumnModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Cut off one column from a table, returning an array.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cut off one column from a table, returning an array.&quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;table.cut_column&quot;</span>
     <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CutColumnModuleConfig</span>
@@ -2808,7 +2812,7 @@ desired column name as key, and a field-name in the following format as value:
 <span class="normal">347</span>
 <span class="normal">348</span>
 <span class="normal">349</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">MergeTableModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a table from other tables and/or arrays.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a table from other tables and/or arrays.</span>
 
 <span class="sd">    This module needs configuration to be set (for now). It&#39;s currently not possible to merge an arbitrary</span>
 <span class="sd">    number of tables/arrays, all tables to be merged must be specified in the module configuration.</span>
@@ -3427,7 +3431,7 @@ one will be used.</p>
 <span class="normal">421</span>
 <span class="normal">422</span>
 <span class="normal">423</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">QueryTableSQL</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Execute a sql query against an (Arrow) table.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute a sql query against an (Arrow) table.</span>
 
 <span class="sd">    The default relation name for the sql query is &#39;data&#39;, but can be modified by the &#39;relation_name&#39; config option/input.</span>
 
@@ -3713,12 +3717,12 @@ one will be used.</p>
 <span class="normal">438</span>
 <span class="normal">439</span>
 <span class="normal">440</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ExportTableModule</span><span class="p">(</span><span class="n">DataExportModule</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Export table data items.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export table data items.&quot;&quot;&quot;</span>
 
     <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;export.table&quot;</span>
 
     <span class="k">def</span> <span class="nf">export__table__as__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Export a table as csv file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Export a table as csv file.&quot;&quot;&quot;</span>
 
         <span class="kn">import</span> <span class="nn">pyarrow.csv</span> <span class="k">as</span> <span class="nn">csv</span>
 
@@ -3768,7 +3772,7 @@ one will be used.</p>
 <span class="normal">438</span>
 <span class="normal">439</span>
 <span class="normal">440</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">export__table__as__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">KiaraTable</span><span class="p">,</span> <span class="n">base_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Export a table as csv file.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Export a table as csv file.&quot;&quot;&quot;</span>
 
     <span class="kn">import</span> <span class="nn">pyarrow.csv</span> <span class="k">as</span> <span class="nn">csv</span>
 
@@ -4462,42 +4466,6 @@ one will be used.</p>
       
         <footer class="md-footer">
   
-    
-    <nav class="md-footer__inner md-grid" aria-label="Footer" >
-      
-        
-        <a href="../../db/__init__/" class="md-footer__link md-footer__link--prev" aria-label="Previous: db" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              db
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../filters/" class="md-footer__link md-footer__link--next" aria-label="Next: filters" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              filters
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
-  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -4519,12 +4487,11 @@ one will be used.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../../assets/javascripts/workers/search.12658920.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../../../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      <script src="../../../../../../assets/javascripts/bundle.5cf534bf.min.js"></script>
       
-    
     
   </body>
 </html>
