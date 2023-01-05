@@ -31,7 +31,7 @@ classifiers = [
 ]
 dependencies = [
     "kiara>=0.4.24",
-    "kiara_plugin.core_types>=0.4.12",
+    "kiara_plugin.core_types>=0.4.13",
     "duckdb>=0.6.0",
     "pandas>=1.4.0",
     "polars>=0.15.0",
