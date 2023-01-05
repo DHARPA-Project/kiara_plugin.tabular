@@ -3,6 +3,7 @@ import atexit
 import os
 import shutil
 import tempfile
+import typing
 from typing import Any, Dict, Iterable, List, Mapping, Tuple, Union
 
 from kiara.models import KiaraModel
@@ -23,6 +24,9 @@ from kiara_plugin.tabular.defaults import (
     SqliteDataType,
 )
 from kiara_plugin.tabular.models import TableMetadata
+
+if typing.TYPE_CHECKING:
+    import pandas as pd
 
 
 class SqliteTableSchema(BaseModel):
@@ -264,6 +268,16 @@ class KiaraDatabase(KiaraModel):
         )
         self._tables[table_name] = table
         return table
+
+    def get_table_as_pandas_df(self, table_name: str) -> "pd.DataFrame":
+
+        import pandas as pd
+
+        query = text(f"SELECT * FROM {table_name}")
+        with self.get_sqlalchemy_engine().connect() as con:
+            df = pd.read_sql(query, con)
+
+        return df
 
     def create_metadata(self) -> "DatabaseMetadata":
 
