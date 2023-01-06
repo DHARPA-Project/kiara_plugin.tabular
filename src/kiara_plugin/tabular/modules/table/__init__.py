@@ -44,6 +44,30 @@ class CreateTableModule(CreateFromModule):
     _module_type_name = "create.table"
     _config_cls = CreateTableModuleConfig
 
+    def create__table__from__file(self, source_value: Value) -> Any:
+        """Create a table from a file, trying to auto-determine the format of said file."""
+
+        from pyarrow import csv
+
+        input_file: FileModel = source_value.data
+        imported_data = None
+        errors = []
+        try:
+            imported_data = csv.read_csv(input_file.path)
+        except Exception as e:
+            errors.append(e)
+
+        if imported_data is None:
+            raise KiaraProcessingException(
+                f"Failed to import file '{input_file.path}'."
+            )
+
+        # import pandas as pd
+        # df = pd.read_csv(input_file.path)
+        # imported_data = pa.Table.from_pandas(df)
+
+        return KiaraTable.create_table(imported_data)
+
     def create__table__from__csv_file(self, source_value: Value) -> Any:
         """Create a table from a csv_file value."""
 
