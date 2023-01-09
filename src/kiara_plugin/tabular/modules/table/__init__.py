@@ -409,7 +409,10 @@ class QueryTableSQL(KiaraModule):
         }
 
         if self.get_config_value("query") is None:
-            inputs["query"] = {"type": "string", "doc": "The query."}
+            inputs["query"] = {
+                "type": "string",
+                "doc": "The query, use the value of the 'relation_name' input as table, e.g. 'select * from data'.",
+            }
             inputs["relation_name"] = {
                 "type": "string",
                 "doc": "The name the table is referred to in the sql query.",
