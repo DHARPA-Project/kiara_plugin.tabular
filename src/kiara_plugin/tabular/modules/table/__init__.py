@@ -82,7 +82,7 @@ class CreateTableModule(CreateFromModule):
 
         return KiaraTable.create_table(imported_data)
 
-    def create__table__from__text_file_bundle(self, source_value: Value) -> Any:
+    def create__table__from__file_bundle(self, source_value: Value) -> Any:
         """Create a table value from a text file_bundle.
 
         The resulting table will have (at a minimum) the following collumns:

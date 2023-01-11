@@ -7,10 +7,10 @@
       "step_id": "import_file_bundle"
     },
     {
-      "module_type": "create.table.from.text_file_bundle",
+      "module_type": "create.table.from.file_bundle",
       "step_id": "create_table_from_files",
       "input_links": {
-        "text_file_bundle": "import_file_bundle.file_bundle"
+        "file_bundle": "import_file_bundle.file_bundle"
       }
     }],
   "input_aliases": {
