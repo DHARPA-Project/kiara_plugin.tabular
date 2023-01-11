@@ -1,5 +1,5 @@
 {
-  "pipeline_name": "import.database.from.csv_file",
+  "pipeline_name": "import.database.from.local_file_path",
   "doc": "Import a database from a csv file.",
   "steps": [
     {

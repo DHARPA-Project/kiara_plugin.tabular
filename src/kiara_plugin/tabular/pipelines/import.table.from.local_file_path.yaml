@@ -1,16 +1,16 @@
 {
-  "pipeline_name": "import.table.from.csv_file",
-  "doc": "Import a table from a csv file.",
+  "pipeline_name": "import.table.from.local_file_path",
+  "doc": "Import a table from a file on the local filesystem.",
   "steps": [
     {
       "module_type": "import.file",
       "step_id": "import_file"
     },
     {
-      "module_type": "create.table.from.csv_file",
+      "module_type": "create.table.from.file",
       "step_id": "create_table_from_file",
       "input_links": {
-        "csv_file": "import_file.file"
+        "file": "import_file.file"
       }
     }],
   "input_aliases": {

@@ -1,6 +1,6 @@
 {
-  "pipeline_name": "import.table.from.text_file_bundle",
-  "doc": "Load a table from a bundle of text files.",
+  "pipeline_name": "import.table.from.local_folder_path",
+  "doc": "Import a table from a local folder containing text files.",
   "steps": [
     {
       "module_type": "import.file_bundle",
