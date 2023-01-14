@@ -7,7 +7,7 @@ steps:
     step_id: create_text_corpus
     input_links:
       text_file_bundle: import_text_corpus.file_bundle
-  - module_type: table.cut_column
+  - module_type: table.pick.column
     step_id: extract_filename_column
     input_links:
       table: create_text_corpus.table

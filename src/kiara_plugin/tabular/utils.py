@@ -37,11 +37,22 @@ def insert_db_table_from_file_bundle(
     file_bundle: FileBundle,
     table_name: str = "file_items",
     include_content: bool = True,
+    included_files: Union[None, Mapping[str, bool]] = None,
+    errors: Union[Mapping[str, Union[str, None]], None] = None,
 ):
 
     # TODO: check if table with that name exists
 
-    from sqlalchemy import Column, Integer, MetaData, String, Table, Text, insert
+    from sqlalchemy import (
+        Boolean,
+        Column,
+        Integer,
+        MetaData,
+        String,
+        Table,
+        Text,
+        insert,
+    )
     from sqlalchemy.engine import Engine
 
     # if db_file_path is None:
@@ -64,10 +75,17 @@ def insert_db_table_from_file_bundle(
         Column("rel_path", String(), nullable=False),
         Column("file_name", String(), nullable=False),
         Column("content", Text(), nullable=not include_content),
+        Column("included_in_bundle", Boolean(), nullable=included_files is None),
+        Column("error", Text(), nullable=True),
     )
 
     engine: Engine = database.get_sqlalchemy_engine()
     metadata_obj.create_all(engine)
+
+    if included_files is None:
+        included_files = {}
+    if errors is None:
+        errors = {}
 
     with engine.connect() as con:
 
@@ -75,11 +93,13 @@ def insert_db_table_from_file_bundle(
 
         for index, rel_path in enumerate(sorted(file_bundle.included_files.keys())):
             f: FileModel = file_bundle.included_files[rel_path]
-            if not include_content:
+            if include_content:
                 content: Union[str, None] = f.read_text()  # type: ignore
             else:
                 content = None
 
+            included = included_files.get(rel_path, None)
+            error = errors.get(rel_path, None)
             _values = {
                 "id": index,
                 "size": f.size,
@@ -87,6 +107,8 @@ def insert_db_table_from_file_bundle(
                 "rel_path": rel_path,
                 "file_name": f.file_name,
                 "content": content,
+                "included_in_bundle": included,
+                "error": error,
             }
 
             stmt = insert(file_items).values(**_values)

@@ -167,7 +167,7 @@ class DeserializeTableModule(DeserializeValueModule):
         return table
 
 
-class CutColumnModuleConfig(KiaraModuleConfig):
+class PickColumnModuleConfig(KiaraModuleConfig):
     """Configuration for the 'table.cut_column' kiara module.
 
     Technically this is not necessary, because we could just use the 'constants' field to
@@ -180,11 +180,11 @@ class CutColumnModuleConfig(KiaraModuleConfig):
     )
 
 
-class CutColumnModule(KiaraModule):
-    """Cut off one column from a table, returning an array."""
+class PickColumnModule(KiaraModule):
+    """Pick one column from a table, returning an array."""
 
-    _module_type_name = "table.cut_column"
-    _config_cls = CutColumnModuleConfig
+    _module_type_name = "table.pick.column"
+    _config_cls = PickColumnModuleConfig
 
     def create_inputs_schema(
         self,

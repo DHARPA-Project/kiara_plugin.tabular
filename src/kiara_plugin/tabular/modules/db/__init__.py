@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 import atexit
+import logging
 import os
 import shutil
 import tempfile
 from typing import Any, Dict, List, Mapping, Type, Union
 
-from kiara.exceptions import KiaraProcessingException
+from kiara.exceptions import KiaraException, KiaraProcessingException
 from kiara.models.filesystem import FileBundle, FileModel
 from kiara.models.module import KiaraModuleConfig
+from kiara.models.module.jobs import JobLog
 from kiara.models.rendering import RenderScene, RenderValueResult
 from kiara.models.values.value import SerializedData, Value, ValueMap
 from kiara.modules import KiaraModule, ValueMapSchema
@@ -56,8 +58,11 @@ class CreateDatabaseModule(CreateFromModule):
     _module_type_name = "create.database"
     _config_cls = CreateDatabaseModuleConfig
 
-    def create__database__from__csv_file(self, source_value: Value) -> Any:
-        """Create a database from a csv_file value."""
+    def create__database__from__file(self, source_value: Value) -> Any:
+        """Create a database from a file.
+
+        Currently, only csv files are supported.
+        """
 
         temp_f = tempfile.mkdtemp()
         db_path = os.path.join(temp_f, "db.sqlite")
@@ -68,6 +73,11 @@ class CreateDatabaseModule(CreateFromModule):
         atexit.register(cleanup)
 
         file_item: FileModel = source_value.data
+        if not file_item.file_name.endswith(".csv"):
+            raise KiaraProcessingException(
+                "Only csv files are supported (at the moment)."
+            )
+
         table_name = file_item.file_name_without_extension
 
         table_name = table_name.replace("-", "_")
@@ -105,12 +115,17 @@ class CreateDatabaseModule(CreateFromModule):
 
         return db_path
 
-    def create__database__from__csv_file_bundle(self, source_value: Value) -> Any:
+    def create__database__from__file_bundle(
+        self, source_value: Value, job_log: JobLog
+    ) -> Any:
         """Create a database from a csv_file_bundle value.
 
-        Unless 'merge_into_single_table' is set to 'True', each csv file will create one table
+        Currently, only csv files are supported, files in the source file_bundle that have different extensions will be ignored.
+
+        Unless 'merge_into_single_table' is set to 'True' in the module configuration, each csv file will create one table
         in the resulting database. If this option is set, only a single table with all the values of all
         csv files will be created. For this to work, all csv files should follow the same schema.
+
         """
 
         merge_into_single_table = self.get_config_value("merge_into_single_table")
@@ -135,8 +150,19 @@ class CreateDatabaseModule(CreateFromModule):
         # TODO: check whether/how to add indexes
 
         bundle: FileBundle = source_value.data
+
         table_names: List[str] = []
+        included_files: Dict[str, bool] = {}
+        errors: Dict[str, Union[None, str]] = {}
         for rel_path in sorted(bundle.included_files.keys()):
+
+            if not rel_path.endswith(".csv"):
+                job_log.add_log(
+                    f"Ignoring file (not csv): {rel_path}", log_level=logging.INFO
+                )
+                included_files[rel_path] = False
+                errors[rel_path] = "Not a csv file."
+                continue
 
             file_item = bundle.included_files[rel_path]
             table_name = find_free_id(
@@ -147,20 +173,28 @@ class CreateDatabaseModule(CreateFromModule):
                 create_sqlite_table_from_tabular_file(
                     target_db_file=db_path, file_item=file_item, table_name=table_name
                 )
+                included_files[rel_path] = True
             except Exception as e:
+                included_files[rel_path] = False
+                errors[rel_path] = KiaraException.get_root_details(e)
+
                 if self.get_config_value("ignore_errors") is True or True:
                     log_message("ignore.import_file", file=rel_path, reason=str(e))
                     continue
+
                 raise KiaraProcessingException(e)
 
         if include_raw_content_in_file_info in [None, True]:
             include_content: bool = self.get_config_value("include_source_file_content")
             db._unlock_db()
+
             insert_db_table_from_file_bundle(
                 database=db,
                 file_bundle=source_value.data,
                 table_name="source_files_metadata",
                 include_content=include_content,
+                included_files=included_files,
+                errors=errors,
             )
             db._lock_db()
 

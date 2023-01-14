@@ -5,7 +5,7 @@
 import typing
 from typing import Dict, Literal, Tuple, Type
 
-from sqlalchemy.types import BLOB, FLOAT, INTEGER, TEXT, VARCHAR
+from sqlalchemy.types import BLOB, BOOLEAN, FLOAT, INTEGER, TEXT, VARCHAR
 
 # if not hasattr(sys, "frozen"):
 #     KIARA_PLUGIN_TABULAR_BASE_FOLDER = os.path.dirname(__file__)
@@ -39,6 +39,7 @@ SQLALCHEMY_SQLITE_TYPE_MAP: Dict[Type, SqliteDataType] = {
     FLOAT: "REAL",
     TEXT: "TEXT",
     BLOB: "BLOB",
+    BOOLEAN: "INTEGER",
     VARCHAR: "TEXT",
 }
 

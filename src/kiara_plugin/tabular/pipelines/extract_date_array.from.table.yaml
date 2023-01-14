@@ -3,19 +3,19 @@
   "doc": "Extract a date array from a table column.",
   "steps": [
     {
-      "module_type": "table.cut_column",
-      "step_id": "cut_column"
+      "module_type": "table.pick.column",
+      "step_id": "pick_column"
     },
     {
       "module_type": "parse.date_array",
       "step_id": "parse_date_array",
       "input_links": {
-        "array": "cut_column.array"
+        "array": "pick_column.array"
       }
     }],
   "input_aliases": {
-      "cut_column.table": "table",
-      "cut_column.column_name": "column_name"
+      "pick_column.table": "table",
+      "pick_column.column_name": "column_name"
   },
   "output_aliases": {
       "parse_date_array.date_array": "date_array"

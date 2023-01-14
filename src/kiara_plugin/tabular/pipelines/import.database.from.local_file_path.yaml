@@ -7,10 +7,10 @@
       "step_id": "import_file"
     },
     {
-      "module_type": "create.database.from.csv_file",
+      "module_type": "create.database.from.file",
       "step_id": "create_database_from_file",
       "input_links": {
-        "csv_file": "import_file.file"
+        "file": "import_file.file"
       }
     }],
   "input_aliases": {
