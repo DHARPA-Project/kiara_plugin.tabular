@@ -118,7 +118,7 @@ class CreateDatabaseModule(CreateFromModule):
     def create__database__from__file_bundle(
         self, source_value: Value, job_log: JobLog
     ) -> Any:
-        """Create a database from a csv_file_bundle value.
+        """Create a database from a file_bundle value.
 
         Currently, only csv files are supported, files in the source file_bundle that have different extensions will be ignored.
 

@@ -13,13 +13,13 @@ steps:
   - module_type: create.database
     module_config:
       include_source_metadata: false
-      source_type: csv_file_bundle
+      source_type: file_bundle
       target_type: database
       ignore_errors: false
       include_source_file_content: false
     step_id: create_database
     input_links:
-      csv_file_bundle: import_csv_files.file_bundle
+      file_bundle: import_csv_files.file_bundle
 
 input_aliases:
   import_csv_files.path: path
