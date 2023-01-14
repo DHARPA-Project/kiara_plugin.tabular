@@ -1009,15 +1009,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModuleConfig" class="md-nav__link">
-    CutColumnModuleConfig
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModuleConfig" class="md-nav__link">
+    PickColumnModuleConfig
   </a>
   
-    <nav class="md-nav" aria-label="CutColumnModuleConfig">
+    <nav class="md-nav" aria-label="PickColumnModuleConfig">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModuleConfig-attributes" class="md-nav__link">
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModuleConfig-attributes" class="md-nav__link">
     Attributes
   </a>
   
@@ -1025,7 +1025,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModuleConfig.column_name" class="md-nav__link">
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModuleConfig.column_name" class="md-nav__link">
     column_name
   </a>
   
@@ -1042,15 +1042,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModule" class="md-nav__link">
-    CutColumnModule
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModule" class="md-nav__link">
+    PickColumnModule
   </a>
   
-    <nav class="md-nav" aria-label="CutColumnModule">
+    <nav class="md-nav" aria-label="PickColumnModule">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModule-attributes" class="md-nav__link">
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModule-attributes" class="md-nav__link">
     Attributes
   </a>
   
@@ -1058,7 +1058,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModule._config_cls" class="md-nav__link">
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModule._config_cls" class="md-nav__link">
     _config_cls
   </a>
   
@@ -1070,7 +1070,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModule-functions" class="md-nav__link">
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModule-functions" class="md-nav__link">
     Functions
   </a>
   
@@ -1078,21 +1078,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModule.create_inputs_schema" class="md-nav__link">
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModule.create_inputs_schema" class="md-nav__link">
     create_inputs_schema()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModule.create_outputs_schema" class="md-nav__link">
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModule.create_outputs_schema" class="md-nav__link">
     create_outputs_schema()
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CutColumnModule.process" class="md-nav__link">
+  <a href="#kiara_plugin.tabular.modules.table.PickColumnModule.process" class="md-nav__link">
     process()
   </a>
   
@@ -2290,11 +2290,11 @@
 
 
 
-<h3 id="kiara_plugin.tabular.modules.table.CutColumnModuleConfig" class="doc doc-heading">
-        <code>CutColumnModuleConfig</code>
+<h3 id="kiara_plugin.tabular.modules.table.PickColumnModuleConfig" class="doc doc-heading">
+        <code>PickColumnModuleConfig</code>
 
 
-<a href="#kiara_plugin.tabular.modules.table.CutColumnModuleConfig" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#kiara_plugin.tabular.modules.table.PickColumnModuleConfig" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
@@ -2320,7 +2320,7 @@ and I wanted to show how implement kiara module configuration.</p>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
-<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CutColumnModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
+<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PickColumnModuleConfig</span><span class="p">(</span><span class="n">KiaraModuleConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for the &#39;table.cut_column&#39; kiara module.</span>
 
 <span class="sd">    Technically this is not necessary, because we could just use the &#39;constants&#39; field to</span>
@@ -2342,20 +2342,20 @@ and I wanted to show how implement kiara module configuration.</p>
 
 
 
-<h4 id="kiara_plugin.tabular.modules.table.CutColumnModuleConfig-attributes">Attributes<a href="#kiara_plugin.tabular.modules.table.CutColumnModuleConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
+<h4 id="kiara_plugin.tabular.modules.table.PickColumnModuleConfig-attributes">Attributes<a href="#kiara_plugin.tabular.modules.table.PickColumnModuleConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
 
 <div class="doc doc-object doc-attribute">
 
 
 
-<h5 id="kiara_plugin.tabular.modules.table.CutColumnModuleConfig.column_name" class="doc doc-heading">
+<h5 id="kiara_plugin.tabular.modules.table.PickColumnModuleConfig.column_name" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">column_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A hardcoded column name to cut.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
-<a href="#kiara_plugin.tabular.modules.table.CutColumnModuleConfig.column_name" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#kiara_plugin.tabular.modules.table.PickColumnModuleConfig.column_name" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
   <div class="doc doc-contents ">
@@ -2377,11 +2377,11 @@ and I wanted to show how implement kiara module configuration.</p>
 
 
 
-<h3 id="kiara_plugin.tabular.modules.table.CutColumnModule" class="doc doc-heading">
-        <code>CutColumnModule</code>
+<h3 id="kiara_plugin.tabular.modules.table.PickColumnModule" class="doc doc-heading">
+        <code>PickColumnModule</code>
 
 
-<a href="#kiara_plugin.tabular.modules.table.CutColumnModule" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#kiara_plugin.tabular.modules.table.PickColumnModule" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
   <div class="doc doc-contents ">
@@ -2389,7 +2389,7 @@ and I wanted to show how implement kiara module configuration.</p>
         Bases: <code><a class="autorefs autorefs-external" title="kiara.modules.KiaraModule" href="https://dharpa.org/kiara/latest/reference/kiara/modules/__init__/#kiara.modules.KiaraModule">KiaraModule</a></code></p>
 
   
-      <p>Cut off one column from a table, returning an array.</p>
+      <p>Pick one column from a table, returning an array.</p>
 
 
         <details class="quote">
@@ -2448,11 +2448,11 @@ and I wanted to show how implement kiara module configuration.</p>
 <span class="normal">234</span>
 <span class="normal">235</span>
 <span class="normal">236</span>
-<span class="normal">237</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">CutColumnModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cut off one column from a table, returning an array.&quot;&quot;&quot;</span>
+<span class="normal">237</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">PickColumnModule</span><span class="p">(</span><span class="n">KiaraModule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pick one column from a table, returning an array.&quot;&quot;&quot;</span>
 
-    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;table.cut_column&quot;</span>
-    <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CutColumnModuleConfig</span>
+    <span class="n">_module_type_name</span> <span class="o">=</span> <span class="s2">&quot;table.pick.column&quot;</span>
+    <span class="n">_config_cls</span> <span class="o">=</span> <span class="n">PickColumnModuleConfig</span>
 
     <span class="k">def</span> <span class="nf">create_inputs_schema</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2514,20 +2514,20 @@ and I wanted to show how implement kiara module configuration.</p>
 
 
 
-<h4 id="kiara_plugin.tabular.modules.table.CutColumnModule-attributes">Attributes<a href="#kiara_plugin.tabular.modules.table.CutColumnModule-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
+<h4 id="kiara_plugin.tabular.modules.table.PickColumnModule-attributes">Attributes<a href="#kiara_plugin.tabular.modules.table.PickColumnModule-attributes" class="headerlink" title="Permanent link">&para;</a></h4>
 
 <div class="doc doc-object doc-attribute">
 
 
 
-<h5 id="kiara_plugin.tabular.modules.table.CutColumnModule._config_cls" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CutColumnModuleConfig</span></code>
+<h5 id="kiara_plugin.tabular.modules.table.PickColumnModule._config_cls" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">_config_cls</span> <span class="o">=</span> <span class="n">PickColumnModuleConfig</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
-<a href="#kiara_plugin.tabular.modules.table.CutColumnModule._config_cls" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#kiara_plugin.tabular.modules.table.PickColumnModule._config_cls" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
   <div class="doc doc-contents ">
@@ -2535,16 +2535,16 @@ and I wanted to show how implement kiara module configuration.</p>
 
 </div>
 
-<h4 id="kiara_plugin.tabular.modules.table.CutColumnModule-functions">Functions<a href="#kiara_plugin.tabular.modules.table.CutColumnModule-functions" class="headerlink" title="Permanent link">&para;</a></h4>
+<h4 id="kiara_plugin.tabular.modules.table.PickColumnModule-functions">Functions<a href="#kiara_plugin.tabular.modules.table.PickColumnModule-functions" class="headerlink" title="Permanent link">&para;</a></h4>
 
 <div class="doc doc-object doc-function">
 
 
 
-<h5 id="kiara_plugin.tabular.modules.table.CutColumnModule.create_inputs_schema" class="doc doc-heading">
+<h5 id="kiara_plugin.tabular.modules.table.PickColumnModule.create_inputs_schema" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">create_inputs_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ValueMapSchema</span></code>
 
-<a href="#kiara_plugin.tabular.modules.table.CutColumnModule.create_inputs_schema" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#kiara_plugin.tabular.modules.table.PickColumnModule.create_inputs_schema" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
   <div class="doc doc-contents ">
@@ -2586,10 +2586,10 @@ and I wanted to show how implement kiara module configuration.</p>
 
 
 
-<h5 id="kiara_plugin.tabular.modules.table.CutColumnModule.create_outputs_schema" class="doc doc-heading">
+<h5 id="kiara_plugin.tabular.modules.table.PickColumnModule.create_outputs_schema" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">create_outputs_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ValueMapSchema</span></code>
 
-<a href="#kiara_plugin.tabular.modules.table.CutColumnModule.create_outputs_schema" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#kiara_plugin.tabular.modules.table.PickColumnModule.create_outputs_schema" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
   <div class="doc doc-contents ">
@@ -2617,10 +2617,10 @@ and I wanted to show how implement kiara module configuration.</p>
 
 
 
-<h5 id="kiara_plugin.tabular.modules.table.CutColumnModule.process" class="doc doc-heading">
+<h5 id="kiara_plugin.tabular.modules.table.PickColumnModule.process" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">process</span><span class="p">(</span><span class="n">inputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">,</span> <span class="n">outputs</span><span class="p">:</span> <span class="n">ValueMap</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
-<a href="#kiara_plugin.tabular.modules.table.CutColumnModule.process" class="headerlink" title="Permanent link">&para;</a></h5>
+<a href="#kiara_plugin.tabular.modules.table.PickColumnModule.process" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
   <div class="doc doc-contents ">
