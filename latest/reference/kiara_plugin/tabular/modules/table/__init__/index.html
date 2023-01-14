@@ -931,13 +931,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.modules.table.CreateTableModule.create__table__from__csv_file" class="md-nav__link">
-    create__table__from__csv_file()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.modules.table.CreateTableModule.create__table__from__file_bundle" class="md-nav__link">
     create__table__from__file_bundle()
   </a>
@@ -1689,19 +1682,19 @@
 
         <span class="k">return</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">imported_data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">create__table__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
-
-        <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
-
-        <span class="n">input_file</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
-        <span class="n">imported_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-
-        <span class="c1"># import pandas as pd</span>
-        <span class="c1"># df = pd.read_csv(input_file.path)</span>
-        <span class="c1"># imported_data = pa.Table.from_pandas(df)</span>
-
-        <span class="k">return</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">imported_data</span><span class="p">)</span>
+    <span class="c1"># def create__table__from__csv_file(self, source_value: Value) -&gt; Any:</span>
+    <span class="c1">#     &quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1">#     from pyarrow import csv</span>
+    <span class="c1">#</span>
+    <span class="c1">#     input_file: FileModel = source_value.data</span>
+    <span class="c1">#     imported_data = csv.read_csv(input_file.path)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     # import pandas as pd</span>
+    <span class="c1">#     # df = pd.read_csv(input_file.path)</span>
+    <span class="c1">#     # imported_data = pa.Table.from_pandas(df)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return KiaraTable.create_table(imported_data)</span>
 
     <span class="k">def</span> <span class="nf">create__table__from__file_bundle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a table value from a text file_bundle.</span>
@@ -1829,53 +1822,6 @@
         <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Failed to import file &#39;</span><span class="si">{</span><span class="n">input_file</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
         <span class="p">)</span>
-
-    <span class="c1"># import pandas as pd</span>
-    <span class="c1"># df = pd.read_csv(input_file.path)</span>
-    <span class="c1"># imported_data = pa.Table.from_pandas(df)</span>
-
-    <span class="k">return</span> <span class="n">KiaraTable</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">imported_data</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h5 id="kiara_plugin.tabular.modules.table.CreateTableModule.create__table__from__csv_file" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create__table__from__csv_file</span><span class="p">(</span><span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span></code>
-
-<a href="#kiara_plugin.tabular.modules.table.CreateTableModule.create__table__from__csv_file" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Create a table from a csv_file value.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>kiara_plugin/tabular/modules/table/__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
-<span class="normal">72</span>
-<span class="normal">73</span>
-<span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span>
-<span class="normal">79</span>
-<span class="normal">80</span>
-<span class="normal">81</span>
-<span class="normal">82</span>
-<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create__table__from__csv_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a table from a csv_file value.&quot;&quot;&quot;</span>
-
-    <span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">csv</span>
-
-    <span class="n">input_file</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
-    <span class="n">imported_data</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="c1"># import pandas as pd</span>
     <span class="c1"># df = pd.read_csv(input_file.path)</span>

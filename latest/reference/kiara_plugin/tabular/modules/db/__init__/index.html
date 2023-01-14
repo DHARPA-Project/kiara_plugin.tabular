@@ -2095,7 +2095,7 @@
     <span class="k">def</span> <span class="nf">create__database__from__file_bundle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">job_log</span><span class="p">:</span> <span class="n">JobLog</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a database from a csv_file_bundle value.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a database from a file_bundle value.</span>
 
 <span class="sd">        Currently, only csv files are supported, files in the source file_bundle that have different extensions will be ignored.</span>
 
@@ -2408,7 +2408,7 @@
 
   <div class="doc doc-contents ">
   
-      <p>Create a database from a csv_file_bundle value.</p>
+      <p>Create a database from a file_bundle value.</p>
 <p>Currently, only csv files are supported, files in the source file_bundle that have different extensions will be ignored.</p>
 <p>Unless 'merge_into_single_table' is set to 'True' in the module configuration, each csv file will create one table
 in the resulting database. If this option is set, only a single table with all the values of all
@@ -2502,7 +2502,7 @@ csv files will be created. For this to work, all csv files should follow the sam
 <span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create__database__from__file_bundle</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">source_value</span><span class="p">:</span> <span class="n">Value</span><span class="p">,</span> <span class="n">job_log</span><span class="p">:</span> <span class="n">JobLog</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a database from a csv_file_bundle value.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a database from a file_bundle value.</span>
 
 <span class="sd">    Currently, only csv files are supported, files in the source file_bundle that have different extensions will be ignored.</span>
 

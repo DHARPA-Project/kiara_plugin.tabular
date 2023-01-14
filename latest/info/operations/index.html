@@ -387,13 +387,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#kiara_info.operations.create.table.from.csv_file" class="md-nav__link">
-    create.table.from.csv_file
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#kiara_info.operations.create.table.from.file" class="md-nav__link">
     create.table.from.file
   </a>
@@ -1038,13 +1031,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#kiara_info.operations.create.table.from.csv_file" class="md-nav__link">
-    create.table.from.csv_file
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#kiara_info.operations.create.table.from.file" class="md-nav__link">
     create.table.from.file
   </a>
@@ -1279,7 +1265,7 @@
 <table>
     <tr>
         <td>Documentation</td>
-        <td><p>Create a database from a csv_file_bundle value.</p>
+        <td><p>Create a database from a file_bundle value.</p>
 <p>Currently, only csv files are supported, files in the source file_bundle that have different extensions will be ignored.</p>
 <p>Unless 'merge_into_single_table' is set to 'True' in the module configuration, each csv file will create one table
 in the resulting database. If this option is set, only a single table with all the values of all
@@ -1402,69 +1388,6 @@ csv files will be created. For this to work, all csv files should follow the sam
 <td>database</td>
 <td>database</td>
 <td>The result value (of type &#39;database&#39;).</td>
-<td>yes</td>
-<td></td>
-    </tr>
-
-    </tbody>
-</table>
-</td>
-    </tr>
-</table><h3 id="kiara_info.operations.create.table.from.csv_file"><code>create.table.from.csv_file</code><a class="headerlink" href="#kiara_info.operations.create.table.from.csv_file" title="Permanent link">&para;</a></h3>
-
-
-<table>
-    <tr>
-        <td>Documentation</td>
-        <td><p>Create a table from a csv_file value.</p>
-</td>
-    </tr>
-    <tr>
-        <td>Inputs</td>
-        <td>
-<table>
-    <thead>
-    <tr>
-        <th>field name</th>
-        <th>type</th>
-        <th>description</th>
-        <th>required</th>
-        <th>default</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-
-<td>csv_file</td>
-<td>csv_file</td>
-<td>The source value (of type &#39;csv_file&#39;).</td>
-<td>yes</td>
-<td></td>
-    </tr>
-
-    </tbody>
-</table>
-</td>
-    </tr>
-    <tr>
-        <td>Outputs</td>
-        <td>
-<table>
-    <thead>
-    <tr>
-        <th>field name</th>
-        <th>type</th>
-        <th>description</th>
-        <th>required</th>
-        <th>default</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-
-<td>table</td>
-<td>table</td>
-<td>The result value (of type &#39;table&#39;).</td>
 <td>yes</td>
 <td></td>
     </tr>
