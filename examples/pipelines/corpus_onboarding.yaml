@@ -3,10 +3,10 @@ doc: Onboard a text corpus.
 steps:
   - module_type: import.file_bundle
     step_id: import_text_corpus
-  - module_type: create.table.from.text_file_bundle
+  - module_type: create.table.from.file_bundle
     step_id: create_text_corpus
     input_links:
-      text_file_bundle: import_text_corpus.file_bundle
+      file_bundle: import_text_corpus.file_bundle
   - module_type: table.pick.column
     step_id: extract_filename_column
     input_links:
