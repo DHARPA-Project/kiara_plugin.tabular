@@ -3,7 +3,7 @@
   "doc": "Import a table from a local folder containing text files.",
   "steps": [
     {
-      "module_type": "import.file_bundle",
+      "module_type": "import.local.file_bundle",
       "step_id": "import_file_bundle"
     },
     {

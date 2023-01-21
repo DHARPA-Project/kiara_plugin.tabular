@@ -5,7 +5,7 @@ doc: |
   Each file will represent a table in the database.
 
 steps:
-  - module_type: import.file_bundle
+  - module_type: import.local.file_bundle
     module_config:
       include_file_types:
         - ".csv"

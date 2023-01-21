@@ -3,7 +3,7 @@
   "doc": "Import a database from a csv file.",
   "steps": [
     {
-      "module_type": "import.file",
+      "module_type": "import.local.file",
       "step_id": "import_file"
     },
     {

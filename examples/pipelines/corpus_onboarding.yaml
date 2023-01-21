@@ -1,7 +1,7 @@
 pipeline_name: corpus_onboarding
 doc: Onboard a text corpus.
 steps:
-  - module_type: import.file_bundle
+  - module_type: import.local.file_bundle
     step_id: import_text_corpus
   - module_type: create.table.from.file_bundle
     step_id: create_text_corpus
