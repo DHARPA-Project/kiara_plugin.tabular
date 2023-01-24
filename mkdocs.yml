@@ -52,6 +52,7 @@ plugins:
         import:
         - https://dharpa.org/kiara/latest/objects.inv
         - https://dharpa.org/kiara_plugin.core_types/latest/objects.inv
+
     watch:
       - "src"
     enable_inventory: true

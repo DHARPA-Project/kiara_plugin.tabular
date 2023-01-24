@@ -60,6 +60,22 @@ dev_all = [
     "kiara[dev_all]"
 ]
 
+[project.entry-points."kiara.plugin"]
+tabular = "kiara_plugin.tabular"
+
+[project.entry-points."kiara.data_types"]
+tabular = "kiara_plugin.tabular:find_data_types"
+
+[project.entry-points."kiara.model_classes"]
+tabular = "kiara_plugin.tabular:find_model_classes"
+
+[project.entry-points."kiara.modules"]
+tabular = "kiara_plugin.tabular:find_modules"
+
+[project.entry-points."kiara.pipelines"]
+tabular = "kiara_plugin.tabular:find_pipelines"
+
+
 [project.urls]
 homepage = "https://github.com/DHARPA-Project/kiara_plugin.tabular"
 documentation = "https://DHARPA-Project.github.io/kiara_plugin.tabular"
