@@ -15,8 +15,8 @@ from pydantic import BaseModel, Field, PrivateAttr, validator
 from sqlalchemy import Column, MetaData, create_engine, event, inspect, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.engine.reflection import Inspector
+from sqlalchemy.schema import Table
 from sqlalchemy.sql.elements import TextClause
-from sqlalchemy.testing.schema import Table
 
 from kiara_plugin.tabular.defaults import (
     SQLALCHEMY_SQLITE_TYPE_MAP,
