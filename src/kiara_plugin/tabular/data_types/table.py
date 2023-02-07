@@ -10,7 +10,6 @@ from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
 from kiara.utils.output import ArrowTabularWrap
-
 from kiara_plugin.tabular.data_types.array import store_array
 from kiara_plugin.tabular.models.table import KiaraTable
 from kiara_plugin.tabular.modules.table import EMPTY_COLUMN_NAME_MARKER

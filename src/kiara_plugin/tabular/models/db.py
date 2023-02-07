@@ -6,10 +6,6 @@ import tempfile
 import typing
 from typing import Any, Dict, Iterable, List, Mapping, Tuple, Union
 
-from kiara.models import KiaraModel
-from kiara.models.values.value import Value
-from kiara.models.values.value_metadata import ValueMetadata
-from kiara.utils.hashing import compute_cid_from_file
 from multiformats import CID
 from pydantic import BaseModel, Field, PrivateAttr, validator
 from sqlalchemy import Column, MetaData, create_engine, event, inspect, text
@@ -18,6 +14,10 @@ from sqlalchemy.engine.reflection import Inspector
 from sqlalchemy.schema import Table
 from sqlalchemy.sql.elements import TextClause
 
+from kiara.models import KiaraModel
+from kiara.models.values.value import Value
+from kiara.models.values.value_metadata import ValueMetadata
+from kiara.utils.hashing import compute_cid_from_file
 from kiara_plugin.tabular.defaults import (
     SQLALCHEMY_SQLITE_TYPE_MAP,
     SQLITE_SQLALCHEMY_TYPE_MAP,
@@ -275,7 +275,7 @@ class KiaraDatabase(KiaraModel):
 
         query = text(f"SELECT * FROM {table_name}")
         with self.get_sqlalchemy_engine().connect() as con:
-            df = pd.read_sql(query, con)
+            df = pd.read_sql(query, con)  # noqa
 
         return df
 

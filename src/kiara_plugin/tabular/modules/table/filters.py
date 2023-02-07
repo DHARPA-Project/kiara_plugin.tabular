@@ -5,7 +5,6 @@ from kiara.exceptions import KiaraProcessingException
 from kiara.models.values.value import Value
 from kiara.modules import ValueMapSchema
 from kiara.modules.included_core_modules.filter import FilterModule
-
 from kiara_plugin.tabular.models.table import KiaraTable
 
 

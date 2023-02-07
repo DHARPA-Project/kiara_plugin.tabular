@@ -10,8 +10,9 @@ sub-class a pydantic BaseModel or implement custom base classes.
 """
 from typing import Any, Dict, List, Union
 
-from kiara.models import KiaraModel
 from pydantic import BaseModel, Field
+
+from kiara.models import KiaraModel
 
 
 class ColumnSchema(BaseModel):

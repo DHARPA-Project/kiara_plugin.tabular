@@ -2,11 +2,11 @@
 from typing import Any, Iterable, Union
 
 import pyarrow as pa
+from pydantic import Field, PrivateAttr
+
 from kiara.models import KiaraModel
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
-from pydantic import Field, PrivateAttr
-
 from kiara_plugin.tabular.models import TableMetadata
 
 

@@ -3,13 +3,13 @@ import os
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Type, Union
 
+from rich.console import Group
+
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
 from kiara.utils.output import DictTabularWrap, TabularWrap
-from rich.console import Group
-
 from kiara_plugin.tabular.models.db import KiaraDatabase
 
 if TYPE_CHECKING:

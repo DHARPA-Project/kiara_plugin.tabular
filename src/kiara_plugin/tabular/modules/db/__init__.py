@@ -6,6 +6,9 @@ import shutil
 import tempfile
 from typing import Any, Dict, List, Mapping, Type, Union
 
+from pydantic import Field
+from sqlalchemy import insert, text
+
 from kiara.exceptions import KiaraException, KiaraProcessingException
 from kiara.models.filesystem import FileBundle, FileModel
 from kiara.models.module import KiaraModuleConfig
@@ -21,9 +24,6 @@ from kiara.modules.included_core_modules.render_value import RenderValueModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils import find_free_id, log_message
 from kiara.utils.output import DictTabularWrap
-from pydantic import Field
-from sqlalchemy import insert, text
-
 from kiara_plugin.tabular.defaults import DEFAULT_TABULAR_DATA_CHUNK_SIZE
 from kiara_plugin.tabular.models.db import KiaraDatabase
 from kiara_plugin.tabular.models.table import KiaraTable

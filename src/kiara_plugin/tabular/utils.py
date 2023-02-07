@@ -7,8 +7,6 @@ import typing
 from typing import Dict, Iterable, Mapping, Union
 
 import sqlite_utils
-from kiara.models.filesystem import FileBundle, FileModel
-from kiara.utils import log_exception
 from sqlite_utils.cli import (
     _find_variables,
     _load_extensions,
@@ -25,6 +23,8 @@ from sqlite_utils.utils import (
 )
 from sqlite_utils.utils import flatten as _flatten
 
+from kiara.models.filesystem import FileBundle, FileModel
+from kiara.utils import log_exception
 from kiara_plugin.tabular.defaults import SqliteDataType
 from kiara_plugin.tabular.models.db import KiaraDatabase, SqliteTableSchema
 

@@ -2,6 +2,8 @@
 import os
 from typing import Any, Dict, Iterable, List, Mapping, Type, Union
 
+from pydantic import Field
+
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import (
     FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS,
@@ -22,8 +24,6 @@ from kiara.modules.included_core_modules.export_as import DataExportModule
 from kiara.modules.included_core_modules.render_value import RenderValueModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils.output import ArrowTabularWrap
-from pydantic import Field
-
 from kiara_plugin.tabular.defaults import RESERVED_SQL_KEYWORDS
 from kiara_plugin.tabular.models.array import KiaraArray
 from kiara_plugin.tabular.models.table import KiaraTable, KiaraTableMetadata
@@ -458,10 +458,9 @@ class ExportTableModule(DataExportModule):
     def export__table__as__csv_file(self, value: KiaraTable, base_path: str, name: str):
         """Export a table as csv file."""
 
-        import pyarrow.csv as csv
+        from pyarrow import csv
 
         target_path = os.path.join(base_path, f"{name}.csv")
-
         csv.write_csv(value.arrow_table, target_path)
 
         return {"files": target_path}

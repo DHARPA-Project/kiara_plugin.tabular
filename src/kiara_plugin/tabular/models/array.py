@@ -2,8 +2,9 @@
 from typing import Any, Union
 
 import pyarrow as pa
-from kiara.models import KiaraModel
 from pydantic import Field, PrivateAttr
+
+from kiara.models import KiaraModel
 
 
 class KiaraArray(KiaraModel):

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from typing import Any, Iterable, List, Mapping, Type, Union
 
+from pydantic import Field
+
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.module.jobs import JobLog
 from kiara.models.values.value import SerializedData, ValueMap
 from kiara.modules import ValueMapSchema
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara_plugin.core_types.modules import AutoInputsKiaraModule, KiaraInputsConfig
-from pydantic import Field
-
 from kiara_plugin.tabular.models.array import KiaraArray
 
 
@@ -49,7 +49,7 @@ class DeserializeArrayModule(DeserializeValueModule):
 FORCE_NON_NULL_DOC = "If set to 'True', raise an error if any of the strings in the array can't be parsed."
 MIN_INDEX_DOC = "The minimum index from where to start parsing the string(s)."
 MAX_INDEX_DOC = "The maximum index until whic to parse the string(s)."
-REMOVE_TOKENS_DOC = "A list of tokens/characters to replace with a single white-space before parsing the input."
+REMOVE_TOKENS_DOC = "A list of tokens/characters to replace with a single white-space before parsing the input."  # noqa
 
 
 class ExtractDateConfig(KiaraInputsConfig):
@@ -134,7 +134,7 @@ class ExtractDateModule(AutoInputsKiaraModule):
                     return None
             if max_pos:
                 try:
-                    text = text[0 : max_pos - min_pos]  # type: ignore  # noqa
+                    text = text[0 : max_pos - min_pos]  # type: ignore
                 except Exception:
                     pass
 
