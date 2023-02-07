@@ -132,3 +132,36 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
         )
 
         return result
+
+    def pretty_print_as__string(
+        self, value: Value, render_config: Mapping[str, Any]
+    ) -> Any:
+
+        max_rows = render_config.get(
+            "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
+        )
+        max_row_height = render_config.get(
+            "max_row_height", DEFAULT_PRETTY_PRINT_CONFIG["max_row_height"]
+        )
+        max_cell_length = render_config.get(
+            "max_cell_length", DEFAULT_PRETTY_PRINT_CONFIG["max_cell_length"]
+        )
+
+        half_lines: Union[int, None] = None
+        if max_rows:
+            half_lines = int(max_rows / 2)
+
+        import pyarrow as pa
+
+        array: pa.Array = value.data.arrow_array
+
+        temp_table = pa.Table.from_arrays(arrays=[array], names=["array"])
+        atw = ArrowTabularWrap(temp_table)
+        result = atw.as_string(
+            rows_head=half_lines,
+            rows_tail=half_lines,
+            max_row_height=max_row_height,
+            max_cell_length=max_cell_length,
+        )
+
+        return result
