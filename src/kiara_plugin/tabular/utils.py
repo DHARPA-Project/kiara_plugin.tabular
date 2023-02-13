@@ -286,7 +286,9 @@ def create_sqlite_table_from_tabular_file(
             bulk_sql=None,
         )
     except Exception as e:
+
         log_exception(e)
+        raise e
     # finally:
     #     f.close()
 
@@ -375,6 +377,7 @@ def insert_upsert_implementation_patched(
                     headers = [
                         "untitled_{}".format(i + 1) for i in range(len(first_row))
                     ]
+
                     reader = itertools.chain([first_row], reader)
                 else:
                     headers = first_row
@@ -461,6 +464,7 @@ def insert_upsert_implementation_patched(
                 docs, pk=pk, batch_size=batch_size, alter=alter, **extra_kwargs
             )
         except Exception as e:
+
             if (
                 isinstance(e, OperationalError)
                 and e.args
@@ -480,7 +484,7 @@ def insert_upsert_implementation_patched(
                     )
                 )
             else:
-                raise
+                raise e
         if tracker is not None:
             db[table].transform(types=tracker.types)
     finally:

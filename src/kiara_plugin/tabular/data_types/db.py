@@ -27,7 +27,7 @@ class SqliteTabularWrap(TabularWrap):
         from sqlalchemy import text
 
         with self._engine.connect() as con:
-            result = con.execute(text(f"SELECT count(*) from {self._table_name}"))
+            result = con.execute(text(f'SELECT count(*) from "{self._table_name}"'))
             num_rows = result.fetchone()[0]
 
         return num_rows
@@ -46,7 +46,7 @@ class SqliteTabularWrap(TabularWrap):
 
         from sqlalchemy import text
 
-        query = f"SELECT * FROM {self._table_name}"
+        query = f'SELECT * FROM "{self._table_name}"'
         if length:
             query = f"{query} LIMIT {length}"
         else:
@@ -68,7 +68,7 @@ class SqliteTabularWrap(TabularWrap):
 
         from sqlalchemy import text
 
-        query = f"SELECT * FROM {self._table_name}"
+        query = f'SELECT * FROM "{self._table_name}"'
 
         with self._engine.connect() as con:
             result = con.execute(text(query))

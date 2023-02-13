@@ -63,6 +63,7 @@ class CreateDatabaseModule(CreateFromModule):
 
         Currently, only csv files are supported.
         """
+        import csv as py_csv
 
         temp_f = tempfile.mkdtemp()
         db_path = os.path.join(temp_f, "db.sqlite")
@@ -84,8 +85,25 @@ class CreateDatabaseModule(CreateFromModule):
         table_name = table_name.replace(".", "_")
 
         try:
+            has_header = True
+            with open(source_value.data.path, "rt") as csvfile:
+                sniffer = py_csv.Sniffer()
+                has_header = sniffer.has_header(csvfile.read(2048))
+                csvfile.seek(0)
+        except Exception as e:
+            # TODO: add this to the procss log
+            log_message(
+                "csv_sniffer.error",
+                file=source_value.data.path,
+                error=str(e),
+                details="assuming csv file has header",
+            )
+        try:
             create_sqlite_table_from_tabular_file(
-                target_db_file=db_path, file_item=file_item, table_name=table_name
+                target_db_file=db_path,
+                file_item=file_item,
+                table_name=table_name,
+                no_headers=not has_header,
             )
         except Exception as e:
             if self.get_config_value("ignore_errors") is True or True:

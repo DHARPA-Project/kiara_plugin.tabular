@@ -273,7 +273,7 @@ class KiaraDatabase(KiaraModel):
 
         import pandas as pd
 
-        query = text(f"SELECT * FROM {table_name}")
+        query = text(f'SELECT * FROM "{table_name}"')
         with self.get_sqlalchemy_engine().connect() as con:
             df = pd.read_sql(query, con)  # noqa
 
@@ -288,7 +288,8 @@ class KiaraDatabase(KiaraModel):
         for table_name in insp.get_table_names():
 
             with self.get_sqlalchemy_engine().connect() as con:
-                result = con.execute(text(f"SELECT count(*) from {table_name}"))
+                query = f'SELECT count(*) from "{table_name}"'
+                result = con.execute(text(query))
                 num_rows = result.fetchone()[0]
 
                 try:
