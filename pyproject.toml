@@ -39,7 +39,7 @@ dependencies = [
     "sqlalchemy>=2.0.0",
     "sqlalchemy-utc>=0.10.0",
     "sqlalchemy-utils>=0.38.0",
-    "sqlite-utils>=3.30"
+    "sqlite-utils==3.30"
 ]
 dynamic = ["version"]
 
