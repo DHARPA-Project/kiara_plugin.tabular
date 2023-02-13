@@ -23,6 +23,7 @@ from kiara.modules.included_core_modules.create_from import (
 from kiara.modules.included_core_modules.export_as import DataExportModule
 from kiara.modules.included_core_modules.render_value import RenderValueModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
+from kiara.utils import log_message
 from kiara.utils.output import ArrowTabularWrap
 from kiara_plugin.tabular.defaults import RESERVED_SQL_KEYWORDS
 from kiara_plugin.tabular.models.array import KiaraArray
@@ -47,13 +48,35 @@ class CreateTableModule(CreateFromModule):
     def create__table__from__file(self, source_value: Value) -> Any:
         """Create a table from a file, trying to auto-determine the format of said file."""
 
+        import csv as py_csv
+
         from pyarrow import csv
 
         input_file: FileModel = source_value.data
         imported_data = None
         errors = []
+
         try:
-            imported_data = csv.read_csv(input_file.path)
+            has_header = True
+            with open(input_file.path, "rt") as csvfile:
+                sniffer = py_csv.Sniffer()
+                has_header = sniffer.has_header(csvfile.read(2048))
+                csvfile.seek(0)
+        except Exception as e:
+            # TODO: add this to the procss log
+            log_message(
+                "csv_sniffer.error",
+                file=input_file.path,
+                error=str(e),
+                details="assuming csv file has header",
+            )
+
+        try:
+            if has_header:
+                imported_data = csv.read_csv(input_file.path)
+            else:
+                read_options = csv.ReadOptions(autogenerate_column_names=True)
+                imported_data = csv.read_csv(input_file.path, read_options=read_options)
         except Exception as e:
             errors.append(e)
 
