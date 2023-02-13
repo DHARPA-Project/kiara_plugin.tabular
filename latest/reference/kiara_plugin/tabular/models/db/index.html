@@ -2145,7 +2145,8 @@
 <span class="normal">324</span>
 <span class="normal">325</span>
 <span class="normal">326</span>
-<span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraDatabase</span><span class="p">(</span><span class="n">KiaraModel</span><span class="p">):</span>
+<span class="normal">327</span>
+<span class="normal">328</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraDatabase</span><span class="p">(</span><span class="n">KiaraModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper class to manage a sqlite database.&quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
@@ -2338,7 +2339,7 @@
 
         <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-        <span class="n">query</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SELECT * FROM &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>  <span class="c1"># noqa</span>
 
@@ -2353,7 +2354,8 @@
         <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
 
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;SELECT count(*) from &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
                 <span class="n">num_rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
                 <span class="k">try</span><span class="p">:</span>
@@ -2965,7 +2967,7 @@
 
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-    <span class="n">query</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT * FROM </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;SELECT * FROM &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
     <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>  <span class="c1"># noqa</span>
 
@@ -3035,7 +3037,8 @@
 <span class="normal">324</span>
 <span class="normal">325</span>
 <span class="normal">326</span>
-<span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
+<span class="normal">327</span>
+<span class="normal">328</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
 
     <span class="n">insp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_inspector</span><span class="p">()</span>
 
@@ -3044,7 +3047,8 @@
     <span class="k">for</span> <span class="n">table_name</span> <span class="ow">in</span> <span class="n">insp</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">():</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sqlalchemy_engine</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">con</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SELECT count(*) from </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;SELECT count(*) from &quot;</span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">text</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
             <span class="n">num_rows</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="k">try</span><span class="p">:</span>
@@ -3116,8 +3120,7 @@
 
         <details class="quote">
           <summary>Source code in <code>kiara_plugin/tabular/models/db.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">330</span>
-<span class="normal">331</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">331</span>
 <span class="normal">332</span>
 <span class="normal">333</span>
 <span class="normal">334</span>
@@ -3131,7 +3134,8 @@
 <span class="normal">342</span>
 <span class="normal">343</span>
 <span class="normal">344</span>
-<span class="normal">345</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseMetadata</span><span class="p">(</span><span class="n">ValueMetadata</span><span class="p">):</span>
+<span class="normal">345</span>
+<span class="normal">346</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DatabaseMetadata</span><span class="p">(</span><span class="n">ValueMetadata</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Database and table properties.&quot;&quot;&quot;</span>
 
     <span class="n">_metadata_key</span> <span class="o">=</span> <span class="s2">&quot;database&quot;</span>
@@ -3199,9 +3203,9 @@
 
       <details class="quote">
         <summary>Source code in <code>kiara_plugin/tabular/models/db.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_supported_data_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -3228,11 +3232,11 @@
 
       <details class="quote">
         <summary>Source code in <code>kiara_plugin/tabular/models/db.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">339</span>
-<span class="normal">340</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">340</span>
 <span class="normal">341</span>
 <span class="normal">342</span>
-<span class="normal">343</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">343</span>
+<span class="normal">344</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DatabaseMetadata&quot;</span><span class="p">:</span>
 
     <span class="n">database</span><span class="p">:</span> <span class="n">KiaraDatabase</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>

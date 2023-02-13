@@ -1614,7 +1614,9 @@
 <span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span>
-<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">create_sqlite_table_from_tabular_file</span><span class="p">(</span>
     <span class="n">target_db_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span><span class="p">,</span>
     <span class="n">table_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1671,7 +1673,9 @@
             <span class="n">bulk_sql</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
         <span class="n">log_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -1694,9 +1698,7 @@
 
       <details class="quote">
         <summary>Source code in <code>kiara_plugin/tabular/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">296</span>
 <span class="normal">297</span>
 <span class="normal">298</span>
 <span class="normal">299</span>
@@ -1887,7 +1889,11 @@
 <span class="normal">484</span>
 <span class="normal">485</span>
 <span class="normal">486</span>
-<span class="normal">487</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_upsert_implementation_patched</span><span class="p">(</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_upsert_implementation_patched</span><span class="p">(</span>
     <span class="n">path</span><span class="p">,</span>
     <span class="n">table</span><span class="p">,</span>
     <span class="n">file</span><span class="p">,</span>
@@ -1971,6 +1977,7 @@
                     <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span>
                         <span class="s2">&quot;untitled_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_row</span><span class="p">))</span>
                     <span class="p">]</span>
+
                     <span class="n">reader</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">([</span><span class="n">first_row</span><span class="p">],</span> <span class="n">reader</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">headers</span> <span class="o">=</span> <span class="n">first_row</span>
@@ -2057,6 +2064,7 @@
                 <span class="n">docs</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">pk</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">alter</span><span class="o">=</span><span class="n">alter</span><span class="p">,</span> <span class="o">**</span><span class="n">extra_kwargs</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
             <span class="k">if</span> <span class="p">(</span>
                 <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">OperationalError</span><span class="p">)</span>
                 <span class="ow">and</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span>
@@ -2076,7 +2084,7 @@
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span>
+                <span class="k">raise</span> <span class="n">e</span>
         <span class="k">if</span> <span class="n">tracker</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">db</span><span class="p">[</span><span class="n">table</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">types</span><span class="o">=</span><span class="n">tracker</span><span class="o">.</span><span class="n">types</span><span class="p">)</span>
     <span class="k">finally</span><span class="p">:</span>
