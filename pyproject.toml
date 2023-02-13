@@ -30,8 +30,8 @@ classifiers = [
     "Programming Language :: Python :: 3.11"
 ]
 dependencies = [
-    "kiara>=0.4.31",
-    "kiara_plugin.core_types>=0.4.15",
+    "kiara>=0.4.32",
+    "kiara_plugin.core_types>=0.4.16",
     "duckdb>=0.6.0,<0.7.0",
     "pandas>=1.4.0",
     "polars>=0.15.0",
