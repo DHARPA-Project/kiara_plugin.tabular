@@ -49,7 +49,7 @@ class DeserializeArrayModule(DeserializeValueModule):
 FORCE_NON_NULL_DOC = "If set to 'True', raise an error if any of the strings in the array can't be parsed."
 MIN_INDEX_DOC = "The minimum index from where to start parsing the string(s)."
 MAX_INDEX_DOC = "The maximum index until whic to parse the string(s)."
-REMOVE_TOKENS_DOC = "A list of tokens/characters to replace with a single white-space before parsing the input."  # noqa
+REMOVE_TOKENS_DOC = "A list of tokens/characters to replace with a single white-space before parsing the input."  # noqa: S105
 
 
 class ExtractDateConfig(KiaraInputsConfig):

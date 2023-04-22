@@ -370,10 +370,9 @@ class MergeTableModule(KiaraModule):
         for source_key, rows in len_dict.items():
             if all_rows is None:
                 all_rows = rows
-            else:
-                if all_rows != rows:
-                    all_rows = None
-                    break
+            elif all_rows != rows:
+                all_rows = None
+                break
 
         if all_rows is None:
             len_str = ""

@@ -83,7 +83,7 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
 
         for column_name in data.arrow_table.column_names:
             column: pa.Array = data.arrow_table.column(column_name)
-            if column_name == "":
+            if not column_name:
                 file_name = os.path.join(temp_f, EMPTY_COLUMN_NAME_MARKER)
             else:
                 file_name = os.path.join(temp_f, column_name)
