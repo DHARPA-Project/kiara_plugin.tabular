@@ -198,13 +198,15 @@ class KiaraDatabase(KiaraModel):
             statement = text(statement)
 
         if data:
-            statement.bindparams(**data)
+            statement = statement.bindparams(**data)
 
         with self.get_sqlalchemy_engine().connect() as con:
-            con.execute(statement)
+            result = con.execute(statement)
 
         if invalidate:
             self._invalidate()
+
+        return result
 
     def _invalidate(self):
         self._cached_engine = None
