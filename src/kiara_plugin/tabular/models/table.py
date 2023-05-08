@@ -72,7 +72,7 @@ class KiaraTable(KiaraModel):
 
         import polars as pl
 
-        return pl.from_arrow(self.arrow_table)
+        return pl.from_arrow(self.arrow_table)  # type: ignore
 
     @property
     def column_names(self) -> Iterable[str]:
