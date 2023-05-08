@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Iterable, Union
+from typing import TYPE_CHECKING, Any, Iterable, Union
 
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
@@ -8,6 +8,9 @@ from kiara.models import KiaraModel
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
 from kiara_plugin.tabular.models import TableMetadata
+
+if TYPE_CHECKING:
+    import polars as pl
 
 
 class KiaraTable(KiaraModel):
@@ -62,6 +65,14 @@ class KiaraTable(KiaraModel):
 
         self._table_obj = table
         return self._table_obj
+
+    @property
+    def polars_dataframe(self) -> "pl.DataFrame":
+        """Return the data as a Polars dataframe."""
+
+        import polars as pl
+
+        return pl.from_arrow(self.arrow_table)
 
     @property
     def column_names(self) -> Iterable[str]:

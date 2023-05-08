@@ -127,7 +127,7 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
             "data_type": self.data_type_name,
             "data_type_config": self.type_config.dict(),
             "data": chunks,
-            "serialization_profile": "feather",
+            "serialization_profile": "copy",
             "metadata": {
                 "environment": {},
                 "deserialize": {
