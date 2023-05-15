@@ -45,7 +45,22 @@ class CreateTableModule(CreateFromModule):
     _module_type_name = "create.table"
     _config_cls = CreateTableModuleConfig
 
-    def create__table__from__file(self, source_value: Value) -> Any:
+    def create_optional_inputs(
+        self, source_type: str, target_type
+    ) -> Union[Mapping[str, Mapping[str, Any]], None]:
+
+        if source_type == "file":
+            return {
+                "first_row_is_header": {
+                    "type": "boolean",
+                    "optional": True,
+                    "doc": "Whether the first row of the file is a header row. If not provided, kiara will try to auto-determine.",
+                }
+            }
+
+        return None
+
+    def create__table__from__file(self, source_value: Value, optional: ValueMap) -> Any:
         """Create a table from a file, trying to auto-determine the format of said file."""
 
         import csv as py_csv
@@ -56,20 +71,22 @@ class CreateTableModule(CreateFromModule):
         imported_data = None
         errors = []
 
-        try:
-            has_header = True
-            with open(input_file.path, "rt") as csvfile:
-                sniffer = py_csv.Sniffer()
-                has_header = sniffer.has_header(csvfile.read(2048))
-                csvfile.seek(0)
-        except Exception as e:
-            # TODO: add this to the procss log
-            log_message(
-                "csv_sniffer.error",
-                file=input_file.path,
-                error=str(e),
-                details="assuming csv file has header",
-            )
+        has_header = optional.get_value_data("first_row_is_header")
+        if has_header is None:
+            try:
+                has_header = True
+                with open(input_file.path, "rt") as csvfile:
+                    sniffer = py_csv.Sniffer()
+                    has_header = sniffer.has_header(csvfile.read(2048))
+                    csvfile.seek(0)
+            except Exception as e:
+                # TODO: add this to the procss log
+                log_message(
+                    "csv_sniffer.error",
+                    file=input_file.path,
+                    error=str(e),
+                    details="assuming csv file has header",
+                )
 
         try:
             if has_header:

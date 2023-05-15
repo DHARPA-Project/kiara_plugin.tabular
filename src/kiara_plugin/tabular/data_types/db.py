@@ -17,9 +17,17 @@ if TYPE_CHECKING:
 
 
 class SqliteTabularWrap(TabularWrap):
-    def __init__(self, engine: "Engine", table_name: str):
+    def __init__(
+        self,
+        engine: "Engine",
+        table_name: str,
+        sort_column_names: Union[None, Iterable[str]] = None,
+        sort_reverse: bool = False,
+    ):
         self._engine: Engine = engine
         self._table_name: str = table_name
+        self._sort_column_names: Union[Iterable[str], None] = sort_column_names
+        self._sort_reverse: bool = sort_reverse
         super().__init__()
 
     def retrieve_number_of_rows(self) -> int:
@@ -47,12 +55,24 @@ class SqliteTabularWrap(TabularWrap):
         from sqlalchemy import text
 
         query = f'SELECT * FROM "{self._table_name}"'
+
+        if self._sort_column_names:
+            query = f"{query} ORDER BY "
+            order = []
+            for col in self._sort_column_names:
+                if self._sort_reverse:
+                    order.append(f"{col} DESC")
+                else:
+                    order.append(f"{col} ASC")
+            query = f"{query} {', '.join(order)}"
+
         if length:
             query = f"{query} LIMIT {length}"
         else:
             query = f"{query} LIMIT {self.num_rows}"
         if offset > 0:
             query = f"{query} OFFSET {offset}"
+
         with self._engine.connect() as con:
             result = con.execute(text(query))
             result_dict: Dict[str, List[Any]] = {}

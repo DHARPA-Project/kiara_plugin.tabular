@@ -3,8 +3,18 @@ import atexit
 import os
 import shutil
 import tempfile
-import typing
-from typing import Any, Dict, Iterable, List, Mapping, Tuple, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Tuple,
+    Type,
+    TypeVar,
+    Union,
+)
 
 from multiformats import CID
 from pydantic import BaseModel, Field, PrivateAttr, validator
@@ -25,8 +35,11 @@ from kiara_plugin.tabular.defaults import (
 )
 from kiara_plugin.tabular.models import TableMetadata
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     import pandas as pd
+
+
+KDBC = TypeVar("KDBC", bound="KiaraDatabase")
 
 
 class SqliteTableSchema(BaseModel):
@@ -85,10 +98,10 @@ class KiaraDatabase(KiaraModel):
 
     @classmethod
     def create_in_temp_dir(
-        cls,
+        cls: Type[KDBC],
         init_statement: Union[None, str, "TextClause"] = None,
         init_data: Union[Mapping[str, Any], None] = None,
-    ):
+    ) -> KDBC:
 
         temp_f = tempfile.mkdtemp()
         db_path = os.path.join(temp_f, "db.sqlite")

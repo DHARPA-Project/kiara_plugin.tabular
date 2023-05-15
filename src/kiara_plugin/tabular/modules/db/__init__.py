@@ -58,7 +58,9 @@ class CreateDatabaseModule(CreateFromModule):
     _module_type_name = "create.database"
     _config_cls = CreateDatabaseModuleConfig
 
-    def create__database__from__file(self, source_value: Value) -> Any:
+    def create__database__from__file(
+        self, source_value: Value, optional: ValueMap
+    ) -> Any:
         """Create a database from a file.
 
         Currently, only csv files are supported.
@@ -84,20 +86,23 @@ class CreateDatabaseModule(CreateFromModule):
         table_name = table_name.replace("-", "_")
         table_name = table_name.replace(".", "_")
 
-        try:
-            has_header = True
-            with open(source_value.data.path, "rt") as csvfile:
-                sniffer = py_csv.Sniffer()
-                has_header = sniffer.has_header(csvfile.read(2048))
-                csvfile.seek(0)
-        except Exception as e:
-            # TODO: add this to the procss log
-            log_message(
-                "csv_sniffer.error",
-                file=source_value.data.path,
-                error=str(e),
-                details="assuming csv file has header",
-            )
+        has_header = optional.get_value_data("first_row_is_header")
+        if has_header is None:
+            try:
+                has_header = True
+                with open(source_value.data.path, "rt") as csvfile:
+                    sniffer = py_csv.Sniffer()
+                    has_header = sniffer.has_header(csvfile.read(2048))
+                    csvfile.seek(0)
+            except Exception as e:
+                # TODO: add this to the procss log
+                log_message(
+                    "csv_sniffer.error",
+                    file=source_value.data.path,
+                    error=str(e),
+                    details="assuming csv file has header",
+                )
+
         try:
             create_sqlite_table_from_tabular_file(
                 target_db_file=db_path,
@@ -222,17 +227,23 @@ class CreateDatabaseModule(CreateFromModule):
         self, source_type: str, target_type
     ) -> Union[Mapping[str, Mapping[str, Any]], None]:
 
+        inputs = {}
+        if source_type == "file":
+            inputs["first_row_is_header"] = {
+                "type": "boolean",
+                "optional": True,
+                "doc": "Whether the first row of the file is a header row. If not provided, kiara will try to auto-determine.",
+            }
+
         if target_type == "database" and source_type == "table":
 
-            return {
-                "table_name": {
-                    "type": "string",
-                    "doc": "The name of the table in the new database.",
-                    "default": "imported_table",
-                }
+            inputs["table_name"] = {
+                "type": "string",
+                "doc": "The name of the table in the new database.",
+                "default": "imported_table",
             }
-        else:
-            return None
+
+        return inputs
 
     def create__database__from__table(
         self, source_value: Value, optional: ValueMap
