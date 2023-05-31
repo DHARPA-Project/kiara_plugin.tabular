@@ -36,10 +36,10 @@ jobs:
     name: create and publish test coverage
     runs-on: ubuntu-latest
     steps:
-      - name: "Set up Python 3.9"
+      - name: "Set up Python 3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.11"
       - uses: actions/checkout@v3
       - name: install kiara
         run: pip install -U --extra-index-url https://pypi.fury.io/dharpa/ .[all,dev_testing]
@@ -101,10 +101,10 @@ jobs:
       - linting-linux
 
     steps:
-      - name: Set up Python 3.9
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.11"
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -132,10 +132,10 @@ jobs:
     env:
         GEMFURY_PUSH_TOKEN: ${{ secrets.GEMFURY_PUSH_TOKEN }}
     steps:
-      - name: Set up Python 3.9
+      - name: Set up Python 11
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.11"
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
@@ -166,10 +166,10 @@ jobs:
       - mypy-linux
       - linting-linux
     steps:
-      - name: "Set up Python 3.9"
+      - name: "Set up Python 3.11"
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.11"
       - name: pip cache
         id: pip-cache
         uses: actions/cache@v3
