@@ -14,7 +14,8 @@
       }
     }],
   "input_aliases": {
-    "import_file.path": "path"
+    "import_file.path": "path",
+    "create_table_from_file.first_row_is_header": "first_row_is_header"
   },
   "output_aliases": {
     "import_file.file": "imported_file",

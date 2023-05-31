@@ -4,7 +4,7 @@ import io
 import itertools
 import json
 import typing
-from typing import Dict, Iterable, Mapping, Union
+from typing import Any, Dict, Iterable, List, Mapping, Union
 
 import sqlite_utils
 from sqlite_utils.cli import (
@@ -114,6 +114,52 @@ def insert_db_table_from_file_bundle(
             stmt = insert(file_items).values(**_values)
             con.execute(stmt)
         con.commit()
+
+
+def create_table_from_file_bundle(
+    file_bundle: FileBundle,
+    include_content: bool = True,
+    included_files: Union[None, Mapping[str, bool]] = None,
+    errors: Union[Mapping[str, Union[str, None]], None] = None,
+):
+
+    import pyarrow as pa
+
+    if included_files is None:
+        included_files = {}
+    if errors is None:
+        errors = {}
+
+    table_data: Dict[str, List[Any]] = {
+        "id": [],
+        "size": [],
+        "mime_type": [],
+        "rel_path": [],
+        "file_name": [],
+        "content": [],
+        "included_in_bundle": [],
+        "error": [],
+    }
+    for index, rel_path in enumerate(sorted(file_bundle.included_files.keys())):
+        f: FileModel = file_bundle.included_files[rel_path]
+        if include_content:
+            content: Union[str, None] = f.read_text()  # type: ignore
+        else:
+            content = None
+
+        included = included_files.get(rel_path, None)
+        error = errors.get(rel_path, None)
+
+        table_data["id"].append(index)
+        table_data["size"].append(f.size)
+        table_data["mime_type"].append(f.mime_type)
+        table_data["rel_path"].append(rel_path)
+        table_data["file_name"].append(f.file_name)
+        table_data["content"].append(content)
+        table_data["included_in_bundle"].append(included)
+        table_data["error"].append(error)
+
+    return pa.table(table_data)
 
 
 def convert_arrow_type_to_sqlite(data_type: str) -> SqliteDataType:

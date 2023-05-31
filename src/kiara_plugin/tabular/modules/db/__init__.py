@@ -24,7 +24,10 @@ from kiara.modules.included_core_modules.render_value import RenderValueModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils import find_free_id, log_message
 from kiara.utils.output import DictTabularWrap
-from kiara_plugin.tabular.defaults import DEFAULT_TABULAR_DATA_CHUNK_SIZE
+from kiara_plugin.tabular.defaults import (
+    DEFAULT_TABLE_NAME,
+    DEFAULT_TABULAR_DATA_CHUNK_SIZE,
+)
 from kiara_plugin.tabular.models.db import KiaraDatabase
 from kiara_plugin.tabular.models.table import KiaraTable
 from kiara_plugin.tabular.utils import (
@@ -252,7 +255,7 @@ class CreateDatabaseModule(CreateFromModule):
 
         table_name = optional.get_value_data("table_name")
         if not table_name:
-            table_name = "imported_table"
+            table_name = DEFAULT_TABLE_NAME
 
         table: KiaraTable = source_value.data
         arrow_table = table.arrow_table

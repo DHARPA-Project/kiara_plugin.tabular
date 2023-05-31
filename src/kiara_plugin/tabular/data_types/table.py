@@ -41,23 +41,6 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
 
         return KiaraTable.create_table(data)
 
-    # def calculate_hash(self, data: KiaraTable) -> CID:
-    #     hashes = []
-    #     for column_name in data.arrow_table.column_names:
-    #         hashes.append(column_name)
-    #         column = data.arrow_table.column(column_name)
-    #         for chunk in column.chunks:
-    #             for buf in chunk.buffers():
-    #                 if not buf:
-    #                     continue
-    #                 h = hash_from_buffer(memoryview(buf))
-    #                 hashes.append(h)
-    #     return compute_cid(hashes)
-    #     return KIARA_HASH_FUNCTION(memoryview(data.arrow_array))
-
-    # def calculate_size(self, data: KiaraTable) -> int:
-    #     return len(data.arrow_table)
-
     def _validate(cls, value: Any) -> None:
 
         pass

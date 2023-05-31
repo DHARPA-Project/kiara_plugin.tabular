@@ -23,6 +23,9 @@ from sqlalchemy.types import BLOB, BOOLEAN, FLOAT, INTEGER, TEXT, VARCHAR
 
 DEFAULT_TABULAR_DATA_CHUNK_SIZE = 1024
 
+DEFAULT_TABLE_NAME: str = "data"
+TABLE_COLUMN_SPLIT_MARKER = "///"
+
 SqliteDataType = Literal["NULL", "INTEGER", "REAL", "TEXT", "BLOB", "FLOAT"]
 SQLITE_DATA_TYPE: Tuple[SqliteDataType, ...] = typing.get_args(SqliteDataType)
 
