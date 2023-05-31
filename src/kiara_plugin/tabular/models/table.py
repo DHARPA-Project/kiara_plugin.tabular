@@ -73,8 +73,7 @@ class KiaraTable(KiaraModel):
         self._table_obj = table
         return self._table_obj
 
-    @property
-    def polars_dataframe(self) -> "pl.DataFrame":
+    def to_polars_dataframe(self) -> "pl.DataFrame":
         """Return the data as a Polars dataframe."""
 
         import polars as pl

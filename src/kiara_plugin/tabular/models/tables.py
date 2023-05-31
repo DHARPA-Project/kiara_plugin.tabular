@@ -34,7 +34,7 @@ class KiaraTables(KiaraModel):
                 f"Can't create tables, invalid source data type: {type(data)}."
             )
 
-        obj = KiaraTables(tables=table_obj)
+        obj = cls(tables=table_obj)
         return obj
 
     tables: Dict[str, KiaraTable] = Field(
