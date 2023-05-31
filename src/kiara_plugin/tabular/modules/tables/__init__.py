@@ -201,14 +201,12 @@ class AssembleTablesModule(KiaraModule):
         if not table_names:
             if not number_tables:
                 number_tables = 2
-        else:
-            if not number_tables:
-                number_tables = len(table_names)
-            else:
-                if not number_tables == len(table_names):
-                    raise KiaraException(
-                        "The 'number_of_tables' and length of 'table_names' config option must match."
-                    )
+        elif not number_tables:
+            number_tables = len(table_names)
+        elif not number_tables == len(table_names):
+            raise KiaraException(
+                "The 'number_of_tables' and length of 'table_names' config option must match."
+            )
 
         if number_tables < 2:
             raise KiaraException("The 'number_of_tables' must be at least 2.")
@@ -235,14 +233,12 @@ class AssembleTablesModule(KiaraModule):
         if not table_names:
             if not number_tables:
                 number_tables = 2
-        else:
-            if not number_tables:
-                number_tables = len(table_names)
-            else:
-                if not number_tables == len(table_names):
-                    raise KiaraException(
-                        "The 'number_of_tables' and length of 'table_names' config option must match."
-                    )
+        elif not number_tables:
+            number_tables = len(table_names)
+        elif not number_tables == len(table_names):
+            raise KiaraException(
+                "The 'number_of_tables' and length of 'table_names' config option must match."
+            )
 
         if number_tables < 2:
             raise KiaraException("The 'number_of_tables' must be at least 2.")
