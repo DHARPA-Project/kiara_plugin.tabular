@@ -693,13 +693,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.table.KiaraTable.polars_dataframe" class="md-nav__link">
-    polars_dataframe
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.table.KiaraTable.column_names" class="md-nav__link">
     column_names
   </a>
@@ -729,6 +722,13 @@
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.table.KiaraTable.create_table" class="md-nav__link">
     create_table()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.models.table.KiaraTable.to_polars_dataframe" class="md-nav__link">
+    to_polars_dataframe()
   </a>
   
 </li>
@@ -1113,13 +1113,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.table.KiaraTable.polars_dataframe" class="md-nav__link">
-    polars_dataframe
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.table.KiaraTable.column_names" class="md-nav__link">
     column_names
   </a>
@@ -1149,6 +1142,13 @@
           <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.table.KiaraTable.create_table" class="md-nav__link">
     create_table()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kiara_plugin.tabular.models.table.KiaraTable.to_polars_dataframe" class="md-nav__link">
+    to_polars_dataframe()
   </a>
   
 </li>
@@ -1403,8 +1403,7 @@
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraTable</span><span class="p">(</span><span class="n">KiaraModel</span><span class="p">):</span>
+<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraTable</span><span class="p">(</span><span class="n">KiaraModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper class to manage tabular data in a memory efficient way.&quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
@@ -1463,8 +1462,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_table_obj</span> <span class="o">=</span> <span class="n">table</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_obj</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">polars_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pl.DataFrame&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">to_polars_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pl.DataFrame&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the data as a Polars dataframe.&quot;&quot;&quot;</span>
 
         <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
@@ -1523,8 +1521,8 @@
 <code class="highlight language-python"><span class="n">data_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The path to the (feather) file backing this array.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.models.table.KiaraTable.data_path" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1554,27 +1552,6 @@
   <div class="doc doc-contents ">
   
       <p>Return the data as an Apache Arrow Table instance.</p>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h5 id="kiara_plugin.tabular.models.table.KiaraTable.polars_dataframe" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">polars_dataframe</span><span class="p">:</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span></code>
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-property"><code>property</code></small>
-  </span>
-
-<a href="#kiara_plugin.tabular.models.table.KiaraTable.polars_dataframe" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Return the data as a Polars dataframe.</p>
   </div>
 
 </div>
@@ -1712,6 +1689,39 @@
 
 
 
+<h5 id="kiara_plugin.tabular.models.table.KiaraTable.to_polars_dataframe" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">to_polars_dataframe</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span></code>
+
+<a href="#kiara_plugin.tabular.models.table.KiaraTable.to_polars_dataframe" class="headerlink" title="Permanent link">&para;</a></h5>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Return the data as a Polars dataframe.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/table.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_polars_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;pl.DataFrame&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the data as a Polars dataframe.&quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+
+    <span class="k">return</span> <span class="n">pl</span><span class="o">.</span><span class="n">from_arrow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arrow_table</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h5 id="kiara_plugin.tabular.models.table.KiaraTable.to_pydict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">to_pydict</span><span class="p">()</span></code>
 
@@ -1725,12 +1735,12 @@
 
       <details class="quote">
         <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/table.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">94</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">93</span>
+<span class="normal">94</span>
 <span class="normal">95</span>
 <span class="normal">96</span>
 <span class="normal">97</span>
-<span class="normal">98</span>
-<span class="normal">99</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_pydict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_pydict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert and return the table data as a dictionary of lists.</span>
 
 <span class="sd">    This will load all data into memory, so you might or might not want to do that.</span>
@@ -1759,13 +1769,13 @@
 
       <details class="quote">
         <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/table.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">101</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
+<span class="normal">101</span>
 <span class="normal">102</span>
 <span class="normal">103</span>
 <span class="normal">104</span>
 <span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_pylist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_pylist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert and return the table data as a list of rows/dictionaries.</span>
 
 <span class="sd">    This will load all data into memory, so you might or might not want to do that.</span>
@@ -1795,12 +1805,12 @@
 
       <details class="quote">
         <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/table.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
+<span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_pandas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_pandas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert and return the table data to a Pandas dataframe.</span>
 
 <span class="sd">    This will load all data into memory, so you might or might not want to do that.</span>
@@ -1841,7 +1851,8 @@
 
         <details class="quote">
           <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/table.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">117</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">116</span>
+<span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
@@ -1881,8 +1892,7 @@
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraTableMetadata</span><span class="p">(</span><span class="n">ValueMetadata</span><span class="p">):</span>
+<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraTableMetadata</span><span class="p">(</span><span class="n">ValueMetadata</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;File stats.&quot;&quot;&quot;</span>
 
     <span class="n">_metadata_key</span> <span class="o">=</span> <span class="s2">&quot;table&quot;</span>
@@ -1945,8 +1955,8 @@
 <code class="highlight language-python"><span class="n">table</span><span class="p">:</span> <span class="n">TableMetadata</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The table schema.&#39;</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.models.table.KiaraTableMetadata.table" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1977,9 +1987,9 @@
 
       <details class="quote">
         <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/table.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_supported_data_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;table&quot;</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -2006,7 +2016,8 @@
 
       <details class="quote">
         <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/table.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">126</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
+<span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span>
@@ -2035,8 +2046,7 @@
 <span class="normal">152</span>
 <span class="normal">153</span>
 <span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KiaraTableMetadata&quot;</span><span class="p">:</span>
 
     <span class="n">kiara_table</span><span class="p">:</span> <span class="n">KiaraTable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
