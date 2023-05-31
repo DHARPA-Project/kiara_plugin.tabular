@@ -125,7 +125,7 @@ class CreateTableModule(CreateFromModule):
     def create__table__from__file_bundle(self, source_value: Value) -> Any:
         """Create a table value from a text file_bundle.
 
-        The resulting table will have (at a minimum) the following collumns:
+        The resulting table will have (at a minimum) the following columns:
         - id: an auto-assigned index
         - rel_path: the relative path of the file (from the provided base path)
         - content: the text file content
