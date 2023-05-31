@@ -49,6 +49,9 @@ jobs:
         run: coverage run -m pytest tests
       - name: coveralls
         uses: coverallsapp/github-action@v2
+        with:
+          format: python
+          allow-empty: true
 
   mypy-linux:
     name: mypy check on linux
