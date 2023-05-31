@@ -30,8 +30,8 @@ classifiers = [
     "Programming Language :: Python :: 3.11"
 ]
 dependencies = [
-    "kiara>=0.4.32",
-    "kiara_plugin.core_types>=0.4.16",
+    "kiara>=0.4.39",
+    "kiara_plugin.core_types>=0.4.17",
     "duckdb>=0.7.0,<0.8.0",
     "pandas>=1.4.0",
     "polars>=0.17.0",
@@ -39,7 +39,8 @@ dependencies = [
     "sqlalchemy>=2.0.0",
     "sqlalchemy-utc>=0.10.0",
     "sqlalchemy-utils>=0.38.0",
-    "sqlite-utils==3.30"
+    "sqlite-utils==3.30",
+    "typing_extensions>=4.6.0"
 ]
 dynamic = ["version"]
 
