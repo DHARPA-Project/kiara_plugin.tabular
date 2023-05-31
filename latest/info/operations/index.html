@@ -17,7 +17,7 @@
         <link rel="next" href="../../reference/kiara_plugin/tabular/__init__/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
     
     
       
@@ -25,7 +25,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
       
 
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kiara_info.operations.create.database.from.file" class="md-skip">
+        <a href="#kiara_info.operations.assemble.tables" class="md-skip">
           Skip to content
         </a>
       
@@ -362,6 +362,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#kiara_info.operations.assemble.tables" class="md-nav__link">
+    assemble.tables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kiara_info.operations.create.database.from.file" class="md-nav__link">
     create.database.from.file
   </a>
@@ -397,6 +404,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kiara_info.operations.create.tables.from.file_bundle" class="md-nav__link">
+    create.tables.from.file_bundle
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kiara_info.operations.deserialize.array.as.python_object" class="md-nav__link">
     deserialize.array.as.python_object
   </a>
@@ -413,6 +427,13 @@
         <li class="md-nav__item">
   <a href="#kiara_info.operations.deserialize.table.as.python_object" class="md-nav__link">
     deserialize.table.as.python_object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.operations.deserialize.tables.as.python_object" class="md-nav__link">
+    deserialize.tables.as.python_object
   </a>
   
 </li>
@@ -708,6 +729,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/data_types/tables/" class="md-nav__link">
+        tables
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -798,6 +833,20 @@
     <li class="md-nav__item">
       <a href="../../reference/kiara_plugin/tabular/models/table/" class="md-nav__link">
         table
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/models/tables/" class="md-nav__link">
+        tables
       </a>
     </li>
   
@@ -926,6 +975,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/kiara_plugin/tabular/modules/tables/__init__/" class="md-nav__link">
+        tables
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1006,6 +1069,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#kiara_info.operations.assemble.tables" class="md-nav__link">
+    assemble.tables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kiara_info.operations.create.database.from.file" class="md-nav__link">
     create.database.from.file
   </a>
@@ -1041,6 +1111,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kiara_info.operations.create.tables.from.file_bundle" class="md-nav__link">
+    create.tables.from.file_bundle
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kiara_info.operations.deserialize.array.as.python_object" class="md-nav__link">
     deserialize.array.as.python_object
   </a>
@@ -1057,6 +1134,13 @@
         <li class="md-nav__item">
   <a href="#kiara_info.operations.deserialize.table.as.python_object" class="md-nav__link">
     deserialize.table.as.python_object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.operations.deserialize.tables.as.python_object" class="md-nav__link">
+    deserialize.tables.as.python_object
   </a>
   
 </li>
@@ -1190,7 +1274,92 @@
 
   <h1>operations</h1>
 
-<h3 id="kiara_info.operations.create.database.from.file"><code>create.database.from.file</code><a class="headerlink" href="#kiara_info.operations.create.database.from.file" title="Permanent link">&para;</a></h3>
+<h3 id="kiara_info.operations.assemble.tables"><code>assemble.tables</code><a class="headerlink" href="#kiara_info.operations.assemble.tables" title="Permanent link">&para;</a></h3>
+
+
+<table>
+    <tr>
+        <td>Documentation</td>
+        <td><p>Assemble a 'tables' value from multiple tables.</p>
+<p>Depending on the module configuration, 2 or more tables can be merged into a single 'tables' value.</p>
+</td>
+    </tr>
+    <tr>
+        <td>Inputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>table_name_1</td>
+<td>string</td>
+<td>The alias for table #1.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+<td>table_1</td>
+<td>table</td>
+<td>The table to merge (#1).</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+<td>table_name_2</td>
+<td>string</td>
+<td>The alias for table #2.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+<td>table_2</td>
+<td>table</td>
+<td>The table to merge (#2).</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+    <tr>
+        <td>Outputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>tables</td>
+<td>tables</td>
+<td>The assembled tables instance.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+</table><h3 id="kiara_info.operations.create.database.from.file"><code>create.database.from.file</code><a class="headerlink" href="#kiara_info.operations.create.database.from.file" title="Permanent link">&para;</a></h3>
 
 
 <table>
@@ -1537,6 +1706,73 @@ csv files will be created. For this to work, all csv files should follow the sam
 </table>
 </td>
     </tr>
+</table><h3 id="kiara_info.operations.create.tables.from.file_bundle"><code>create.tables.from.file_bundle</code><a class="headerlink" href="#kiara_info.operations.create.tables.from.file_bundle" title="Permanent link">&para;</a></h3>
+
+
+<table>
+    <tr>
+        <td>Documentation</td>
+        <td><p>Create a database from a file_bundle value.</p>
+<p>Currently, only csv files are supported, files in the source file_bundle that have different extensions will be ignored.</p>
+<p>Unless 'merge_into_single_table' is set to 'True' in the module configuration, each csv file will create one table
+in the resulting database. If this option is set, only a single table with all the values of all
+csv files will be created. For this to work, all csv files should follow the same schema.</p>
+</td>
+    </tr>
+    <tr>
+        <td>Inputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>file_bundle</td>
+<td>file_bundle</td>
+<td>The source value (of type &#39;file_bundle&#39;).</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+    <tr>
+        <td>Outputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>tables</td>
+<td>tables</td>
+<td>The result value (of type &#39;tables&#39;).</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
 </table><h3 id="kiara_info.operations.deserialize.array.as.python_object"><code>deserialize.array.as.python_object</code><a class="headerlink" href="#kiara_info.operations.deserialize.array.as.python_object" title="Permanent link">&para;</a></h3>
 
 
@@ -1704,6 +1940,76 @@ csv files will be created. For this to work, all csv files should follow the sam
 
 <td>table</td>
 <td>table</td>
+<td>The value object.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+<td>deserialization_config</td>
+<td>any</td>
+<td>Serialization-format specific configuration.</td>
+<td>no</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+    <tr>
+        <td>Outputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>python_object</td>
+<td>python_object</td>
+<td>The deserialized python object instance.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+</table><h3 id="kiara_info.operations.deserialize.tables.as.python_object"><code>deserialize.tables.as.python_object</code><a class="headerlink" href="#kiara_info.operations.deserialize.tables.as.python_object" title="Permanent link">&para;</a></h3>
+
+
+<table>
+    <tr>
+        <td>Documentation</td>
+        <td><p>-- n/a --</p>
+</td>
+    </tr>
+    <tr>
+        <td>Inputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>tables</td>
+<td>tables</td>
 <td>The value object.</td>
 <td>yes</td>
 <td></td>
@@ -2038,7 +2344,7 @@ csv files will be created. For this to work, all csv files should follow the sam
 <td></td>
     </tr>
 
-<td>create_table_from_file__first_row_is_header</td>
+<td>first_row_is_header</td>
 <td>boolean</td>
 <td>Whether the first row of the file is a header row. If not provided, kiara will try to auto-determine.</td>
 <td>no</td>
@@ -3027,7 +3333,7 @@ one will be used.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>
