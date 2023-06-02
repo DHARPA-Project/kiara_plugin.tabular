@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import atexit
+import csv
 import logging
 import os
 import shutil
 import tempfile
+from pathlib import Path
 from typing import Any, Dict, List, Mapping, Type, Union
 
 from pydantic import Field
@@ -20,6 +22,7 @@ from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
     CreateFromModuleConfig,
 )
+from kiara.modules.included_core_modules.export_as import DataExportModule
 from kiara.modules.included_core_modules.render_value import RenderValueModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils import find_free_id, log_message
@@ -30,6 +33,7 @@ from kiara_plugin.tabular.defaults import (
 )
 from kiara_plugin.tabular.models.db import KiaraDatabase
 from kiara_plugin.tabular.models.table import KiaraTable
+from kiara_plugin.tabular.models.tables import KiaraTables
 from kiara_plugin.tabular.utils import (
     create_sqlite_schema_data_from_arrow_table,
     create_sqlite_table_from_tabular_file,
@@ -247,6 +251,47 @@ class CreateDatabaseModule(CreateFromModule):
             }
 
         return inputs
+
+    def create__database__from__tables(
+        self, source_value: Value, optional: ValueMap
+    ) -> Any:
+        """Create a database value from a list of tables."""
+
+        tables: KiaraTables = source_value.data
+
+        column_map = None
+        index_columns = None
+
+        db = KiaraDatabase.create_in_temp_dir()
+        db._unlock_db()
+        engine = db.get_sqlalchemy_engine()
+
+        for table_name, table in tables.tables.items():
+            arrow_table = table.arrow_table
+            nullable_columns = []
+            for column_name in arrow_table.column_names:
+                column = arrow_table.column(column_name)
+                if column.null_count > 0:
+                    nullable_columns.append(column_name)
+
+            sqlite_schema = create_sqlite_schema_data_from_arrow_table(
+                table=table.arrow_table,
+                index_columns=index_columns,
+                column_map=column_map,
+                nullable_columns=nullable_columns,
+            )
+
+            _table = sqlite_schema.create_table(table_name=table_name, engine=engine)
+            with engine.connect() as conn:
+                arrow_table = table.arrow_table
+                for batch in arrow_table.to_batches(
+                    max_chunksize=DEFAULT_TABULAR_DATA_CHUNK_SIZE
+                ):
+                    conn.execute(insert(_table), batch.to_pylist())
+                    conn.commit()
+
+        db._lock_db()
+        return db
 
     def create__database__from__table(
         self, source_value: Value, optional: ValueMap
@@ -528,3 +573,63 @@ class RenderDatabaseModule(RenderDatabaseModuleBase):
             related_scenes=data_related_scenes,
             render_manifest=self.manifest.manifest_hash,
         )
+
+
+class ExportNetworkDataModule(DataExportModule):
+    """Export database values."""
+
+    _module_type_name = "export.database"
+
+    def export__database__as__sqlite_db(
+        self, value: KiaraDatabase, base_path: str, name: str
+    ):
+        """Export network data as a sqlite database file."""
+
+        target_path = os.path.abspath(os.path.join(base_path, f"{name}.sqlite"))
+        shutil.copy2(value.db_file_path, target_path)
+
+        return {"files": target_path}
+
+    def export__database__as__sql_dump(
+        self, value: KiaraDatabase, base_path: str, name: str
+    ):
+        """Export network data as a sql dump file."""
+
+        import sqlite_utils
+
+        db = sqlite_utils.Database(value.db_file_path)
+        target_path = Path(os.path.join(base_path, f"{name}.sql"))
+        with target_path.open("wt") as f:
+            for line in db.conn.iterdump():
+                f.write(line + "\n")
+
+        return {"files": target_path.as_posix()}
+
+    def export__database__as__csv_files(
+        self, value: KiaraDatabase, base_path: str, name: str
+    ):
+        """Export network data as 2 csv files (one for edges, one for nodes."""
+
+        import sqlite3
+
+        files = []
+
+        for table_name in value.table_names:
+            target_path = os.path.join(base_path, f"{name}__{table_name}.csv")
+            os.makedirs(os.path.dirname(target_path), exist_ok=True)
+
+            # copied from: https://stackoverflow.com/questions/2952366/dump-csv-from-sqlalchemy
+            con = sqlite3.connect(value.db_file_path)
+            outfile = open(target_path, "wt")
+            outcsv = csv.writer(outfile)
+
+            cursor = con.execute(f"select * from {table_name}")
+            # dump column titles (optional)
+            outcsv.writerow(x[0] for x in cursor.description)
+            # dump rows
+            outcsv.writerows(cursor.fetchall())
+
+            outfile.close()
+            files.append(target_path)
+
+        return {"files": files}
