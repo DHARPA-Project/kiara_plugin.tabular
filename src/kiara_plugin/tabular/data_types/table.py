@@ -11,6 +11,7 @@ from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.models.values.value import SerializationResult, SerializedData, Value
 from kiara.utils.output import ArrowTabularWrap
 from kiara_plugin.tabular.data_types.array import store_array
+from kiara_plugin.tabular.defaults import TABLE_SCHEMA_CHUNKS_NAME
 from kiara_plugin.tabular.models.table import KiaraTable
 from kiara_plugin.tabular.modules.table import EMPTY_COLUMN_NAME_MARKER
 
@@ -64,8 +65,20 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
 
         atexit.register(cleanup)
 
-        for column_name in data.arrow_table.column_names:
-            column: pa.Array = data.arrow_table.column(column_name)
+        table = data.arrow_table
+
+        schema_bytes = table.schema.serialize().to_pybytes()
+        chunk_map[TABLE_SCHEMA_CHUNKS_NAME] = {
+            "type": "chunk",
+            "chunk": schema_bytes,
+            "codec": "raw",
+        }
+        for column_name in table.column_names:
+
+            assert column_name != TABLE_SCHEMA_CHUNKS_NAME
+
+            column: pa.Array = table.column(column_name)
+
             if not column_name:
                 file_name = os.path.join(temp_f, EMPTY_COLUMN_NAME_MARKER)
             else:

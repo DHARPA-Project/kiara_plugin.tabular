@@ -33,7 +33,7 @@ from kiara_plugin.tabular.defaults import (
     SQLITE_SQLALCHEMY_TYPE_MAP,
     SqliteDataType,
 )
-from kiara_plugin.tabular.models import TableMetadata
+from kiara_plugin.tabular.models.table import TableMetadata
 
 if TYPE_CHECKING:
     import pandas as pd

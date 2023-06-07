@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Dict, List, Mapping, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Union
 
 import pyarrow as pa
 from pydantic import Field
 
 from kiara.exceptions import KiaraException
 from kiara.models import KiaraModel
+from kiara.models.values.value_metadata import ValueMetadata
 from kiara_plugin.tabular.defaults import DEFAULT_TABLE_NAME
-from kiara_plugin.tabular.models.table import KiaraTable
+from kiara_plugin.tabular.models.table import KiaraTable, TableMetadata
+
+if TYPE_CHECKING:
+    from kiara.models.values.value import Value
 
 
 class KiaraTables(KiaraModel):
@@ -45,6 +49,11 @@ class KiaraTables(KiaraModel):
     def table_names(self) -> List[str]:
         return list(self.tables.keys())
 
+    def get_metadata_for_column(
+        self, table_name: str, column_name: str
+    ) -> Dict[str, Any]:
+        raise NotImplementedError()
+
     def _retrieve_data_to_hash(self) -> Any:
         raise NotImplementedError()
 
@@ -56,3 +65,28 @@ class KiaraTables(KiaraModel):
             )
 
         return self.tables[table_name]
+
+
+class KiaraTablesMetadata(ValueMetadata):
+    """File stats."""
+
+    _metadata_key = "tables"
+
+    @classmethod
+    def retrieve_supported_data_types(cls) -> Iterable[str]:
+        return ["tables"]
+
+    @classmethod
+    def create_value_metadata(cls, value: "Value") -> "KiaraTablesMetadata":
+
+        kiara_tables: KiaraTables = value.data
+
+        tables = {}
+        for table_name, table in kiara_tables.tables.items():
+
+            md = TableMetadata.create_from_table(table)
+            tables[table_name] = md
+
+        return KiaraTablesMetadata.construct(tables=tables)
+
+    tables: Dict[str, TableMetadata] = Field(description="The table schema.")

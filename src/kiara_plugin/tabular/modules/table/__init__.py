@@ -25,7 +25,10 @@ from kiara.modules.included_core_modules.render_value import RenderValueModule
 from kiara.modules.included_core_modules.serialization import DeserializeValueModule
 from kiara.utils import log_message
 from kiara.utils.output import ArrowTabularWrap
-from kiara_plugin.tabular.defaults import RESERVED_SQL_KEYWORDS
+from kiara_plugin.tabular.defaults import (
+    RESERVED_SQL_KEYWORDS,
+    TABLE_SCHEMA_CHUNKS_NAME,
+)
 from kiara_plugin.tabular.models.array import KiaraArray
 from kiara_plugin.tabular.models.table import KiaraTable, KiaraTableMetadata
 
@@ -183,7 +186,15 @@ class DeserializeTableModule(DeserializeValueModule):
 
         columns = {}
 
+        table_schema_chunks = data.get_serialized_data(TABLE_SCHEMA_CHUNKS_NAME)
+        chunks_generator = table_schema_chunks.get_chunks(as_files=False)
+        schema_chunk = next(chunks_generator)  # type: ignore
+        schema = pa.ipc.read_schema(pa.py_buffer(schema_chunk))
+
         for column_name in data.get_keys():
+
+            if column_name == TABLE_SCHEMA_CHUNKS_NAME:
+                continue
 
             chunks = data.get_serialized_data(column_name)
 
@@ -201,7 +212,7 @@ class DeserializeTableModule(DeserializeValueModule):
                 else:
                     columns[column_name] = column
 
-        arrow_table = pa.table(columns)
+        arrow_table = pa.table(columns, schema=schema)
 
         table = KiaraTable.create_table(arrow_table)
         return table

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, Iterable, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Union
 
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
@@ -8,7 +8,8 @@ from kiara.exceptions import KiaraException
 from kiara.models import KiaraModel
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
-from kiara_plugin.tabular.models import TableMetadata
+from kiara_plugin.tabular.models import ColumnSchema
+from kiara_plugin.tabular.utils.tables import extract_column_metadata
 
 if TYPE_CHECKING:
     import polars as pl
@@ -44,15 +45,22 @@ class KiaraTable(KiaraModel):
                 f"Can't create table, invalid source data type: {type(data)}."
             )
 
+        column_metadata = extract_column_metadata(table_obj)
+
         obj = KiaraTable()
         obj._table_obj = table_obj
+        obj._column_metadata = column_metadata
         return obj
 
     data_path: Union[None, str] = Field(
         description="The path to the (feather) file backing this array.", default=None
     )
+
     """The path where the table object is store (for internal or read-only use)."""
     _table_obj: pa.Table = PrivateAttr(default=None)
+    _column_metadata: Union[Dict[str, Dict[str, KiaraModel]], None] = PrivateAttr(
+        default=None
+    )
 
     def _retrieve_data_to_hash(self) -> Any:
         raise NotImplementedError()
@@ -73,22 +81,61 @@ class KiaraTable(KiaraModel):
         self._table_obj = table
         return self._table_obj
 
-    def to_polars_dataframe(self) -> "pl.DataFrame":
-        """Return the data as a Polars dataframe."""
-
-        import polars as pl
-
-        return pl.from_arrow(self.arrow_table)  # type: ignore
-
     @property
     def column_names(self) -> Iterable[str]:
         """Retrieve the names of all the columns of this table."""
         return self.arrow_table.column_names
 
     @property
+    def column_metadata(self) -> Mapping[str, Mapping[str, KiaraModel]]:
+
+        if self._column_metadata is None:
+            self._column_metadata = {}
+        return self._column_metadata
+
+    @property
     def num_rows(self) -> int:
         """Return the number of rows in this table."""
         return self.arrow_table.num_rows
+
+    def set_column_metadata(
+        self,
+        column_name: str,
+        metadata_key: str,
+        metadata: KiaraModel,
+        overwrite_existing: bool = True,
+    ):
+
+        if column_name not in self.column_names:
+            raise KiaraException(
+                "Can't set column metadata, No column with name: " + column_name
+            )
+
+        if (
+            not overwrite_existing
+            and metadata_key in self.column_metadata.get(column_name, {}).keys()
+        ):
+            return
+
+        self.column_metadata.setdefault(column_name, {})[metadata_key] = metadata  # type: ignore
+
+    def get_column_metadata(self, column_name: str, metadata_key: str) -> KiaraModel:
+
+        if column_name not in self.column_names:
+            raise KiaraException("No column with name: " + column_name)
+
+        if column_name not in self.column_metadata.keys():
+            raise KiaraException("No column metadata set for column: " + column_name)
+
+        if metadata_key not in self.column_metadata[column_name].keys():
+            raise KiaraException(
+                "No column metadata set for column: "
+                + column_name
+                + " and key: "
+                + metadata_key
+            )
+
+        return self.column_metadata[column_name][metadata_key]
 
     def to_pydict(self):
         """Convert and return the table data as a dictionary of lists.
@@ -105,7 +152,14 @@ class KiaraTable(KiaraModel):
 
         return self.arrow_table.to_pylist()
 
-    def to_pandas(self):
+    def to_polars_dataframe(self) -> "pl.DataFrame":
+        """Return the data as a Polars dataframe."""
+
+        import polars as pl
+
+        return pl.from_arrow(self.arrow_table)  # type: ignore
+
+    def to_pandas_dataframe(self):
         """Convert and return the table data to a Pandas dataframe.
 
         This will load all data into memory, so you might or might not want to do that.
@@ -113,25 +167,16 @@ class KiaraTable(KiaraModel):
         return self.arrow_table.to_pandas()
 
 
-class KiaraTableMetadata(ValueMetadata):
-    """File stats."""
-
-    _metadata_key = "table"
+class TableMetadata(KiaraModel):
+    """Describes properties for the 'table' data type."""
 
     @classmethod
-    def retrieve_supported_data_types(cls) -> Iterable[str]:
-        return ["table"]
+    def create_from_table(cls, table: "KiaraTable") -> "TableMetadata":
 
-    @classmethod
-    def create_value_metadata(cls, value: "Value") -> "KiaraTableMetadata":
-
-        kiara_table: KiaraTable = value.data
-
-        table: pa.Table = kiara_table.arrow_table
-
-        table_schema = {}
-        for name in table.schema.names:
-            field = table.schema.field(name)
+        arrow_table = table.arrow_table
+        table_schema: Dict[str, Any] = {}
+        for name in arrow_table.schema.names:
+            field = arrow_table.schema.field(name)
             md = field.metadata
             _type = field.type
             if not md:
@@ -148,10 +193,45 @@ class KiaraTableMetadata(ValueMetadata):
             "column_names": table.column_names,
             "column_schema": table_schema,
             "rows": table.num_rows,
-            "size": table.nbytes,
+            "size": arrow_table.nbytes,
+        }
+        md = TableMetadata.construct(**schema)
+        return md
+
+    column_names: List[str] = Field(description="The name of the columns of the table.")
+    column_schema: Dict[str, ColumnSchema] = Field(
+        description="The schema description of the table."
+    )
+    rows: int = Field(description="The number of rows the table contains.")
+    size: Union[int, None] = Field(
+        description="The tables size in bytes.", default=None
+    )
+
+    def _retrieve_data_to_hash(self) -> Any:
+
+        return {
+            "column_schemas": {k: v.dict() for k, v in self.column_schema.items()},
+            "rows": self.rows,
+            "size": self.size,
         }
 
-        md = TableMetadata.construct(**schema)
+
+class KiaraTableMetadata(ValueMetadata):
+    """File stats."""
+
+    _metadata_key = "table"
+
+    @classmethod
+    def retrieve_supported_data_types(cls) -> Iterable[str]:
+        return ["table"]
+
+    @classmethod
+    def create_value_metadata(cls, value: "Value") -> "KiaraTableMetadata":
+
+        kiara_table: KiaraTable = value.data
+
+        md = TableMetadata.create_from_table(kiara_table)
+
         return KiaraTableMetadata.construct(table=md)
 
     table: TableMetadata = Field(description="The table schema.")

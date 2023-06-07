@@ -46,6 +46,8 @@ SQLALCHEMY_SQLITE_TYPE_MAP: Dict[Type, SqliteDataType] = {
     VARCHAR: "TEXT",
 }
 
+TABLE_SCHEMA_CHUNKS_NAME = "__table_schema__"
+
 RESERVED_SQL_KEYWORDS = [
     "ALL",
     "AND",
