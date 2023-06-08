@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, Mapping, Union
 
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
@@ -8,7 +8,7 @@ from kiara.exceptions import KiaraException
 from kiara.models import KiaraModel
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
-from kiara_plugin.tabular.models import ColumnSchema
+from kiara_plugin.tabular.models import TableMetadata
 from kiara_plugin.tabular.utils.tables import extract_column_metadata
 
 if TYPE_CHECKING:
@@ -119,7 +119,18 @@ class KiaraTable(KiaraModel):
 
         self.column_metadata.setdefault(column_name, {})[metadata_key] = metadata  # type: ignore
 
-    def get_column_metadata(self, column_name: str, metadata_key: str) -> KiaraModel:
+    def get_column_metadata(self, column_name: str) -> Mapping[str, KiaraModel]:
+        if column_name not in self.column_names:
+            raise KiaraException("No column with name: " + column_name)
+
+        if column_name not in self.column_metadata.keys():
+            return {}
+
+        return self.column_metadata[column_name]
+
+    def get_column_metadata_for_key(
+        self, column_name: str, metadata_key: str
+    ) -> KiaraModel:
 
         if column_name not in self.column_names:
             raise KiaraException("No column with name: " + column_name)
@@ -165,55 +176,6 @@ class KiaraTable(KiaraModel):
         This will load all data into memory, so you might or might not want to do that.
         """
         return self.arrow_table.to_pandas()
-
-
-class TableMetadata(KiaraModel):
-    """Describes properties for the 'table' data type."""
-
-    @classmethod
-    def create_from_table(cls, table: "KiaraTable") -> "TableMetadata":
-
-        arrow_table = table.arrow_table
-        table_schema: Dict[str, Any] = {}
-        for name in arrow_table.schema.names:
-            field = arrow_table.schema.field(name)
-            md = field.metadata
-            _type = field.type
-            if not md:
-                md = {
-                    "arrow_type_id": _type.id,
-                }
-            _d = {
-                "type_name": str(_type),
-                "metadata": md,
-            }
-            table_schema[name] = _d
-
-        schema = {
-            "column_names": table.column_names,
-            "column_schema": table_schema,
-            "rows": table.num_rows,
-            "size": arrow_table.nbytes,
-        }
-        md = TableMetadata.construct(**schema)
-        return md
-
-    column_names: List[str] = Field(description="The name of the columns of the table.")
-    column_schema: Dict[str, ColumnSchema] = Field(
-        description="The schema description of the table."
-    )
-    rows: int = Field(description="The number of rows the table contains.")
-    size: Union[int, None] = Field(
-        description="The tables size in bytes.", default=None
-    )
-
-    def _retrieve_data_to_hash(self) -> Any:
-
-        return {
-            "column_schemas": {k: v.dict() for k, v in self.column_schema.items()},
-            "rows": self.rows,
-            "size": self.size,
-        }
 
 
 class KiaraTableMetadata(ValueMetadata):

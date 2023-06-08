@@ -1,3 +1,7 @@
+# This example uses the manual configuration of the 'create.database' module, instead of the
+# 'create.database.from.file_bundle' operation, which would also be possible (but would not be
+# configurable, as this is.
+
 pipeline_name: import.database.from.csv_files
 doc: |
   Create a database value from a folder of csv files.
@@ -26,9 +30,3 @@ input_aliases:
 
 output_aliases:
   create_database.database: database
-
-#defaults:
-#  filename_column_name: "file_name"
-#  date_parse_min: 11
-#  date_parse_max: 21
-#  text_corpus_folder_path: "${pipeline_dir}/../data/text_corpus/data"

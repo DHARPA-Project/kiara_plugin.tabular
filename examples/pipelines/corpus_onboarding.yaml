@@ -43,9 +43,3 @@ input_aliases:
 
 output_aliases:
   merge_table.table: merged_table
-
-defaults:
-  filename_column_name: "file_name"
-  date_parse_min: 11
-  date_parse_max: 21
-  text_corpus_folder_path: "${pipeline_dir}/../data/text_corpus/data"

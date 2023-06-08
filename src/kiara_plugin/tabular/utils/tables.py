@@ -3,8 +3,13 @@ from typing import TYPE_CHECKING, Dict, Union
 
 import pyarrow as pa
 
+from kiara_plugin.tabular.defaults import DEFAULT_TABULAR_DATA_CHUNK_SIZE
+from kiara_plugin.tabular.utils import create_sqlite_schema_data_from_arrow_table
+
 if TYPE_CHECKING:
     from kiara.models import KiaraModel
+    from kiara_plugin.tabular.models.db import KiaraDatabase
+    from kiara_plugin.tabular.models.tables import KiaraTables
 
 
 def attach_metadata(
@@ -73,3 +78,44 @@ def extract_column_metadata(table: pa.Table) -> Dict[str, Dict[str, "KiaraModel"
             result[column_name] = column_metadata
 
     return result
+
+
+def create_database_from_tables(tables: "KiaraTables") -> "KiaraDatabase":
+
+    from sqlalchemy import insert
+
+    from kiara_plugin.tabular.models.db import KiaraDatabase
+
+    column_map = None
+    index_columns = None
+
+    db = KiaraDatabase.create_in_temp_dir()
+    db._unlock_db()
+    engine = db.get_sqlalchemy_engine()
+
+    for table_name, table in tables.tables.items():
+        arrow_table = table.arrow_table
+        nullable_columns = []
+        for column_name in arrow_table.column_names:
+            column = arrow_table.column(column_name)
+            if column.null_count > 0:
+                nullable_columns.append(column_name)
+
+        sqlite_schema = create_sqlite_schema_data_from_arrow_table(
+            table=table.arrow_table,
+            index_columns=index_columns,
+            column_map=column_map,
+            nullable_columns=nullable_columns,
+        )
+
+        _table = sqlite_schema.create_table(table_name=table_name, engine=engine)
+        with engine.connect() as conn:
+            arrow_table = table.arrow_table
+            for batch in arrow_table.to_batches(
+                max_chunksize=DEFAULT_TABULAR_DATA_CHUNK_SIZE
+            ):
+                conn.execute(insert(_table), batch.to_pylist())
+                conn.commit()
+
+    db._lock_db()
+    return db

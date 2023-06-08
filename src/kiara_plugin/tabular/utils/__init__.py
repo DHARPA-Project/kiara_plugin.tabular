@@ -159,7 +159,20 @@ def create_table_from_file_bundle(
         table_data["included_in_bundle"].append(included)
         table_data["error"].append(error)
 
-    return pa.table(table_data)
+    schema = pa.schema(
+        [
+            pa.field("id", pa.int64(), nullable=False),
+            pa.field("size", pa.int64(), nullable=False),
+            pa.field("mime_type", pa.utf8(), nullable=False),
+            pa.field("rel_path", pa.utf8(), nullable=False),
+            pa.field("file_name", pa.utf8(), nullable=False),
+            pa.field("content", pa.utf8(), nullable=True),
+            pa.field("included_in_bundle", pa.bool_(), nullable=False),
+            pa.field("error", pa.utf8(), nullable=True),
+        ]
+    )
+
+    return pa.table(table_data, schema=schema)
 
 
 def convert_arrow_type_to_sqlite(data_type: str) -> SqliteDataType:

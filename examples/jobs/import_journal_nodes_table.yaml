@@ -1,0 +1,3 @@
+operation: import.table.from.local_file_path
+inputs:
+  path: "${this_dir}/../data/journals/JournalNodes1902.csv"

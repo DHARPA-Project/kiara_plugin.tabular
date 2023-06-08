@@ -1,0 +1,22 @@
+pipeline_name: import.tables.from.csv_files
+doc: |
+  Create a tables value from a folder of csv files.
+
+  Each file will represent a table in the database.
+
+steps:
+  - module_type: import.local.file_bundle
+    module_config:
+      include_file_types:
+        - ".csv"
+    step_id: import_csv_files
+  - module_type: create.tables.from.file_bundle
+    step_id: create_tables
+    input_links:
+      file_bundle: import_csv_files.file_bundle
+
+input_aliases:
+  import_csv_files.path: path
+
+output_aliases:
+  create_tables.tables: tables

@@ -8,7 +8,8 @@ from kiara.exceptions import KiaraException
 from kiara.models import KiaraModel
 from kiara.models.values.value_metadata import ValueMetadata
 from kiara_plugin.tabular.defaults import DEFAULT_TABLE_NAME
-from kiara_plugin.tabular.models.table import KiaraTable, TableMetadata
+from kiara_plugin.tabular.models import TableMetadata
+from kiara_plugin.tabular.models.table import KiaraTable
 
 if TYPE_CHECKING:
     from kiara.models.values.value import Value

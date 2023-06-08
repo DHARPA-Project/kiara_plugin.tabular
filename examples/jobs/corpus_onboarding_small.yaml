@@ -1,0 +1,6 @@
+operation: "${this_dir}/../pipelines/corpus_onboarding.yaml"
+inputs:
+  text_corpus_folder_path: "${this_dir}/../data/text_corpus/data"
+  filename_column_name: "file_name"
+  date_parse_min: 11
+  date_parse_max: 21

@@ -33,7 +33,7 @@ from kiara_plugin.tabular.defaults import (
     SQLITE_SQLALCHEMY_TYPE_MAP,
     SqliteDataType,
 )
-from kiara_plugin.tabular.models.table import TableMetadata
+from kiara_plugin.tabular.models import StorageBackend, TableMetadata
 
 if TYPE_CHECKING:
     import pandas as pd
@@ -318,21 +318,25 @@ class KiaraDatabase(KiaraModel):
                     size = None
 
             columns = {}
+            backend_properties: Dict[str, Any] = {"column_details": {}}
             for column in insp.get_columns(table_name=table_name):
                 name = column["name"]
                 _type = column["type"]
                 type_name = SQLALCHEMY_SQLITE_TYPE_MAP[type(_type)]
+                backend_properties["column_details"][name] = {
+                    "nullable": column["nullable"],
+                    "primary_key": True if column["primary_key"] else False,
+                }
                 columns[name] = {
                     "type_name": type_name,
-                    "metadata": {
-                        "nullable": column["nullable"],
-                        "primary_key": True if column["primary_key"] else False,
-                    },
                 }
+
+            backend = StorageBackend(name="sqlite", properties=backend_properties)
 
             schema = {
                 "column_names": list(columns.keys()),
                 "column_schema": columns,
+                "backend": backend,
                 "rows": num_rows,
                 "size": size,
             }

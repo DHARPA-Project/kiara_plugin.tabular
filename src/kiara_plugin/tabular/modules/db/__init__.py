@@ -257,40 +257,11 @@ class CreateDatabaseModule(CreateFromModule):
     ) -> Any:
         """Create a database value from a list of tables."""
 
+        from kiara_plugin.tabular.utils.tables import create_database_from_tables
+
         tables: KiaraTables = source_value.data
+        db = create_database_from_tables(tables=tables)
 
-        column_map = None
-        index_columns = None
-
-        db = KiaraDatabase.create_in_temp_dir()
-        db._unlock_db()
-        engine = db.get_sqlalchemy_engine()
-
-        for table_name, table in tables.tables.items():
-            arrow_table = table.arrow_table
-            nullable_columns = []
-            for column_name in arrow_table.column_names:
-                column = arrow_table.column(column_name)
-                if column.null_count > 0:
-                    nullable_columns.append(column_name)
-
-            sqlite_schema = create_sqlite_schema_data_from_arrow_table(
-                table=table.arrow_table,
-                index_columns=index_columns,
-                column_map=column_map,
-                nullable_columns=nullable_columns,
-            )
-
-            _table = sqlite_schema.create_table(table_name=table_name, engine=engine)
-            with engine.connect() as conn:
-                arrow_table = table.arrow_table
-                for batch in arrow_table.to_batches(
-                    max_chunksize=DEFAULT_TABULAR_DATA_CHUNK_SIZE
-                ):
-                    conn.execute(insert(_table), batch.to_pylist())
-                    conn.commit()
-
-        db._lock_db()
         return db
 
     def create__database__from__table(
