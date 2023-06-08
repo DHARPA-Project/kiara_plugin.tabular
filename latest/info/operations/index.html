@@ -474,6 +474,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#kiara_info.operations.export.tables.as.csv_files" class="md-nav__link">
+    export.tables.as.csv_files
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.operations.export.tables.as.sql_dump" class="md-nav__link">
+    export.tables.as.sql_dump
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.operations.export.tables.as.sqlite_db" class="md-nav__link">
+    export.tables.as.sqlite_db
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kiara_info.operations.extract.date_array.from.table" class="md-nav__link">
     extract.date_array.from.table
   </a>
@@ -1043,10 +1064,50 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_1_6" >
+      
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../reference/kiara_plugin/tabular/utils/__init__/">utils</a>
+          
+            <label for="__nav_5_1_1_6">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_1_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5_1_1_6">
+          <span class="md-nav__icon md-icon"></span>
+          utils
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../reference/kiara_plugin/tabular/utils/" class="md-nav__link">
-        utils
+      <a href="../../reference/kiara_plugin/tabular/utils/tables/" class="md-nav__link">
+        tables
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1204,6 +1265,27 @@
         <li class="md-nav__item">
   <a href="#kiara_info.operations.export.table.as.csv_file" class="md-nav__link">
     export.table.as.csv_file
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.operations.export.tables.as.csv_files" class="md-nav__link">
+    export.tables.as.csv_files
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.operations.export.tables.as.sql_dump" class="md-nav__link">
+    export.tables.as.sql_dump
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kiara_info.operations.export.tables.as.sqlite_db" class="md-nav__link">
+    export.tables.as.sqlite_db
   </a>
   
 </li>
@@ -2452,6 +2534,258 @@ csv files will be created. For this to work, all csv files should follow the sam
 <td>table</td>
 <td>table</td>
 <td>A value of type &#39;table&#39;.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+<td>base_path</td>
+<td>string</td>
+<td>The directory to export the file(s) to.</td>
+<td>no</td>
+<td></td>
+    </tr>
+
+<td>name</td>
+<td>string</td>
+<td>The (base) name of the exported file(s).</td>
+<td>no</td>
+<td></td>
+    </tr>
+
+<td>export_metadata</td>
+<td>boolean</td>
+<td>Whether to also export the value metadata.</td>
+<td>no</td>
+<td>False</td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+    <tr>
+        <td>Outputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>export_details</td>
+<td>dict</td>
+<td>Details about the exported files/folders.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+</table><h3 id="kiara_info.operations.export.tables.as.csv_files"><code>export.tables.as.csv_files</code><a class="headerlink" href="#kiara_info.operations.export.tables.as.csv_files" title="Permanent link">&para;</a></h3>
+
+
+<table>
+    <tr>
+        <td>Documentation</td>
+        <td><p>Export network data as 2 csv files (one for edges, one for nodes.</p>
+</td>
+    </tr>
+    <tr>
+        <td>Inputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>tables</td>
+<td>tables</td>
+<td>A value of type &#39;tables&#39;.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+<td>base_path</td>
+<td>string</td>
+<td>The directory to export the file(s) to.</td>
+<td>no</td>
+<td></td>
+    </tr>
+
+<td>name</td>
+<td>string</td>
+<td>The (base) name of the exported file(s).</td>
+<td>no</td>
+<td></td>
+    </tr>
+
+<td>export_metadata</td>
+<td>boolean</td>
+<td>Whether to also export the value metadata.</td>
+<td>no</td>
+<td>False</td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+    <tr>
+        <td>Outputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>export_details</td>
+<td>dict</td>
+<td>Details about the exported files/folders.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+</table><h3 id="kiara_info.operations.export.tables.as.sql_dump"><code>export.tables.as.sql_dump</code><a class="headerlink" href="#kiara_info.operations.export.tables.as.sql_dump" title="Permanent link">&para;</a></h3>
+
+
+<table>
+    <tr>
+        <td>Documentation</td>
+        <td><p>Export network data as a sql dump file.</p>
+</td>
+    </tr>
+    <tr>
+        <td>Inputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>tables</td>
+<td>tables</td>
+<td>A value of type &#39;tables&#39;.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+<td>base_path</td>
+<td>string</td>
+<td>The directory to export the file(s) to.</td>
+<td>no</td>
+<td></td>
+    </tr>
+
+<td>name</td>
+<td>string</td>
+<td>The (base) name of the exported file(s).</td>
+<td>no</td>
+<td></td>
+    </tr>
+
+<td>export_metadata</td>
+<td>boolean</td>
+<td>Whether to also export the value metadata.</td>
+<td>no</td>
+<td>False</td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+    <tr>
+        <td>Outputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>export_details</td>
+<td>dict</td>
+<td>Details about the exported files/folders.</td>
+<td>yes</td>
+<td></td>
+    </tr>
+
+    </tbody>
+</table>
+</td>
+    </tr>
+</table><h3 id="kiara_info.operations.export.tables.as.sqlite_db"><code>export.tables.as.sqlite_db</code><a class="headerlink" href="#kiara_info.operations.export.tables.as.sqlite_db" title="Permanent link">&para;</a></h3>
+
+
+<table>
+    <tr>
+        <td>Documentation</td>
+        <td><p>Export network data as a sqlite database file.</p>
+</td>
+    </tr>
+    <tr>
+        <td>Inputs</td>
+        <td>
+<table>
+    <thead>
+    <tr>
+        <th>field name</th>
+        <th>type</th>
+        <th>description</th>
+        <th>required</th>
+        <th>default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+<td>tables</td>
+<td>tables</td>
+<td>A value of type &#39;tables&#39;.</td>
 <td>yes</td>
 <td></td>
     </tr>
