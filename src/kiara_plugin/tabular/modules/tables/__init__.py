@@ -343,9 +343,9 @@ class ExportNetworkDataModule(DataExportModule):
 
         from kiara_plugin.tabular.utils.tables import create_database_from_tables
 
-        db = create_database_from_tables(tables=value)
+        kiara_db = create_database_from_tables(tables=value)
 
-        db = sqlite_utils.Database(db.db_file_path)
+        db = sqlite_utils.Database(kiara_db.db_file_path)
         target_path = Path(os.path.join(base_path, f"{name}.sql"))
         with target_path.open("wt") as f:
             for line in db.conn.iterdump():
