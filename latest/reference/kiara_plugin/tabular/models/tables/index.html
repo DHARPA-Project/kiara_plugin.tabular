@@ -17,7 +17,7 @@
         <link rel="next" href="../../modules/__init__/">
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
     
     
       
@@ -734,13 +734,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.tables.KiaraTables.get_metadata_for_column" class="md-nav__link">
-    get_metadata_for_column()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.tables.KiaraTables.get_table" class="md-nav__link">
     get_table()
   </a>
@@ -1159,13 +1152,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#kiara_plugin.tabular.models.tables.KiaraTables.get_metadata_for_column" class="md-nav__link">
-    get_metadata_for_column()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#kiara_plugin.tabular.models.tables.KiaraTables.get_table" class="md-nav__link">
     get_table()
   </a>
@@ -1304,7 +1290,7 @@
 
 
         <details class="quote">
-          <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
+          <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
           <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -1350,12 +1336,7 @@
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraTables</span><span class="p">(</span><span class="n">KiaraModel</span><span class="p">):</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraTables</span><span class="p">(</span><span class="n">KiaraModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper class, containing multiple tables.&quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
@@ -1390,11 +1371,6 @@
     <span class="k">def</span> <span class="nf">table_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">get_metadata_for_column</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-
     <span class="k">def</span> <span class="nf">_retrieve_data_to_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
@@ -1427,8 +1403,8 @@
 <code class="highlight language-python"><span class="n">tables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">KiaraTable</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary of tables, with the table names as keys.&#39;</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.models.tables.KiaraTables.tables" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1477,7 +1453,7 @@
   <div class="doc doc-contents ">
 
       <details class="quote">
-        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
+        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
         <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
@@ -1533,33 +1509,6 @@
 
 
 
-<h5 id="kiara_plugin.tabular.models.tables.KiaraTables.get_metadata_for_column" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_metadata_for_column</span><span class="p">(</span><span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
-
-<a href="#kiara_plugin.tabular.models.tables.KiaraTables.get_metadata_for_column" class="headerlink" title="Permanent link">&para;</a></h5>
-
-
-  <div class="doc doc-contents ">
-
-      <details class="quote">
-        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_metadata_for_column</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">column_name</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
 <h5 id="kiara_plugin.tabular.models.tables.KiaraTables.get_table" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_table</span><span class="p">(</span><span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KiaraTable</span></code>
 
@@ -1569,15 +1518,15 @@
   <div class="doc doc-contents ">
 
       <details class="quote">
-        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">61</span>
+        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
 <span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KiaraTable</span><span class="p">:</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">KiaraTable</span><span class="p">:</span>
 
     <span class="k">if</span> <span class="n">table_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">KiaraException</span><span class="p">(</span>
@@ -1619,8 +1568,13 @@
 
 
         <details class="quote">
-          <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
+          <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
 <span class="normal">72</span>
 <span class="normal">73</span>
 <span class="normal">74</span>
@@ -1637,12 +1591,7 @@
 <span class="normal">85</span>
 <span class="normal">86</span>
 <span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span>
-<span class="normal">92</span>
-<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraTablesMetadata</span><span class="p">(</span><span class="n">ValueMetadata</span><span class="p">):</span>
+<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">KiaraTablesMetadata</span><span class="p">(</span><span class="n">ValueMetadata</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;File stats.&quot;&quot;&quot;</span>
 
     <span class="n">_metadata_key</span> <span class="o">=</span> <span class="s2">&quot;tables&quot;</span>
@@ -1686,8 +1635,8 @@
 <code class="highlight language-python"><span class="n">tables</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TableMetadata</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The table schema.&#39;</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.models.tables.KiaraTablesMetadata.tables" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1717,10 +1666,10 @@
   <div class="doc doc-contents ">
 
       <details class="quote">
-        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">retrieve_supported_data_types</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;tables&quot;</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -1746,19 +1695,19 @@
   <div class="doc doc-contents ">
 
       <details class="quote">
-        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.3/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">80</span>
+        <summary>Source code in <code>/opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/kiara_plugin/tabular/models/tables.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span>
 <span class="normal">84</span>
 <span class="normal">85</span>
-<span class="normal">86</span>
-<span class="normal">87</span>
-<span class="normal">88</span>
-<span class="normal">89</span>
-<span class="normal">90</span>
-<span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">create_value_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="s2">&quot;Value&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;KiaraTablesMetadata&quot;</span><span class="p">:</span>
 
     <span class="n">kiara_tables</span><span class="p">:</span> <span class="n">KiaraTables</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">data</span>
@@ -1832,7 +1781,7 @@
     <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.a51614de.min.js"></script>
       
     
   </body>
