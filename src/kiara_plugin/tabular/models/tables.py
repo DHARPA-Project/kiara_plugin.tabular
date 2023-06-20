@@ -50,11 +50,6 @@ class KiaraTables(KiaraModel):
     def table_names(self) -> List[str]:
         return list(self.tables.keys())
 
-    def get_metadata_for_column(
-        self, table_name: str, column_name: str
-    ) -> Dict[str, Any]:
-        raise NotImplementedError()
-
     def _retrieve_data_to_hash(self) -> Any:
         raise NotImplementedError()
 
