@@ -7,8 +7,8 @@ from pydantic import Field
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import (
     FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS,
-    FileBundle,
-    FileModel,
+    KiaraFile,
+    KiaraFileBundle,
 )
 from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.jobs import JobLog
@@ -70,7 +70,7 @@ class CreateTableModule(CreateFromModule):
 
         from pyarrow import csv
 
-        input_file: FileModel = source_value.data
+        input_file: KiaraFile = source_value.data
         imported_data = None
         errors = []
 
@@ -136,7 +136,7 @@ class CreateTableModule(CreateFromModule):
 
         import pyarrow as pa
 
-        bundle: FileBundle = source_value.data
+        bundle: KiaraFileBundle = source_value.data
 
         columns = FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS
 

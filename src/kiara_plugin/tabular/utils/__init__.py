@@ -23,7 +23,7 @@ from sqlite_utils.utils import (
 )
 from sqlite_utils.utils import flatten as _flatten
 
-from kiara.models.filesystem import FileBundle, FileModel
+from kiara.models.filesystem import KiaraFile, KiaraFileBundle
 from kiara.utils import log_exception
 from kiara_plugin.tabular.defaults import SqliteDataType
 from kiara_plugin.tabular.models.db import KiaraDatabase, SqliteTableSchema
@@ -34,7 +34,7 @@ if typing.TYPE_CHECKING:
 
 def insert_db_table_from_file_bundle(
     database: KiaraDatabase,
-    file_bundle: FileBundle,
+    file_bundle: KiaraFileBundle,
     table_name: str = "file_items",
     include_content: bool = True,
     included_files: Union[None, Mapping[str, bool]] = None,
@@ -92,7 +92,7 @@ def insert_db_table_from_file_bundle(
         # TODO: commit in batches for better performance
 
         for index, rel_path in enumerate(sorted(file_bundle.included_files.keys())):
-            f: FileModel = file_bundle.included_files[rel_path]
+            f: KiaraFile = file_bundle.included_files[rel_path]
             if include_content:
                 content: Union[str, None] = f.read_text()  # type: ignore
             else:
@@ -117,7 +117,7 @@ def insert_db_table_from_file_bundle(
 
 
 def create_table_from_file_bundle(
-    file_bundle: FileBundle,
+    file_bundle: KiaraFileBundle,
     include_content: bool = True,
     included_files: Union[None, Mapping[str, bool]] = None,
     errors: Union[Mapping[str, Union[str, None]], None] = None,
@@ -141,7 +141,7 @@ def create_table_from_file_bundle(
         "error": [],
     }
     for index, rel_path in enumerate(sorted(file_bundle.included_files.keys())):
-        f: FileModel = file_bundle.included_files[rel_path]
+        f: KiaraFile = file_bundle.included_files[rel_path]
         if include_content:
             content: Union[str, None] = f.read_text()  # type: ignore
         else:
@@ -290,7 +290,7 @@ def create_sqlite_schema_data_from_arrow_table(
 
 def create_sqlite_table_from_tabular_file(
     target_db_file: str,
-    file_item: FileModel,
+    file_item: KiaraFile,
     table_name: Union[str, None] = None,
     is_csv: bool = True,
     is_tsv: bool = False,

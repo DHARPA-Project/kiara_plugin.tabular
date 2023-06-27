@@ -12,7 +12,7 @@ from pydantic import Field
 from sqlalchemy import insert, text
 
 from kiara.exceptions import KiaraException, KiaraProcessingException
-from kiara.models.filesystem import FileBundle, FileModel
+from kiara.models.filesystem import KiaraFile, KiaraFileBundle
 from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.jobs import JobLog
 from kiara.models.rendering import RenderScene, RenderValueResult
@@ -82,7 +82,7 @@ class CreateDatabaseModule(CreateFromModule):
 
         atexit.register(cleanup)
 
-        file_item: FileModel = source_value.data
+        file_item: KiaraFile = source_value.data
         if not file_item.file_name.endswith(".csv"):
             raise KiaraProcessingException(
                 "Only csv files are supported (at the moment)."
@@ -132,7 +132,7 @@ class CreateDatabaseModule(CreateFromModule):
             include_content: bool = self.get_config_value("include_source_file_content")
             db._unlock_db()
             included_files = {file_item.file_name: file_item}
-            file_bundle = FileBundle.create_from_file_models(
+            file_bundle = KiaraFileBundle.create_from_file_models(
                 files=included_files, bundle_name=file_item.file_name
             )
             insert_db_table_from_file_bundle(
@@ -179,7 +179,7 @@ class CreateDatabaseModule(CreateFromModule):
 
         # TODO: check whether/how to add indexes
 
-        bundle: FileBundle = source_value.data
+        bundle: KiaraFileBundle = source_value.data
 
         table_names: List[str] = []
         included_files: Dict[str, bool] = {}

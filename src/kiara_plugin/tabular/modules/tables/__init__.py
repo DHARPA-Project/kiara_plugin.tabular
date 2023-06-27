@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Mapping, Tuple, Type, Union
 from pydantic import Field
 
 from kiara.exceptions import KiaraException, KiaraProcessingException
-from kiara.models.filesystem import FileBundle
+from kiara.models.filesystem import KiaraFileBundle
 from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.jobs import JobLog
 from kiara.models.values.value import SerializedData, Value, ValueMap
@@ -120,7 +120,7 @@ class CreateDatabaseModule(CreateFromModule):
 
         tables = {}
 
-        bundle: FileBundle = source_value.data
+        bundle: KiaraFileBundle = source_value.data
 
         table_names: List[str] = []
         included_files: Dict[str, bool] = {}
