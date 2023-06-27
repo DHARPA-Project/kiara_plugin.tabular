@@ -17,7 +17,7 @@
         <link rel="next" href="../../../pipelines/__init__/">
       
       <link rel="icon" href="../../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
     
     
       
@@ -2050,8 +2050,8 @@
 <code class="highlight language-python"><span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Whether to ignore convert errors and omit the failed items.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.tables.CreateTablesModuleConfig.ignore_errors" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2070,8 +2070,8 @@
 <code class="highlight language-python"><span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Whether to include a table with metadata about the source files.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.tables.CreateTablesModuleConfig.include_source_metadata" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2090,8 +2090,8 @@
 <code class="highlight language-python"><span class="n">include_source_file_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;When including source metadata, whether to also include the original raw (string) content.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.tables.CreateTablesModuleConfig.include_source_file_content" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2233,7 +2233,7 @@
 
         <span class="n">tables</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">bundle</span><span class="p">:</span> <span class="n">FileBundle</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">bundle</span><span class="p">:</span> <span class="n">KiaraFileBundle</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
 
         <span class="n">table_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">included_files</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2305,8 +2305,8 @@
 <code class="highlight language-python"><span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CreateTablesModuleConfig</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.tables.CreateDatabaseModule._config_cls" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2431,7 +2431,7 @@ csv files will be created. For this to work, all csv files should follow the sam
 
     <span class="n">tables</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="n">bundle</span><span class="p">:</span> <span class="n">FileBundle</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">bundle</span><span class="p">:</span> <span class="n">KiaraFileBundle</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
 
     <span class="n">table_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">included_files</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2559,8 +2559,8 @@ csv files will be created. For this to work, all csv files should follow the sam
 <code class="highlight language-python"><span class="n">number_of_tables</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;How many tables should be merged. If &#39;table_names&#39; is empty, this defaults to &#39;2&#39;, otherwise the length of the &#39;table_names&#39; input.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.tables.AssembleTablesConfig.number_of_tables" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2579,8 +2579,8 @@ csv files will be created. For this to work, all csv files should follow the sam
 <code class="highlight language-python"><span class="n">table_names</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A pre-defined list of table names. If not defined, users will be asked for the table name(s).&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.tables.AssembleTablesConfig.table_names" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2867,8 +2867,8 @@ csv files will be created. For this to work, all csv files should follow the sam
 <code class="highlight language-python"><span class="n">_config_cls</span> <span class="o">=</span> <span class="n">AssembleTablesConfig</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.tables.AssembleTablesModule._config_cls" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3520,7 +3520,7 @@ csv files will be created. For this to work, all csv files should follow the sam
     <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../../../assets/javascripts/bundle.a51614de.min.js"></script>
+      <script src="../../../../../../assets/javascripts/bundle.b425cdc4.min.js"></script>
       
     
   </body>

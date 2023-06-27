@@ -17,7 +17,7 @@
         <link rel="next" href="../../table/__init__/">
       
       <link rel="icon" href="../../../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
     
     
       
@@ -1921,8 +1921,8 @@
 <code class="highlight language-python"><span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Whether to ignore convert errors and omit the failed items.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModuleConfig.ignore_errors" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1941,8 +1941,8 @@
 <code class="highlight language-python"><span class="n">merge_into_single_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Whether to merge all csv files into a single table.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModuleConfig.merge_into_single_table" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1961,8 +1961,8 @@
 <code class="highlight language-python"><span class="n">include_source_metadata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Whether to include a table with metadata about the source files.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModuleConfig.include_source_metadata" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -1981,8 +1981,8 @@
 <code class="highlight language-python"><span class="n">include_source_file_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;When including source metadata, whether to also include the original raw (string) content.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModuleConfig.include_source_file_content" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2282,7 +2282,7 @@
 
         <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">cleanup</span><span class="p">)</span>
 
-        <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">file_item</span><span class="p">:</span> <span class="n">KiaraFile</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
                 <span class="s2">&quot;Only csv files are supported (at the moment).&quot;</span>
@@ -2332,7 +2332,7 @@
             <span class="n">include_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;include_source_file_content&quot;</span><span class="p">)</span>
             <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
             <span class="n">included_files</span> <span class="o">=</span> <span class="p">{</span><span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span> <span class="n">file_item</span><span class="p">}</span>
-            <span class="n">file_bundle</span> <span class="o">=</span> <span class="n">FileBundle</span><span class="o">.</span><span class="n">create_from_file_models</span><span class="p">(</span>
+            <span class="n">file_bundle</span> <span class="o">=</span> <span class="n">KiaraFileBundle</span><span class="o">.</span><span class="n">create_from_file_models</span><span class="p">(</span>
                 <span class="n">files</span><span class="o">=</span><span class="n">included_files</span><span class="p">,</span> <span class="n">bundle_name</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span>
             <span class="p">)</span>
             <span class="n">insert_db_table_from_file_bundle</span><span class="p">(</span>
@@ -2379,7 +2379,7 @@
 
         <span class="c1"># TODO: check whether/how to add indexes</span>
 
-        <span class="n">bundle</span><span class="p">:</span> <span class="n">FileBundle</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">bundle</span><span class="p">:</span> <span class="n">KiaraFileBundle</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
 
         <span class="n">table_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">included_files</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2520,8 +2520,8 @@
 <code class="highlight language-python"><span class="n">_config_cls</span> <span class="o">=</span> <span class="n">CreateDatabaseModuleConfig</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.db.CreateDatabaseModule._config_cls" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -2646,7 +2646,7 @@
 
     <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">cleanup</span><span class="p">)</span>
 
-    <span class="n">file_item</span><span class="p">:</span> <span class="n">FileModel</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">file_item</span><span class="p">:</span> <span class="n">KiaraFile</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.csv&quot;</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">KiaraProcessingException</span><span class="p">(</span>
             <span class="s2">&quot;Only csv files are supported (at the moment).&quot;</span>
@@ -2696,7 +2696,7 @@
         <span class="n">include_content</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s2">&quot;include_source_file_content&quot;</span><span class="p">)</span>
         <span class="n">db</span><span class="o">.</span><span class="n">_unlock_db</span><span class="p">()</span>
         <span class="n">included_files</span> <span class="o">=</span> <span class="p">{</span><span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span><span class="p">:</span> <span class="n">file_item</span><span class="p">}</span>
-        <span class="n">file_bundle</span> <span class="o">=</span> <span class="n">FileBundle</span><span class="o">.</span><span class="n">create_from_file_models</span><span class="p">(</span>
+        <span class="n">file_bundle</span> <span class="o">=</span> <span class="n">KiaraFileBundle</span><span class="o">.</span><span class="n">create_from_file_models</span><span class="p">(</span>
             <span class="n">files</span><span class="o">=</span><span class="n">included_files</span><span class="p">,</span> <span class="n">bundle_name</span><span class="o">=</span><span class="n">file_item</span><span class="o">.</span><span class="n">file_name</span>
         <span class="p">)</span>
         <span class="n">insert_db_table_from_file_bundle</span><span class="p">(</span>
@@ -2851,7 +2851,7 @@ csv files will be created. For this to work, all csv files should follow the sam
 
     <span class="c1"># TODO: check whether/how to add indexes</span>
 
-    <span class="n">bundle</span><span class="p">:</span> <span class="n">FileBundle</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">bundle</span><span class="p">:</span> <span class="n">KiaraFileBundle</span> <span class="o">=</span> <span class="n">source_value</span><span class="o">.</span><span class="n">data</span>
 
     <span class="n">table_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">included_files</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -3394,8 +3394,8 @@ csv files will be created. For this to work, all csv files should follow the sam
 <code class="highlight language-python"><span class="n">query</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The query.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.db.QueryDatabaseConfig.query" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -3547,8 +3547,8 @@ csv files will be created. For this to work, all csv files should follow the sam
 <code class="highlight language-python"><span class="n">_config_cls</span> <span class="o">=</span> <span class="n">QueryDatabaseConfig</span></code>
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
   </span>
 
 <a href="#kiara_plugin.tabular.modules.db.QueryDatabaseModule._config_cls" class="headerlink" title="Permanent link">&para;</a></h5>
@@ -4819,7 +4819,7 @@ csv files will be created. For this to work, all csv files should follow the sam
     <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["navigation.instant", "navigation.tracking"], "search": "../../../../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../../../assets/javascripts/bundle.a51614de.min.js"></script>
+      <script src="../../../../../../assets/javascripts/bundle.b425cdc4.min.js"></script>
       
     
   </body>
