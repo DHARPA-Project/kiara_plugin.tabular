@@ -12,6 +12,7 @@ from kiara_plugin.tabular.models import TableMetadata
 from kiara_plugin.tabular.utils.tables import extract_column_metadata
 
 if TYPE_CHECKING:
+    import pandas as pd
     import polars as pl
 
 
@@ -170,12 +171,35 @@ class KiaraTable(KiaraModel):
 
         return pl.from_arrow(self.arrow_table)  # type: ignore
 
-    def to_pandas_dataframe(self):
+    def to_pandas_dataframe(
+        self,
+        include_columns: Union[None, str, Iterable[str]] = None,
+        exclude_columns: Union[None, str, Iterable[str]] = None,
+    ) -> "pd.DataFrame":
         """Convert and return the table data to a Pandas dataframe.
 
         This will load all data into memory, so you might or might not want to do that.
+
+        Column names in the 'exclude_columns' argument take precedence over those in the 'include_columns' argument.
+
         """
-        return self.arrow_table.to_pandas()
+
+        if include_columns is None:
+            columns = self.arrow_table.column_names
+        elif isinstance(include_columns, str):
+            columns = [include_columns]
+        else:
+            columns = list(include_columns)
+
+        if exclude_columns is not None:
+            if isinstance(exclude_columns, str):
+                columns = columns.remove(exclude_columns)
+            elif exclude_columns:
+                exclude_columns = list(exclude_columns)
+                columns = [c for c in columns if c not in exclude_columns]
+
+        table = self.arrow_table.select(columns)
+        return table.to_pandas()
 
 
 class KiaraTableMetadata(ValueMetadata):
