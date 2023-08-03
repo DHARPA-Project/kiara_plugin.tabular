@@ -57,15 +57,55 @@ class CreateTableModule(CreateFromModule):
                 "first_row_is_header": {
                     "type": "boolean",
                     "optional": True,
-                    "doc": "Whether the first row of the file is a header row. If not provided, kiara will try to auto-determine.",
+                    "doc": "Whether the first row of a (csv) file is a header row. If not provided, kiara will try to auto-determine. Ignored if not a csv file.",
                 }
             }
 
         return None
 
     def create__table__from__file(self, source_value: Value, optional: ValueMap) -> Any:
-        """Create a table from a file, trying to auto-determine the format of said file."""
+        """Create a table from a file, trying to auto-determine the format of said file.
 
+        Currently supported input file types:
+
+        - csv
+        - parquet
+        """
+
+        input_file: KiaraFile = source_value.data
+
+        if input_file.file_name.endswith(".csv"):
+            return self.import_csv_file(source_value, optional)
+        elif input_file.file_name.endswith(".parquet"):
+            return self.import_parquet_file(source_value, optional)
+
+    def import_parquet_file(
+        self, source_value: Value, optional: ValueMap
+    ) -> KiaraTable:
+        """Create a table from a parquet file value."""
+
+        import pyarrow.parquet as pq
+
+        # TODO: use memory mapping to optimize memory usage?
+
+        input_file: KiaraFile = source_value.data
+        imported_data = None
+        errors = []
+
+        try:
+            imported_data = pq.read_table(input_file.path)
+        except Exception as e:
+            errors.append(e)
+
+        if imported_data is None:
+            raise KiaraProcessingException(
+                f"Failed to import parquet file '{input_file.path}'."
+            )
+
+        return KiaraTable.create_table(imported_data)
+
+    def import_csv_file(self, source_value: Value, optional: ValueMap) -> KiaraTable:
+        """Create a table from a csv file value."""
         import csv as py_csv
 
         from pyarrow import csv
@@ -102,7 +142,7 @@ class CreateTableModule(CreateFromModule):
 
         if imported_data is None:
             raise KiaraProcessingException(
-                f"Failed to import file '{input_file.path}'."
+                f"Failed to import csv file '{input_file.path}'."
             )
 
         # import pandas as pd
