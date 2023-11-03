@@ -94,7 +94,7 @@ class CreateTablesModuleConfig(CreateFromModuleConfig):
     )
 
 
-class CreateDatabaseModule(CreateFromModule):
+class CreateTablesModule(CreateFromModule):
 
     _module_type_name = "create.tables"
     _config_cls = CreateTablesModuleConfig

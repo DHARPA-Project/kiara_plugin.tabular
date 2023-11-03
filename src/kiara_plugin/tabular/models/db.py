@@ -6,6 +6,7 @@ import tempfile
 from typing import (
     TYPE_CHECKING,
     Any,
+    ClassVar,
     Dict,
     Iterable,
     List,
@@ -17,7 +18,7 @@ from typing import (
 )
 
 from multiformats import CID
-from pydantic import BaseModel, Field, PrivateAttr, validator
+from pydantic import BaseModel, Field, PrivateAttr, field_validator
 from sqlalchemy import Column, MetaData, create_engine, event, inspect, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.engine.reflection import Inspector
@@ -140,7 +141,8 @@ class KiaraDatabase(KiaraModel):
     def _retrieve_data_to_hash(self) -> Any:
         return self.file_cid
 
-    @validator("db_file_path", allow_reuse=True)
+    @field_validator("db_file_path")
+    @classmethod
     def ensure_absolute_path(cls, path: str):
 
         path = os.path.abspath(path)
@@ -350,7 +352,7 @@ class KiaraDatabase(KiaraModel):
 class DatabaseMetadata(ValueMetadata):
     """Database and table properties."""
 
-    _metadata_key = "database"
+    _metadata_key: ClassVar[str] = "database"
 
     @classmethod
     def retrieve_supported_data_types(cls) -> Iterable[str]:

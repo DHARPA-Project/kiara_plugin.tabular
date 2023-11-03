@@ -3,7 +3,7 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, Mapping, Type, Union
+from typing import Any, ClassVar, Mapping, Type, Union
 
 import pyarrow as pa
 
@@ -40,7 +40,7 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
     Internally, this type uses the [KiaraArray][kiara_plugin.tabular.models.array.KiaraArray] wrapper class to manage array data. This wrapper class, in turn, uses an [Apache Arrow](https://arrow.apache.org) [Array](https://arrow.apache.org/docs/python/generated/pyarrow.Array.html#pyarrow.Array) to store the data in memory (and on disk).
     """
 
-    _data_type_name = "array"
+    _data_type_name: ClassVar[str] = "array"
 
     @classmethod
     def python_class(cls) -> Type:

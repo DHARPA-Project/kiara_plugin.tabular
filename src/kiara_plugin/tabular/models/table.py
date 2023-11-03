@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, Dict, Iterable, Mapping, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Dict, Iterable, Mapping, Union
 
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
@@ -205,7 +205,7 @@ class KiaraTable(KiaraModel):
 class KiaraTableMetadata(ValueMetadata):
     """File stats."""
 
-    _metadata_key = "table"
+    _metadata_key: ClassVar[str] = "table"
 
     @classmethod
     def retrieve_supported_data_types(cls) -> Iterable[str]:
@@ -218,6 +218,6 @@ class KiaraTableMetadata(ValueMetadata):
 
         md = TableMetadata.create_from_table(kiara_table)
 
-        return KiaraTableMetadata.construct(table=md)
+        return KiaraTableMetadata.model_construct(table=md)
 
     table: TableMetadata = Field(description="The table schema.")

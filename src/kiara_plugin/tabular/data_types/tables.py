@@ -3,7 +3,7 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, List, Mapping, Type, Union
+from typing import Any, ClassVar, List, Mapping, Type, Union
 
 from rich.console import Group
 
@@ -25,7 +25,7 @@ class TablesType(AnyType[KiaraTables, DataTypeConfig]):
     This is similar to the 'database' data type, the main difference being that 'database' is backed by sqlite, whereas 'tables' is backed by Apache Feather/Arrow. There is no hard rule when it's better to use which, but in general, if you need to access the datasets on a row-basis, 'database' is the better fit, for more column-based analytical queries, 'tables' is better.
     """
 
-    _data_type_name = "tables"
+    _data_type_name: ClassVar[str] = "tables"
 
     @classmethod
     def python_class(cls) -> Type:

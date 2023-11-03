@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Mapping, Type, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Type,
+    Union,
+)
 
 from rich.console import Group
 
@@ -109,7 +119,7 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
     the stored data.
     """
 
-    _data_type_name = "database"
+    _data_type_name: ClassVar[str] = "database"
 
     @classmethod
     def python_class(self) -> Type[KiaraDatabase]:

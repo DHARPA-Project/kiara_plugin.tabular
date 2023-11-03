@@ -3,7 +3,7 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, Mapping, Type, Union
+from typing import Any, ClassVar, Mapping, Type, Union
 
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
@@ -32,7 +32,7 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
     in memory and on disk when saved, which enables some advanced usage to preserve memory and compute overhead.
     """
 
-    _data_type_name = "table"
+    _data_type_name: ClassVar[str] = "table"
 
     @classmethod
     def python_class(cls) -> Type:
