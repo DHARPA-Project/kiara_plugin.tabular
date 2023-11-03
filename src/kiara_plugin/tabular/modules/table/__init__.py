@@ -2,7 +2,7 @@
 import os
 from typing import Any, Dict, Iterable, List, Mapping, Type, Union
 
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 from kiara.exceptions import KiaraProcessingException
 from kiara.models.filesystem import (
@@ -14,7 +14,6 @@ from kiara.models.module import KiaraModuleConfig
 from kiara.models.module.jobs import JobLog
 from kiara.models.rendering import RenderScene, RenderValueResult
 from kiara.models.values.value import SerializedData, Value, ValueMap
-from kiara.models.values.value_schema import ValueSchema
 from kiara.modules import KiaraModule, ValueMapSchema
 from kiara.modules.included_core_modules.create_from import (
     CreateFromModule,
@@ -328,9 +327,30 @@ class PickColumnModule(KiaraModule):
         outputs.set_value("array", column)
 
 
+class ValueSchemaInput(BaseModel):
+
+    """
+    The schema of a value.
+
+    This is s simplified version of the default [ValueSchema][kiara.models.values.value_schema.ValueSchema] model,
+    """
+
+    type: str = Field(description="The type of the value.")
+    type_config: Dict[str, Any] = Field(
+        description="Configuration for the type, in case it's complex.",
+        default_factory=dict,
+    )
+    default: Any = Field(description="A default value.", default=None)
+
+    optional: bool = Field(
+        description="Whether this value is required (True), or whether 'None' value is allowed (False).",
+        default=False,
+    )
+
+
 class MergeTableConfig(KiaraModuleConfig):
 
-    inputs_schema: Dict[str, ValueSchema] = Field(
+    inputs_schema: Dict[str, ValueSchemaInput] = Field(
         description="A dict describing the inputs for this merge process."
     )
     column_map: Dict[str, str] = Field(
@@ -357,7 +377,12 @@ class MergeTableModule(KiaraModule):
         self,
     ) -> ValueMapSchema:
 
-        input_schema_dict = self.get_config_value("inputs_schema")
+        input_schema_models = self.get_config_value("inputs_schema")
+
+        input_schema_dict = {}
+        for k, v in input_schema_models.items():
+            input_schema_dict[k] = v.model_dump()
+
         return input_schema_dict
 
     def create_outputs_schema(

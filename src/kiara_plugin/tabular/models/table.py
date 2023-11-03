@@ -217,7 +217,6 @@ class KiaraTableMetadata(ValueMetadata):
         kiara_table: KiaraTable = value.data
 
         md = TableMetadata.create_from_table(kiara_table)
-
         return KiaraTableMetadata.model_construct(table=md)
 
     table: TableMetadata = Field(description="The table schema.")

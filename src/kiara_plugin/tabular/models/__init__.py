@@ -38,8 +38,7 @@ class ColumnSchema(BaseModel):
     )
 
     def _retrieve_data_to_hash(self) -> Any:
-
-        return self.dict()
+        return self.model_dump()
 
 
 class TableMetadata(KiaraModel):
@@ -76,7 +75,7 @@ class TableMetadata(KiaraModel):
             "size": arrow_table.nbytes,
         }
 
-        result = TableMetadata.construct(**schema)
+        result = TableMetadata(**schema)
         return result
 
     column_names: List[str] = Field(description="The name of the columns of the table.")
@@ -92,7 +91,9 @@ class TableMetadata(KiaraModel):
     def _retrieve_data_to_hash(self) -> Any:
 
         return {
-            "column_schemas": {k: v.dict() for k, v in self.column_schema.items()},
+            "column_schemas": {
+                k: v._retrieve_data_to_hash() for k, v in self.column_schema.items()
+            },
             "rows": self.rows,
             "size": self.size,
         }
