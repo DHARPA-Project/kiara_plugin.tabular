@@ -78,7 +78,7 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
 
         serialized_data = {
             "data_type": self.data_type_name,
-            "data_type_config": self.type_config.dict(),
+            "data_type_config": self.type_config.model_dump(),
             "data": chunks,
             "serialization_profile": "feather",
             "metadata": {
