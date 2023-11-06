@@ -63,3 +63,5 @@ onefile.spec
 *_complete.zsh.zwc
 ci/conda/**/build
 ci/conda/kiara_plugin.tabular/meta.yaml
+.pixi
+dev.py
