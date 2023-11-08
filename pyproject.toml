@@ -66,6 +66,7 @@ dev_documentation = [
 ]
 dev_testing = [
     "kiara[dev_testing]",
+    "pandas-stubs"
 ]
 dev_utils = [
     "kiara[dev_utils]",
