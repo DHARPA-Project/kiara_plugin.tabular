@@ -474,7 +474,7 @@ def insert_upsert_implementation_patched(
                 docs = (fn(doc["line"]) for doc in docs)
             elif text:
                 # Special case: this is allowed to be an iterable
-                text_value = list(docs)[0]["text"]
+                text_value = next(iter(docs))["text"]
                 fn_return = fn(text_value)
                 if isinstance(fn_return, dict):
                     docs = [fn_return]

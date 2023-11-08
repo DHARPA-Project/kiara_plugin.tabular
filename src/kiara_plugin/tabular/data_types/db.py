@@ -46,7 +46,7 @@ class SqliteTabularWrap(TabularWrap):
 
         with self._engine.connect() as con:
             result = con.execute(text(f'SELECT count(*) from "{self._table_name}"'))
-            num_rows = result.fetchone()[0]
+            num_rows: int = result.fetchone()[0]
 
         return num_rows
 
@@ -123,7 +123,8 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
 
     @classmethod
     def python_class(self) -> Type[KiaraDatabase]:
-        return KiaraDatabase
+        result: Type[KiaraDatabase] = KiaraDatabase
+        return result
 
     def parse_python_obj(self, data: Any) -> KiaraDatabase:
 
@@ -138,6 +139,10 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
 
             return KiaraDatabase(db_file_path=data)
 
+        if not isinstance(data, KiaraDatabase):
+            raise ValueError(
+                f"Invalid type '{type(data).__name__}', must be an instance of the 'KiaraDatabase' class."
+            )
         return data
 
     def _validate(cls, value: Any) -> None:

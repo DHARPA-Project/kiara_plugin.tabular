@@ -11,6 +11,7 @@ from typing import (
     Iterable,
     List,
     Mapping,
+    Sequence,
     Tuple,
     Type,
     TypeVar,
@@ -124,9 +125,9 @@ class KiaraDatabase(KiaraModel):
 
     db_file_path: str = Field(description="The path to the sqlite database file.")
 
-    _cached_engine = PrivateAttr(default=None)
-    _cached_inspector = PrivateAttr(default=None)
-    _table_names = PrivateAttr(default=None)
+    _cached_engine: Union[None, Engine] = PrivateAttr(default=None)
+    _cached_inspector: Union[None, Inspector] = PrivateAttr(default=None)
+    _table_names: Union[None, Sequence[str]] = PrivateAttr(default=None)
     _tables: Dict[str, Table] = PrivateAttr(default_factory=dict)
     _metadata_obj: Union[MetaData, None] = PrivateAttr(default=None)
     # _table_schemas: Optional[Dict[str, SqliteTableSchema]] = PrivateAttr(default=None)
@@ -346,7 +347,7 @@ class KiaraDatabase(KiaraModel):
             md = TableMetadata(**schema)
             mds[table_name] = md
 
-        return DatabaseMetadata.construct(tables=mds)
+        return DatabaseMetadata(tables=mds)
 
 
 class DatabaseMetadata(ValueMetadata):

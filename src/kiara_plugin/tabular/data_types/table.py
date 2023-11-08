@@ -36,15 +36,14 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
 
     @classmethod
     def python_class(cls) -> Type:
-        return KiaraTable
+        result: Type = KiaraTable
+        return result
 
     def parse_python_obj(self, data: Any) -> KiaraTable:
 
         return KiaraTable.create_table(data)
 
     def _validate(cls, value: Any) -> None:
-
-        pass
 
         if not isinstance(value, KiaraTable):
             raise Exception(

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, ClassVar, Dict, Iterable, Mapping, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Dict, Iterable, List, Mapping, Union
 
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
@@ -85,7 +85,8 @@ class KiaraTable(KiaraModel):
     @property
     def column_names(self) -> Iterable[str]:
         """Retrieve the names of all the columns of this table."""
-        return self.arrow_table.column_names
+        result: List[str] = self.arrow_table.column_names
+        return result
 
     @property
     def column_metadata(self) -> Mapping[str, Mapping[str, KiaraModel]]:
@@ -97,7 +98,8 @@ class KiaraTable(KiaraModel):
     @property
     def num_rows(self) -> int:
         """Return the number of rows in this table."""
-        return self.arrow_table.num_rows
+        result: int = self.arrow_table.num_rows
+        return result
 
     def set_column_metadata(
         self,
@@ -199,7 +201,8 @@ class KiaraTable(KiaraModel):
                 columns = [c for c in columns if c not in exclude_columns]
 
         table = self.arrow_table.select(columns)
-        return table.to_pandas()
+        result: pd.DataFrame = table.to_pandas()
+        return result
 
 
 class KiaraTableMetadata(ValueMetadata):
@@ -217,6 +220,6 @@ class KiaraTableMetadata(ValueMetadata):
         kiara_table: KiaraTable = value.data
 
         md = TableMetadata.create_from_table(kiara_table)
-        return KiaraTableMetadata.model_construct(table=md)
+        return KiaraTableMetadata(table=md)
 
     table: TableMetadata = Field(description="The table schema.")

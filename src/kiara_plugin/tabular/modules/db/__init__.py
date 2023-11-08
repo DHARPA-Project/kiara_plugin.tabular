@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import atexit
+import builtins
 import csv
 import logging
 import os
@@ -402,7 +403,7 @@ class RenderDatabaseModuleBase(RenderValueModule):
         table_names = database.table_names
 
         if not table_name:
-            table_name = list(table_names)[0]
+            table_name = builtins.next(iter(table_names))
 
         if table_name not in table_names:
             raise Exception(

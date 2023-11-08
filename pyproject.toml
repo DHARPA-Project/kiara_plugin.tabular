@@ -247,5 +247,9 @@ plugins = [
 
 # mypy per-module options:
 [[tool.mypy.overrides]]
-module = ["placholder.dummy.*"]
+module = [
+    "ruamel.*",
+    "pyarrow.*",
+    "sqlalchemy_utils.*"
+]
 ignore_missing_imports = true
