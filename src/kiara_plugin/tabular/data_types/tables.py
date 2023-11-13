@@ -29,11 +29,12 @@ class TablesType(AnyType[KiaraTables, DataTypeConfig]):
 
     @classmethod
     def python_class(cls) -> Type:
-        return KiaraTables
+        return KiaraTables  # type: ignore
 
     def parse_python_obj(self, data: Any) -> KiaraTables:
 
-        return KiaraTables.create_tables(data)
+        result: KiaraTables = KiaraTables.create_tables(data)
+        return result
 
     def _validate(cls, value: Any) -> None:
 
