@@ -11,6 +11,11 @@ from kiara_plugin.tabular.defaults import DEFAULT_TABLE_NAME
 from kiara_plugin.tabular.models import TableMetadata
 from kiara_plugin.tabular.models.table import KiaraTable
 
+try:
+    from typing import Self  # type: ignore
+except ImportError:
+    from typing_extensions import Self  # type: ignore
+
 if TYPE_CHECKING:
     from kiara.models.values.value import Value
 
@@ -19,7 +24,7 @@ class KiaraTables(KiaraModel):
     """A wrapper class, containing multiple tables."""
 
     @classmethod
-    def create_tables(cls, data: Any) -> "KiaraTables":
+    def create_tables(cls, data: Any) -> Self:
 
         if isinstance(data, KiaraTables):
             return data
@@ -83,6 +88,6 @@ class KiaraTablesMetadata(ValueMetadata):
             md = TableMetadata.create_from_table(table)
             tables[table_name] = md
 
-        return KiaraTablesMetadata.construct(tables=tables)
+        return KiaraTablesMetadata(tables=tables)
 
     tables: Dict[str, TableMetadata] = Field(description="The table schema.")

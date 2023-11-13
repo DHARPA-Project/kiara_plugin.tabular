@@ -54,7 +54,10 @@ class TableMetadata(KiaraModel):
 
         for name in arrow_table.schema.names:
             field = arrow_table.schema.field(name)
-            md = table.get_column_metadata(column_name=name)
+            _md = table.get_column_metadata(column_name=name)
+            md = {}
+            for _col, _col_md in _md.items():
+                md[_col] = _col_md.model_dump()
             _type = field.type
             backend_properties["column_types"][name] = {
                 "type_id": _type.id,
@@ -74,7 +77,6 @@ class TableMetadata(KiaraModel):
             "rows": table.num_rows,
             "size": arrow_table.nbytes,
         }
-
         result = TableMetadata(**schema)
         return result
 
