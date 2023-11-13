@@ -141,7 +141,9 @@ jobs:
     name: conda package build (and upload if release)
     runs-on: ubuntu-latest
     needs:
-      - build_python_package
+      - test-linux
+      - mypy-linux   # uncomment if this step is enabled
+      - linting-linux   # uncomment if this step is enabled
     steps:
       - name: "Set up Python 3.11"
         uses: actions/setup-python@v4

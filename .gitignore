@@ -52,7 +52,6 @@ src/kiara_plugin/tabular/version.txt
 public
 site
 .dephell_report
-.direnv
 .mypy_cache
 .env
 docs/api-documentation.md
@@ -64,4 +63,5 @@ onefile.spec
 ci/conda/**/build
 ci/conda/kiara_plugin.tabular/meta.yaml
 .pixi
+pixi.lock
 dev.py
