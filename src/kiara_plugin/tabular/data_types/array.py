@@ -44,7 +44,7 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
 
     @classmethod
     def python_class(cls) -> Type:
-        return KiaraArray
+        return KiaraArray  # type: ignore
 
     def parse_python_obj(self, data: Any) -> KiaraArray:
 
