@@ -629,7 +629,7 @@ class RenderTableModuleBase(RenderValueModule):
         if row_offset > 0:
 
             if input_row_offset > 0:
-                related_scenes["first"] = RenderScene.construct(
+                related_scenes["first"] = RenderScene.model_construct(
                     title="first",
                     description=f"Display the first {input_number_of_rows} rows of this table.",
                     manifest_hash=self.manifest.manifest_hash,
@@ -646,7 +646,7 @@ class RenderTableModuleBase(RenderValueModule):
                     "row_offset": p_offset,
                     "number_of_rows": input_number_of_rows,
                 }
-                related_scenes["previous"] = RenderScene.construct(title="previous", description=f"Display the previous {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=previous)  # type: ignore
+                related_scenes["previous"] = RenderScene.model_construct(title="previous", description=f"Display the previous {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=previous)  # type: ignore
             else:
                 related_scenes["first"] = None
                 related_scenes["previous"] = None
@@ -654,7 +654,7 @@ class RenderTableModuleBase(RenderValueModule):
             n_offset = input_row_offset + input_number_of_rows
             if n_offset < arrow_table.num_rows:
                 next = {"row_offset": n_offset, "number_of_rows": input_number_of_rows}
-                related_scenes["next"] = RenderScene.construct(title="next", description=f"Display the next {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=next)  # type: ignore
+                related_scenes["next"] = RenderScene.model_construct(title="next", description=f"Display the next {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=next)  # type: ignore
             else:
                 related_scenes["next"] = None
 
@@ -663,7 +663,7 @@ class RenderTableModuleBase(RenderValueModule):
             if (input_row_offset + input_number_of_rows) > arrow_table.num_rows:
                 related_scenes["last"] = None
             else:
-                related_scenes["last"] = RenderScene.construct(
+                related_scenes["last"] = RenderScene.model_construct(
                     title="last",
                     description="Display the final rows of this table.",
                     manifest_hash=self.manifest.manifest_hash,

@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, ClassVar, Dict, Iterable, List, Mapping, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Sequence,
+    Union,
+)
 
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
@@ -14,6 +24,7 @@ from kiara_plugin.tabular.utils.tables import extract_column_metadata
 if TYPE_CHECKING:
     import pandas as pd
     import polars as pl
+    from rich.console import ConsoleRenderable
 
 
 class KiaraTable(KiaraModel):
@@ -22,6 +33,8 @@ class KiaraTable(KiaraModel):
     @classmethod
     def create_table(cls, data: Any) -> "KiaraTable":
         """Create a `KiaraTable` instance from an Apache Arrow Table, or dict of lists."""
+
+        import polars as pl
 
         if isinstance(data, KiaraTable):
             return data
@@ -35,6 +48,8 @@ class KiaraTable(KiaraModel):
         table_obj = None
         if isinstance(data, (pa.Table)):
             table_obj = data
+        elif isinstance(data, (pl.DataFrame)):
+            table_obj = data.to_arrow()
         else:
             try:
                 table_obj = pa.table(data)
@@ -83,7 +98,7 @@ class KiaraTable(KiaraModel):
         return self._table_obj
 
     @property
-    def column_names(self) -> Iterable[str]:
+    def column_names(self) -> List[str]:
         """Retrieve the names of all the columns of this table."""
         result: List[str] = self.arrow_table.column_names
         return result
@@ -202,6 +217,21 @@ class KiaraTable(KiaraModel):
 
         table = self.arrow_table.select(columns)
         result: pd.DataFrame = table.to_pandas()
+        return result
+
+    def _repr_mimebundle_(
+        self: "ConsoleRenderable",
+        include: Sequence[str],
+        exclude: Sequence[str],
+        **kwargs: Any,
+    ) -> Dict[str, str]:
+
+        result: Dict[str, str] = super()._repr_mimebundle_(
+            include=include, exclude=exclude, **kwargs
+        )
+        pandas_dataframe = self.to_pandas_dataframe()  # type: ignore
+        result["text/html"] = pandas_dataframe._repr_html_()
+
         return result
 
 
