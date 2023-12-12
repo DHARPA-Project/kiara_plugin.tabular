@@ -65,3 +65,6 @@ ci/conda/kiara_plugin.tabular/meta.yaml
 .pixi
 pixi.lock
 dev.py
+.ipynb_checkpoints/
+dev.ipynb
+test.ipynb

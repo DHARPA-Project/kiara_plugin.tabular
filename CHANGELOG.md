@@ -2,6 +2,7 @@
 Changelog
 =========
 
-## Version 0.0.1 (Upcoming)
+## Version 0.5.2 (Upcoming)
 
-- first release of *kiara_plugin.tabular*
+- support polars dataframe as input when creating a KiaraTable instance
+- support Jupyter preview of KiaraTable data
