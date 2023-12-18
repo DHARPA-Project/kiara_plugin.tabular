@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any, Dict, Sequence, Union
 
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
 
 from kiara.models import KiaraModel
+
+if TYPE_CHECKING:
+    from pandas import Series
+    from rich.console import ConsoleRenderable
 
 
 class KiaraArray(KiaraModel):
@@ -94,5 +98,21 @@ class KiaraArray(KiaraModel):
     def to_pylist(self):
         return self.arrow_array.to_pylist()
 
-    def to_pandas(self):
+    def to_pandas(self) -> "Series":
         return self.arrow_array.to_pandas()
+
+    def _repr_mimebundle_(
+        self: "ConsoleRenderable",
+        include: Sequence[str],
+        exclude: Sequence[str],
+        **kwargs: Any,
+    ) -> Dict[str, str]:
+
+        result: Dict[str, str] = super()._repr_mimebundle_(
+            include=include, exclude=exclude, **kwargs
+        )
+
+        pandas_series = self.arrow_array.to_pandas()  # type: ignore
+        result["text/html"] = pandas_series.to_frame()._repr_html_()
+
+        return result

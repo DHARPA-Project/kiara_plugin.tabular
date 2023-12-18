@@ -43,6 +43,7 @@ class CreateTableModuleConfig(CreateFromModuleConfig):
 
 
 class CreateTableModule(CreateFromModule):
+    """Create a table from supported source input types."""
 
     _module_type_name = "create.table"
     _config_cls = CreateTableModuleConfig
