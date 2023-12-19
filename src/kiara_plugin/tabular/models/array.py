@@ -99,7 +99,8 @@ class KiaraArray(KiaraModel):
         return self.arrow_array.to_pylist()
 
     def to_pandas(self) -> "Series":
-        return self.arrow_array.to_pandas()
+        result: Series = self.arrow_array.to_pandas()
+        return result
 
     def _repr_mimebundle_(
         self: "ConsoleRenderable",
@@ -108,7 +109,7 @@ class KiaraArray(KiaraModel):
         **kwargs: Any,
     ) -> Dict[str, str]:
 
-        result: Dict[str, str] = super()._repr_mimebundle_(
+        result: Dict[str, str] = super()._repr_mimebundle_(  # type: ignore
             include=include, exclude=exclude, **kwargs
         )
 

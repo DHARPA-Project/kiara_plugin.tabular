@@ -226,7 +226,7 @@ class KiaraTable(KiaraModel):
         **kwargs: Any,
     ) -> Dict[str, str]:
 
-        result: Dict[str, str] = super()._repr_mimebundle_(
+        result: Dict[str, str] = super()._repr_mimebundle_(  # type: ignore
             include=include, exclude=exclude, **kwargs
         )
         pandas_dataframe = self.to_pandas_dataframe()  # type: ignore
