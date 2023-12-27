@@ -84,7 +84,9 @@ class TableMetadata(KiaraModel):
     column_schema: Dict[str, ColumnSchema] = Field(
         description="The schema description of the table."
     )
-    backend: StorageBackend = Field(description="The storage backend that is used.")
+    backend: StorageBackend = Field(
+        description="The storage backend that is used, and backend-specific properties."
+    )
     rows: int = Field(description="The number of rows the table contains.")
     size: Union[int, None] = Field(
         description="The tables size in bytes.", default=None

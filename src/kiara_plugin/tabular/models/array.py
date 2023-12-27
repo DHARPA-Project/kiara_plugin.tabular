@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-from typing import TYPE_CHECKING, Any, Dict, Sequence, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Dict, Iterable, Sequence, Union
 
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
 
 from kiara.models import KiaraModel
+from kiara.models.values.value_metadata import ValueMetadata
+from kiara_plugin.tabular.models import StorageBackend
 
 if TYPE_CHECKING:
     from pandas import Series
     from rich.console import ConsoleRenderable
+
+    from kiara.models.values.value import Value
 
 
 class KiaraArray(KiaraModel):
@@ -95,6 +99,12 @@ class KiaraArray(KiaraModel):
         self._array_obj = table.column(0)
         return self._array_obj
 
+    @property
+    def num_rows(self) -> int:
+        """Return the number of rows in the array."""
+
+        return len(self.arrow_array)
+
     def to_pylist(self):
         return self.arrow_array.to_pylist()
 
@@ -117,3 +127,37 @@ class KiaraArray(KiaraModel):
         result["text/html"] = pandas_series.to_frame()._repr_html_()
 
         return result
+
+
+class KiaraArrayMetadata(ValueMetadata):
+    """File stats."""
+
+    _metadata_key: ClassVar[str] = "array"
+
+    @classmethod
+    def retrieve_supported_data_types(cls) -> Iterable[str]:
+        return ["array"]
+
+    @classmethod
+    def create_value_metadata(cls, value: "Value") -> "KiaraArrayMetadata":
+
+        kiara_array: KiaraArray = value.data
+        _type = kiara_array.arrow_array.type
+
+        type_id = _type.id
+        size = kiara_array.arrow_array.nbytes
+
+        backend_properties = {"type_id": type_id, "size": size}
+
+        backend = StorageBackend(name="arrow", properties=backend_properties)
+        return KiaraArrayMetadata(
+            type_name=str(_type), rows=len(kiara_array), backend=backend
+        )
+
+    type_name: str = Field(
+        description="The type of the data in the array (backend-specific)."
+    )
+    rows: int = Field(description="The number of rows.")
+    backend: StorageBackend = Field(
+        description="The storage backend that is used, and backend-specific properties."
+    )
