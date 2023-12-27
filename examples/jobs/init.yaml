@@ -1,3 +1,5 @@
 operation: "${this_dir}/../pipelines/tables_from_csv_files.yaml"
 inputs:
   path: "${this_dir}/../data/journals/"
+save:
+  tables: "journal_tables"

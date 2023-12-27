@@ -1,0 +1,2 @@
+table::properties::metadata.table::table::column_names: ['Id', 'Label', 'JournalType', 'City', 'CountryNetworkTime', 'PresentDayCountry', 'Latitude', 'Longitude', 'Language']
+table::properties::metadata.table::table::rows: 276

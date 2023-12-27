@@ -1,0 +1,4 @@
+operation: "tables.pick.table"
+inputs:
+  tables: "journal_tables"
+  table_name: "JournalNodes1902"
