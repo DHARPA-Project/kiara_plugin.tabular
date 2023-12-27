@@ -251,6 +251,7 @@ plugins = [
 module = [
     "ruamel.*",
     "pyarrow.*",
-    "sqlalchemy_utils.*"
+    "sqlalchemy_utils.*",
+    "appdirs.*",
 ]
 ignore_missing_imports = true

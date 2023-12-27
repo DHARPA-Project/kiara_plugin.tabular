@@ -32,75 +32,57 @@ TODO
 If you only want to work on the modules, and not the core *Kiara* codebase, follow the instructions below. Otherwise, please
 check the notes on how to setup a *Kiara* development environment under (TODO).
 
-#### Linux & Mac OS X (using make)
+#### Using `pixi` (recommended)
 
-For *NIX-like operating system, setting up a development environment is relatively easy:
+The recommended way to setup a development environment is to use [pixi](https://github.com/prefix-dev/pixi). Check out [their install instructions](https://github.com/prefix-dev/pixi#installation).
 
-```console
-git clone https://github.com/DHARPA-Project/kiara_plugin.tabular.git
-cd kiara_plugin.tabular
-python3 -m venv .venv
-source .venv/bin/activate
-make init
+Once you have `pixi` installed, you need to initialize the environment once:
+
+```
+pixi run install-dev-env
 ```
 
-#### Windows (or manual pip install)
+You also need to do this whenever a depdendency of this plugin is updated (for example the core `kiara` package).
 
-It's impossible to lay out all the ways Python can be installed on a machine, and virtual- (or conda-)envs can be created, so I'll assume you know how to do this.
-One simple way is to install the [Anaconda (individual edition)](https://docs.anaconda.com/anaconda/install/index.html), then use the Anaconda navigator to create a new environment, install the 'git' package in it (if your system does not already have it), and use the 'Open Terminal' option of that environment to start up a terminal that has that virtual-/conda-environment activated.
+Once that is done, you can enter the environment with:
 
-Once that is done, `cd` into a directory where you want this project folder to live, and do:
-
-```console
-# make sure your virtual env is activated!!!
-git clone https://github.com/DHARPA-Project/kiara_plugin.tabular.git
-cd kiara_plugin.tabular
-pip install --extra-index-url https://pypi.fury.io/dharpa/ -U -e .[all_dev]
+```
+pixi shell
 ```
 
-#### Try it out
+This will start a sub-shell with the virtual environment activated, and all dependencies of the plugin package installed. To confirm it works, you can run any `kiara` command:
 
-After this is done, you should be able to run the included example module via:
-
-```console
-kiara run tabular_example text_1="xxx" text_2="yyy"
-...
-...
 ```
-
-### Re-activate the development environment
-
-The 'prepare' step from above only has to be done once. After that, to re-enable your virtual environment,
-you'll need to navigate to the directory again (wherever that is, in your case), and run the ``source`` command from before again:
-
-```console
-cd path/to/kiara_plugin.tabular
-source .venv/bin/activate  # if it isn't activated already, for example by the Anaconda navigator
-kiara --help  # or whatever, point is, kiara should be available for you now,
-```
-
-### ``make`` targets (Linux & Mac OS X)
-
-- ``init``: init development project (install project & dev dependencies into virtualenv, as well as pre-commit git hook)
-- ``update-dependencies``: update development dependencies (mainly the core ``kiara`` package from git)
-- ``flake``: run *flake8* tests
-- ``mypy``: run mypy tests
-- ``test``: run unit tests
-- ``docs``: create static documentation pages (under ``build/site``)
-- ``serve-docs``: serve documentation pages (incl. auto-reload) for getting direct feedback when working on documentation
-- ``clean``: clean build directories
-
-For details (and other, minor targets), check the ``Makefile``.
-
-
-### Running tests
-
-``` console
-> make test
+kiara --version
 # or
-> make coverage
+kiara operation list
+# or
+...
+...
 ```
 
+Once you are finished with your development session, you can exit the sub-shell as you would normally do in such cases:
+
+```
+exit
+```
+
+Alternatively, you can also run the `kiara` executable directly, it is located in `.pixi/env/bin/kiara`. So either adapt your `PATH` variable, or do something like:
+
+```
+.pixi/env/bin/kiara operation list
+```
+
+In most cases it's recommended to use a pixi shell though.
+
+
+### Using pre-defined development-related tasks
+
+The included `pixi.toml` file includes some useful tasks that help with development:
+
+- `pixi run pre-commit-check`: runs a set of checks against all files
+- `pixi run tests`: runs the unit tests
+- `pixi run mypy`: run mypy checks
 
 ## Copyright & license
 
