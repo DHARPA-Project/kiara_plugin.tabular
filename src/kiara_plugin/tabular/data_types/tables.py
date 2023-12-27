@@ -3,18 +3,20 @@ import atexit
 import os
 import shutil
 import tempfile
-from typing import Any, ClassVar, List, Mapping, Type, Union
+from typing import TYPE_CHECKING, Any, ClassVar, List, Mapping, Type, Union
 
 from rich.console import Group
 
 from kiara.data_types import DataTypeConfig
 from kiara.data_types.included_core_types import AnyType
 from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
-from kiara.models.values.value import SerializationResult, SerializedData, Value
 from kiara.utils.output import ArrowTabularWrap
 from kiara_plugin.tabular.data_types.array import store_array
 from kiara_plugin.tabular.defaults import TABLE_COLUMN_SPLIT_MARKER
 from kiara_plugin.tabular.models.tables import KiaraTables
+
+if TYPE_CHECKING:
+    from kiara.models.values.value import SerializedData, Value
 
 
 class TablesType(AnyType[KiaraTables, DataTypeConfig]):
@@ -104,11 +106,13 @@ class TablesType(AnyType[KiaraTables, DataTypeConfig]):
             },
         }
 
+        from kiara.models.values.value import SerializationResult
+
         serialized = SerializationResult(**serialized_data)
         return serialized
 
     def pretty_print_as__terminal_renderable(
-        self, value: Value, render_config: Mapping[str, Any]
+        self, value: "Value", render_config: Mapping[str, Any]
     ) -> Any:
 
         max_rows = render_config.get(

@@ -29,7 +29,7 @@ from kiara_plugin.tabular.defaults import (
     TABLE_SCHEMA_CHUNKS_NAME,
 )
 from kiara_plugin.tabular.models.array import KiaraArray
-from kiara_plugin.tabular.models.table import KiaraTable, KiaraTableMetadata
+from kiara_plugin.tabular.models.table import KiaraTable
 
 EMPTY_COLUMN_NAME_MARKER = "__no_column_name__"
 
@@ -312,14 +312,12 @@ class PickColumnModule(KiaraModule):
             )
 
         table_value: Value = inputs.get_value_obj("table")
-        table_metadata: KiaraTableMetadata = table_value.get_property_data(
-            "metadata.table"
-        )
-        available = table_metadata.table.column_names
 
-        if column_name not in available:
+        table_instance: KiaraTable = table_value.data
+
+        if column_name not in table_instance.column_names:
             raise KiaraProcessingException(
-                f"Invalid column name '{column_name}'. Available column names: {', '.join(available)}"
+                f"Invalid column name '{column_name}'. Available column names: {', '.join(table_instance.column_names)}"
             )
 
         table: pa.Table = table_value.data.arrow_table

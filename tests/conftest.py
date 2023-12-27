@@ -51,6 +51,7 @@ def example_job_test(request, kiara_api) -> JobTest:
     job_tests_folder = Path(os.path.join(ROOT_DIR, "tests", "job_tests"))
 
     job_desc = request.param
+
     tests = get_tests_for_job(
         job_alias=job_desc.job_alias, job_tests_folder=job_tests_folder
     )
