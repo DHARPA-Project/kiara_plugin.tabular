@@ -1,0 +1,26 @@
+pipeline_name: init_tabular_data
+doc: |
+  Onboards some data that can be used with operations provided by the 'tabular' plugin.
+
+steps:
+  - module_type: import.local.file_bundle
+    module_config:
+      include_file_types:
+        - ".csv"
+    step_id: import_csv_files
+  - module_type: create.tables.from.file_bundle
+    step_id: create_tables
+    input_links:
+      file_bundle: import_csv_files.file_bundle
+  - module_type: import.local.file
+    step_id: import_journal_nodes
+  - module_type: import.local.file
+    step_id: import_journal_edges
+  - module_type: create.table.from.file
+    step_id: create_journal_nodes_table
+    input_links:
+      file: import_journal_nodes.file
+  - module_type: create.table.from.file
+    step_id: create_journal_edges_table
+    input_links:
+      file: import_journal_edges.file

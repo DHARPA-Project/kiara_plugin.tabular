@@ -1,0 +1,10 @@
+operation: assemble.tables
+module_config:
+  number_of_tables: 3
+inputs:
+  table_1: "journals_nodes_table"
+  table_name_1: "table_1"
+  table_2: "journals_nodes_table"
+  table_name_2: "table_2"
+  table_3: "journals_nodes_table"
+  table_name_3: "table_3"

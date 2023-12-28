@@ -57,6 +57,11 @@ class KiaraArray(KiaraModel):
                 pass
 
         if array_obj is None:
+            if isinstance(data, (str)):
+                raise Exception(
+                    f"Can't create array, invalid source data type 'string', maybe an invalid alias: {data}."
+                )
+
             raise Exception(
                 f"Can't create table, invalid source data type: {type(data)}."
             )

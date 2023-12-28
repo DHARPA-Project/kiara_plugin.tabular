@@ -1,0 +1,3 @@
+operation: create.table.from.file
+inputs:
+  file: journals_nodes_file

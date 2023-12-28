@@ -40,6 +40,10 @@ class KiaraTables(KiaraModel):
             table_obj = {DEFAULT_TABLE_NAME: data}
 
         if table_obj is None:
+            if isinstance(data, (str)):
+                raise Exception(
+                    f"Can't create tables, invalid source data type 'string', check if maybe invalid alias: {data}."
+                )
             raise Exception(
                 f"Can't create tables, invalid source data type: {type(data)}."
             )

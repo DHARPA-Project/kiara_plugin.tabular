@@ -1,5 +1,12 @@
-operation: "${this_dir}/../pipelines/tables_from_csv_files.yaml"
+operation: "${this_dir}/../pipelines/init.yaml"
 inputs:
-  path: "${this_dir}/../data/journals/"
+  import_csv_files__path: "${this_dir}/../data/journals/"
+  import_journal_nodes__path: "${this_dir}/../data/journals/JournalNodes1902.csv"
+  import_journal_edges__path: "${this_dir}/../data/journals/JournalEdges1902.csv"
 save:
-  tables: "journal_tables"
+  import_csv_files__file_bundle: "journals_file_bundle"
+  import_journal_nodes__file: "journals_nodes_file"
+  import_journal_edges__file: "journals_edges_file"
+  create_tables__tables: "journals_tables"
+  create_journal_edges_table__table: "journals_edges_table"
+  create_journal_nodes_table__table: "journals_nodes_table"

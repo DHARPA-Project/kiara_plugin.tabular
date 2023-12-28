@@ -1,0 +1,10 @@
+operation: assemble.tables
+module_config:
+  table_names:
+    - x
+    - y
+    - z
+inputs:
+  table_x: "journals_nodes_table"
+  table_y: "journals_nodes_table"
+  table_z: "journals_nodes_table"

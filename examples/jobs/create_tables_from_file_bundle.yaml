@@ -1,0 +1,3 @@
+operation: create.tables.from.file_bundle
+inputs:
+  file_bundle: journals_file_bundle

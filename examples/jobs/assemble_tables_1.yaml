@@ -1,0 +1,6 @@
+operation: assemble.tables
+inputs:
+  table_1: "journals_nodes_table"
+  table_name_1: "journals_nodes_table"
+  table_2: "journals_edges_table"
+  table_name_2: "journals_edges_table"
