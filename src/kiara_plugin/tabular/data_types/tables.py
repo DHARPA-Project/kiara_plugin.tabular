@@ -15,6 +15,11 @@ from kiara_plugin.tabular.data_types.array import store_array
 from kiara_plugin.tabular.defaults import TABLE_COLUMN_SPLIT_MARKER
 from kiara_plugin.tabular.models.tables import KiaraTables
 
+try:
+    from typing import Self  # type: ignore
+except ImportError:
+    from typing_extensions import Self  # type: ignore
+
 if TYPE_CHECKING:
     from kiara.models.values.value import SerializedData, Value
 
@@ -45,7 +50,7 @@ class TablesType(AnyType[KiaraTables, DataTypeConfig]):
                 f"invalid type '{type(value).__name__}', must be 'KiaraTables'."
             )
 
-    def serialize(self, data: KiaraTables) -> Union[None, str, "SerializedData"]:
+    def serialize(self, data: Self) -> Union[None, str, "SerializedData"]:
 
         import pyarrow as pa
 
