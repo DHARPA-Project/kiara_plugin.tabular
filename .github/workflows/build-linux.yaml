@@ -29,29 +29,26 @@ jobs:
         run: pip install -U .[dev_testing]
       - name: display installed kiara and module package versions
         run: pip list | grep kiara
-      - name: Test with pytest
-        run: make test
-
-  coverage:
-    name: create and publish test coverage
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Set up Python 3.11"
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-      - uses: actions/checkout@v3
-      - name: install kiara
-        run: pip install -U .[all,dev_testing]
-      - name: display installed kiara and module package versions
-        run: pip list | grep kiara
-      - name: Run coverage
-        run: coverage run -m pytest tests
-      - name: coveralls
+      - name: test with pytest
+        run: pytest --cov-report=xml --cov=kiara_plugin.tabular tests
+      - name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
-          format: python
-          allow-empty: true
+          parallel: true
+          flag-name: run ${{ join(matrix.*, ' - ') }}
+          format: cobertura
+          file: coverage.xml
+
+  coverage:
+    name: test coverage
+    runs-on: ubuntu-latest
+    needs:
+      - test-linux
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
 
   mypy-linux:
     name: mypy check on linux
@@ -66,7 +63,7 @@ jobs:
           python-version: "${{ matrix.python_version }}"
       - uses: actions/checkout@v3
       - name: install kiara_plugin.tabular
-        run: pip install -U .[all,dev_testing]
+        run: pip install -U .[dev_testing]
       - name: Test with mypy
         run: make mypy
 
@@ -99,7 +96,6 @@ jobs:
       - test-linux
       - mypy-linux
       - linting-linux
-
     steps:
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
@@ -142,8 +138,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - test-linux
-      - mypy-linux   # uncomment if this step is enabled
-      - linting-linux   # uncomment if this step is enabled
+      - mypy-linux
+      - linting-linux
     steps:
       - name: "Set up Python 3.11"
         uses: actions/setup-python@v4
