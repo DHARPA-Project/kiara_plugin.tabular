@@ -1,0 +1,28 @@
+{
+  "pipeline_name": "import.table.from.local_folder_path_ignore_errors",
+  "doc": "Import a table from a local folder containing text files.",
+  "steps": [
+    {
+      "module_type": "import.local.file_bundle",
+      "step_id": "import_file_bundle"
+    },
+    {
+      "module_type": "create.table",
+      "module_config": {
+          "source_type": "file_bundle",
+          "target_type": "table",
+          "ignore_errors": true
+      },
+      "step_id": "create_table_from_files",
+      "input_links": {
+        "file_bundle": "import_file_bundle.file_bundle"
+      }
+    }],
+  "input_aliases": {
+    "import_file_bundle.path": "path"
+  },
+  "output_aliases": {
+    "import_file_bundle.file_bundle": "imported_file_bundle",
+    "create_table_from_files.table": "table"
+  }
+}
