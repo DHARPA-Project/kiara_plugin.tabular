@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
 import os
-from typing import Any, Dict, Iterable, List, Mapping, Type, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Generator,
+    Iterable,
+    List,
+    Mapping,
+    Type,
+    Union,
+)
 
 from pydantic import BaseModel, Field
 
@@ -30,6 +40,9 @@ from kiara_plugin.tabular.defaults import (
 )
 from kiara_plugin.tabular.models.array import KiaraArray
 from kiara_plugin.tabular.models.table import KiaraTable
+
+if TYPE_CHECKING:
+    from multiformats.varint import BytesLike
 
 EMPTY_COLUMN_NAME_MARKER = "__no_column_name__"
 
@@ -227,7 +240,9 @@ class DeserializeTableModule(DeserializeValueModule):
         columns = {}
 
         table_schema_chunks = data.get_serialized_data(TABLE_SCHEMA_CHUNKS_NAME)
-        chunks_generator = table_schema_chunks.get_chunks(as_files=False)
+        chunks_generator: Generator[
+            "BytesLike", None, None
+        ] = table_schema_chunks.get_chunks(as_files=False)
         schema_chunk = next(chunks_generator)
         schema = pa.ipc.read_schema(pa.py_buffer(schema_chunk))
 
