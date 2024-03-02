@@ -23,6 +23,8 @@ def store_array(array_obj: "pa.Array", file_name: str, column_name: "str" = "arr
 
     schema = pa.schema([pa.field(column_name, array_obj.type)])
 
+    os.makedirs(os.path.dirname(file_name), exist_ok=True)
+
     # TODO: support non-single chunk columns
     with pa.OSFile(file_name, "wb") as sink:
         with pa.ipc.new_file(sink, schema=schema) as writer:

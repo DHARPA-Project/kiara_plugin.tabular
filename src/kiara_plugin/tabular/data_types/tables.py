@@ -81,7 +81,7 @@ class TablesType(AnyType[KiaraTables, DataTypeConfig]):
                     )
 
                 column: pa.Array = arrow_table.column(column_name)
-                file_name = os.path.join(temp_f, column_name)
+                file_name = os.path.join(temp_f, table_id, column_name)
                 store_array(
                     array_obj=column, file_name=file_name, column_name=column_name
                 )
