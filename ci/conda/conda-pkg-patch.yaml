@@ -9,7 +9,7 @@ host_requirements:
   - setuptools_scm
 
 requirements:
-  duckdb: "python-duckdb>=0.6.0"
+  duckdb: "python-duckdb>=0.10.0"
 
 test:
   imports:
