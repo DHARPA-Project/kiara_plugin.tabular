@@ -242,7 +242,9 @@ class DeserializeTableModule(DeserializeValueModule):
         table_schema_chunks = data.get_serialized_data(TABLE_SCHEMA_CHUNKS_NAME)
         chunks_generator: Generator[
             "BytesLike", None, None
-        ] = table_schema_chunks.get_chunks(as_files=False)
+        ] = table_schema_chunks.get_chunks(
+            as_files=False
+        )  # type: ignore
         schema_chunk = next(chunks_generator)
         schema = pa.ipc.read_schema(pa.py_buffer(schema_chunk))
 
