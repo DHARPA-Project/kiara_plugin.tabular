@@ -58,7 +58,7 @@ def kiara_api_init_example() -> KiaraAPI:
     if init_job is None:
         return api
 
-    results = api.run_job(init_job)
+    results = api.run_job(init_job, comment="Init test job")
 
     if not init_job.save:
         return api
