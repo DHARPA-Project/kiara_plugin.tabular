@@ -1,5 +1,5 @@
 operation: "tables.pick.column"
 inputs:
-  tables: "journals_tables"
+  tables: "alias:journals_tables"
   table_name: "JournalNodes1902"
   column_name: "City"
