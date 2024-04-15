@@ -386,6 +386,26 @@ class MergeTableModule(KiaraModule):
     - '[inputs_schema_key].orig_column_name' for inputs of type 'table'
     """
 
+    # @classmethod
+    # def retrieve_included_operations(cls):
+    #
+    #     return {
+    #         "table.add_column": {
+    #             "module_config": {
+    #                 "inputs_schema": {
+    #                     "table": {
+    #                         "type": "table",
+    #                         "doc": "The table to add the column to.",
+    #                     },
+    #                     "column": {
+    #                         "type": "array",
+    #                         "doc": "The column to add.",
+    #                     }
+    #                 }
+    #             }
+    #         }
+    #     }
+
     _module_type_name = "table.merge"
     _config_cls = MergeTableConfig
 
