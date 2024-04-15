@@ -19,4 +19,4 @@ test:
     - examples
   commands:
     - kiara module list
-    - kiara run import.table.from.local_file_path path=examples/data/journals/JournalEdges1902.csv
+    - kiara run import.table.from.local_file_path path=examples/data/journals/JournalEdges1902.csv -c conda
