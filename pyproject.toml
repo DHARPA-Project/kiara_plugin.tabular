@@ -58,6 +58,7 @@ dependencies = [
     "sqlalchemy-utils>=0.38.0",
     "sqlite-utils==3.30",
 ]
+
 dynamic = ["version"]
 
 [project.optional-dependencies]

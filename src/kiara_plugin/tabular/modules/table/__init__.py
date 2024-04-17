@@ -14,7 +14,7 @@ from typing import (
 
 from pydantic import BaseModel, Field
 
-from kiara.exceptions import KiaraProcessingException
+from kiara.exceptions import KiaraException, KiaraProcessingException
 from kiara.models.filesystem import (
     FILE_BUNDLE_IMPORT_AVAILABLE_COLUMNS,
     KiaraFile,
@@ -357,11 +357,12 @@ class ValueSchemaInput(BaseModel):
         default_factory=dict,
     )
     default: Any = Field(description="A default value.", default=None)
+    doc: str = Field(description="A description for the value of this input field.")
 
-    optional: bool = Field(
-        description="Whether this value is required (True), or whether 'None' value is allowed (False).",
-        default=False,
-    )
+    # optional: bool = Field(
+    #     description="Whether this value is required (True), or whether 'None' value is allowed (False).",
+    #     default=False,
+    # )
 
 
 class MergeTableConfig(KiaraModuleConfig):
@@ -370,41 +371,89 @@ class MergeTableConfig(KiaraModuleConfig):
         description="A dict describing the inputs for this merge process."
     )
     column_map: Dict[str, str] = Field(
-        description="A map describing", default_factory=dict
+        description="A dict describing how to map column names from inputs to the output table.",
+        default_factory=dict,
     )
+    # ask_column_map: bool = Field(
+    #     description="Whether to ask the user for a column map.", default=False
+    # )
 
 
 class MergeTableModule(KiaraModule):
     """Create a table from other tables and/or arrays.
 
-    This module needs configuration to be set (for now). It's currently not possible to merge an arbitrary
-    number of tables/arrays, all tables to be merged must be specified in the module configuration.
+    This module is a general purpose module to merge arrays and tables into a table data item. It does not have a no-config operation, meaning it needs to be configured before it can be used.
+
+    It does include one module config by default thought, which results in the operation `table.add_column', which takes a table and a single array, and adds the specified array as new column to the (also) provided input table.
+
+    Otherwise it is not possible to merge an arbitrary number of tables/arrays, the number of tables or arrays to be merged must always be specified in the module configuration.
+
+    Note: this module might still be re-worked a bit, because it's not straight-forward how to use tables here, since it's not possible to forsee the column names user-provided input tables will have. For now, the 'table.add_column' is the only use-case for this module, but I'd like it to be more generally useful in the future, for all kinds of table assembly tasks.
+
+    ## Module configuration options
+
+    ### `inputs_schema`
+
+    This is a dict describing which tables/arrays need to be provided by the user. The format is the same as
+    what is used in the `create_inputs_schema` method of a `KiaraModule` (apart from 'optional', which is not allowed here), e.g.:
+
+    ```
+        inputs_schema: {
+          "table1": {
+             "type": "table",
+             "doc": "The first table to merge.",
+          },
+          "table2": {
+            "type": "table",
+            "doc": "The second table to merge.",
+          },
+          "array": {
+            "type": "array",
+            "doc": "An array to add as column.",
+          }
+    }
+    ```
+
+    ### `column_map`
 
     Column names of the resulting table can be controlled by the 'column_map' configuration, which takes the
-    desired column name as key, and a field-name in the following format as value:
+    desired column name as value, and a field-name in the following format as key:
     - '[inputs_schema key]' for inputs of type 'array'
     - '[inputs_schema_key].orig_column_name' for inputs of type 'table'
+
+    Additionally, the 'column_map' can also contain the special value 'input:[inputs_field_name]', which will prompt the resulting operation to have an additional input field with the name '[inputs_field_name]',  which will be used as the new column name of the referenced input field key.
+
+    Example:
+
+    ```
+        column_map: {
+            "array": "input:array_column_name"
+        }
+    ```
+
+    This would result in a module with 4 inputs ('table1', 'table2', "array", and 'array_column_name'), and the 'array_column_name' input would be used as the column name for the 'array' input, and the column names of the 2 tables would be used as-is, with an exception thrown if there is a duplicate column name.
     """
 
-    # @classmethod
-    # def retrieve_included_operations(cls):
-    #
-    #     return {
-    #         "table.add_column": {
-    #             "module_config": {
-    #                 "inputs_schema": {
-    #                     "table": {
-    #                         "type": "table",
-    #                         "doc": "The table to add the column to.",
-    #                     },
-    #                     "column": {
-    #                         "type": "array",
-    #                         "doc": "The column to add.",
-    #                     }
-    #                 }
-    #             }
-    #         }
-    #     }
+    @classmethod
+    def retrieve_included_operations(cls):
+
+        return {
+            "table.add_column": {
+                "module_config": {
+                    "inputs_schema": {
+                        "table": {
+                            "type": "table",
+                            "doc": "The table to add the column to.",
+                        },
+                        "new_column": {
+                            "type": "array",
+                            "doc": "The column to add.",
+                        },
+                    },
+                    "column_map": {"new_column": "input:new_column_name"},
+                }
+            }
+        }
 
     _module_type_name = "table.merge"
     _config_cls = MergeTableConfig
@@ -417,7 +466,29 @@ class MergeTableModule(KiaraModule):
 
         input_schema_dict = {}
         for k, v in input_schema_models.items():
+            if k == "column_map":
+                raise KiaraException(
+                    "Invalid input schema for 'table.merge' module: 'column_map' is a reserved keyword."
+                )
             input_schema_dict[k] = v.model_dump()
+
+        # if self.get_config_value("ask_column_map"):
+        #     input_schema_dict["column_map"] = {
+        #         "type": "dict",
+        #         "doc": "A dict describing how to map column names from inputs to the output table.",
+        #     }
+
+        for k, v in self.get_config_value("column_map").items():
+            if v.startswith("input:"):
+                input_name = v[6:]
+                if input_name in input_schema_dict.keys():
+                    raise KiaraException(
+                        "Can't use input field with name '{input_name}': already used for table or array input."
+                    )
+                input_schema_dict[input_name] = {
+                    "type": "string",
+                    "doc": f"The column-name/-prefix for the input '{input_name}'.",
+                }
 
         return input_schema_dict
 
@@ -437,86 +508,76 @@ class MergeTableModule(KiaraModule):
 
         import pyarrow as pa
 
-        inputs_schema: Dict[str, Any] = self.get_config_value("inputs_schema")
-        column_map: Dict[str, str] = self.get_config_value("column_map")
-
-        sources = {}
-        for field_name in inputs_schema.keys():
-            sources[field_name] = inputs.get_value_data(field_name)
-
-        len_dict = {}
-        arrays = {}
-
-        column_map_final = dict(column_map)
-
-        for source_key, table_or_array in sources.items():
-
-            if isinstance(table_or_array, KiaraTable):
-                rows = table_or_array.num_rows
-                for name in table_or_array.column_names:
-                    array_name = f"{source_key}.{name}"
-                    if column_map and array_name not in column_map.values():
-                        job_log.add_log(
-                            f"Ignoring column '{name}' of input table '{source_key}': not listed in column_map."
-                        )
-                        continue
-
-                    column = table_or_array.arrow_table.column(name)
-                    arrays[array_name] = column
-                    if not column_map:
-                        if name in column_map_final:
-                            raise Exception(
-                                f"Can't merge table, duplicate column name: {name}."
-                            )
-                        column_map_final[name] = array_name
-
-            elif isinstance(table_or_array, KiaraArray):
-
-                if column_map and source_key not in column_map.values():
-                    job_log.add_log(
-                        f"Ignoring array '{source_key}': not listed in column_map."
-                    )
-                    continue
-
-                rows = len(table_or_array)
-                arrays[source_key] = table_or_array.arrow_array
-
-                if not column_map:
-                    if source_key in column_map_final.keys():
-                        raise Exception(
-                            f"Can't merge table, duplicate column name: {source_key}."
-                        )
-                    column_map_final[source_key] = source_key
-
+        # first we need to assemble the final column map, in case there was user input
+        final_column_map = {}
+        config_column_map = self.get_config_value("column_map")
+        for k, v in config_column_map.items():
+            if v.startswith("input:"):
+                input_name = v[6:]
+                final_column_map[k] = inputs.get_value_data(input_name)
             else:
-                raise KiaraProcessingException(
-                    f"Can't merge table: invalid type '{type(table_or_array)}' for source '{source_key}'."
-                )
+                final_column_map[k] = v
 
-            len_dict[source_key] = rows
+        inputs_schema: Dict[str, ValueSchemaInput] = self.get_config_value(
+            "inputs_schema"
+        )
 
-        all_rows = None
-        for source_key, rows in len_dict.items():
-            if all_rows is None:
-                all_rows = rows
-            elif all_rows != rows:
-                all_rows = None
-                break
+        sources: Dict[str, pa.Array] = {}
+        lengths_dict: Dict[int, List[str]] = {}
+        column_map_sources = {}
+        column_order = []
 
-        if all_rows is None:
-            len_str = ""
-            for name, rows in len_dict.items():
-                len_str = f" {name} ({rows})"
+        for field_name, schema in inputs_schema.items():
 
+            if schema.type == "array":
+                kiara_array_data: KiaraArray = inputs.get_value_data(field_name)
+                array_data = kiara_array_data.arrow_array
+                no_rows = array_data.length()
+                sources[field_name] = array_data
+                lengths_dict.setdefault(no_rows, []).append(field_name)
+                column_map_sources[field_name] = field_name
+                column_order.append(field_name)
+            elif schema.type == "table":
+                table_data: KiaraTable = inputs.get_value_data(field_name)
+                arrow_table = table_data.arrow_table
+                for column_name in arrow_table.column_names:
+                    arrow_array = arrow_table.column(column_name)
+                    name = f"{field_name}.{column_name}"
+                    no_rows = arrow_array.length()
+                    sources[name] = arrow_array
+                    lengths_dict.setdefault(no_rows, []).append(name)
+                    column_map_sources[name] = column_name
+                    column_order.append(name)
+
+        if len(lengths_dict) > 1:
+            lengths_str = ", ".join((str(x) for x in lengths_dict.keys()))
             raise KiaraProcessingException(
-                f"Can't merge table, sources have different lengths: {len_str}"
+                f"Can't merge table, sources have different lengths: {lengths_str}"
             )
 
         column_names = []
         columns = []
-        for column_name, ref in column_map_final.items():
+
+        for k in final_column_map.keys():
+            if k not in column_map_sources.keys():
+                raise KiaraProcessingException(
+                    f"Invalid column map key '{k}': not in sources."
+                )
+
+        for column_ref, column_name in column_map_sources.items():
+            if column_ref in final_column_map.keys():
+                continue
+
+            final_column_map[column_ref] = column_name
+
+        for column_ref in column_order:
+            column_name = final_column_map[column_ref]
+            if column_name in column_names:
+                raise KiaraProcessingException(
+                    f"Can't merge table: duplicate column name '{column_name}'."
+                )
             column_names.append(column_name)
-            column = arrays[ref]
+            column = sources[column_ref]
             columns.append(column)
 
         table = pa.Table.from_arrays(arrays=columns, names=column_names)
