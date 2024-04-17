@@ -26,9 +26,9 @@ steps:
           type: array
           doc: The array containing the parsed date items.
       column_map:
-        date: date_array
-        content: source_table.content
-        file_name: source_table.file_name
+        date_array: date
+        source_table.content: content
+        source_table.file_name: file_name
     input_links:
       source_table: create_text_corpus.table
       date_array: create_date_array.date_array

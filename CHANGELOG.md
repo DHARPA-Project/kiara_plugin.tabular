@@ -4,6 +4,9 @@ Changelog
 
 ## Version 0.5.4 (Upcoming)
 
+- BREAKING:
+  - key/value pair of 'column_map' config option for 'table.merge' module was switched: key is now value, value is now key
+
 - new operation:
   - `table.add_column`: add a (single) column to a table
 
