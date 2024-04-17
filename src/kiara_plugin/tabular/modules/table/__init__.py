@@ -439,19 +439,22 @@ class MergeTableModule(KiaraModule):
 
         return {
             "table.add_column": {
+                "doc": """Add a column to a table.
+
+This module takes a table and an array, and adds the array as a new column to the end table. The table and array must have the same number of rows for this to work.""",
                 "module_config": {
                     "inputs_schema": {
                         "table": {
                             "type": "table",
                             "doc": "The table to add the column to.",
                         },
-                        "new_column": {
+                        "array": {
                             "type": "array",
                             "doc": "The column to add.",
                         },
                     },
-                    "column_map": {"new_column": "input:new_column_name"},
-                }
+                    "column_map": {"array": "input:column_name"},
+                },
             }
         }
 
