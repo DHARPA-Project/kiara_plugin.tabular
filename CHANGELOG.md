@@ -2,7 +2,12 @@
 Changelog
 =========
 
-## Version 0.5.3 (Upcoming)
+## Version 0.5.4 (Upcoming)
+
+- new operation:
+  - `table.add_column`: add a (single) column to a table
+
+## Version 0.5.3
 
 - new operations:
   - `tables.pick.table`: pick a table from a `tables` instance
