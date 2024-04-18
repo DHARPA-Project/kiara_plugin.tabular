@@ -499,7 +499,7 @@ This module takes a table and an array, and adds the array as a new column to th
                     )
                 input_schema_dict[input_name] = {
                     "type": "string",
-                    "doc": f"The column-name/-prefix for the input '{input_name}'.",
+                    "doc": f"The column-name for the input '{input_name}'.",
                 }
 
         return input_schema_dict

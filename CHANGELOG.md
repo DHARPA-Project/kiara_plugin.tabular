@@ -4,11 +4,11 @@ Changelog
 
 ## Version 0.5.4 (Upcoming)
 
-- BREAKING:
+- BREAKING CHANGE:
   - key/value pair of 'column_map' config option for 'table.merge' module was switched: key is now value, value is now key
-
-- new operation:
-  - `table.add_column`: add a (single) column to a table
+- new operation(s):
+  - `table.add_column`: add a (single) column to a table, this might be extended in the future (for example to let users select the index where to insert the column, etc.)
+- support for Python 3.12 (following duckdb dependency got support for it)
 
 ## Version 0.5.3
 
