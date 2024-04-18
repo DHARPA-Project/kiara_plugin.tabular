@@ -432,6 +432,15 @@ class MergeTableModule(KiaraModule):
     ```
 
     This would result in a module with 4 inputs ('table1', 'table2', "array", and 'array_column_name'), and the 'array_column_name' input would be used as the column name for the 'array' input, and the column names of the 2 tables would be used as-is, with an exception thrown if there is a duplicate column name.
+
+    For known column names in a table, a key/value pair might look like:
+
+    ```
+        column_map: {
+           "table1.first_name": "first_name"
+        }
+    ```
+
     """
 
     @classmethod
