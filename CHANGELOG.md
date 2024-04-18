@@ -2,7 +2,9 @@
 Changelog
 =========
 
-## Version 0.5.4 (Upcoming)
+## Version 0.5.5 (Upcoming)
+
+## Version 0.5.4
 
 - BREAKING CHANGE:
   - key/value pair of 'column_map' config option for 'table.merge' module was switched: key is now value, value is now key
