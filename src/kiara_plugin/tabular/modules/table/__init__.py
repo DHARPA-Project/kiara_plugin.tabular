@@ -71,7 +71,12 @@ class CreateTableModule(CreateFromModule):
                     "type": "boolean",
                     "optional": True,
                     "doc": "Whether the first row of a (csv) file is a header row. If not provided, kiara will try to auto-determine. Ignored if not a csv file.",
-                }
+                },
+                "delimiter": {
+                    "type": "string",
+                    "optional": True,
+                    "doc": "The delimiter that is used in the csv file. If not provided, kiara will try to auto-determine. Ignored if not a csv file.",
+                },
             }
 
         return None
@@ -128,9 +133,12 @@ class CreateTableModule(CreateFromModule):
         errors = []
 
         has_header = optional.get_value_data("first_row_is_header")
+        delimiter = optional.get_value_data("delimiter")
+
         if has_header is None:
             try:
                 has_header = True
+
                 with open(input_file.path, "rt") as csvfile:
                     sniffer = py_csv.Sniffer()
                     has_header = sniffer.has_header(csvfile.read(2048))
@@ -144,19 +152,44 @@ class CreateTableModule(CreateFromModule):
                     details="assuming csv file has header",
                 )
 
+        if delimiter is None:
+            try:
+                delimiter = ","
+                with open(input_file.path, "rt") as csvfile:
+                    sniffer = py_csv.Sniffer()
+                    dialect = sniffer.sniff(csvfile.read(2048))
+                    delimiter = dialect.delimiter
+                    csvfile.seek(0)
+            except Exception as e:
+                # TODO: add this to the procss log
+                log_message(
+                    "csv_sniffer.error",
+                    file=input_file.path,
+                    error=str(e),
+                    details="assuming csv file delimiter is ','",
+                )
+
         try:
+            parse_options = csv.ParseOptions(delimiter=delimiter)
             if has_header:
-                imported_data = csv.read_csv(input_file.path)
+                imported_data = csv.read_csv(
+                    input_file.path, parse_options=parse_options
+                )
             else:
                 read_options = csv.ReadOptions(autogenerate_column_names=True)
-                imported_data = csv.read_csv(input_file.path, read_options=read_options)
+                imported_data = csv.read_csv(
+                    input_file.path,
+                    read_options=read_options,
+                    parse_options=parse_options,
+                )
         except Exception as e:
             errors.append(e)
 
         if imported_data is None:
-            raise KiaraProcessingException(
-                f"Failed to import csv file '{input_file.path}'."
-            )
+            msg = ""
+            for err in errors:
+                msg += f"{err}\n"
+            raise KiaraProcessingException(f"Failed to import csv file: {msg}'.")
 
         # import pandas as pd
         # df = pd.read_csv(input_file.path)
