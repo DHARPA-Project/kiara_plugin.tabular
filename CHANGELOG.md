@@ -2,7 +2,14 @@
 Changelog
 =========
 
-## Version 0.5.5 (Upcoming)
+## Version 0.5.5
+
+- improve csv parsing when creating a table:
+  - better error message when parsing fails
+  - option to specify the delimiter
+  - add auto-detecting delimiter feature if no delimiter is specified
+- update duckdb dependency to 1.0.0
+- update pandas dependency to 2.0.0
 
 ## Version 0.5.4
 
