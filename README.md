@@ -39,7 +39,7 @@ The recommended way to setup a development environment is to use [pixi](https://
 Once you have `pixi` installed, you need to initialize the environment once:
 
 ```
-pixi run install-dev-env
+pixi run install-dev-dependencies
 ```
 
 You also need to do this whenever a depdendency of this plugin is updated (for example the core `kiara` package).
@@ -78,7 +78,7 @@ In most cases it's recommended to use a pixi shell though.
 
 ### Using pre-defined development-related tasks
 
-The included `pixi.toml` file includes some useful tasks that help with development:
+The included `pyproject.toml` file includes some useful tasks that help with development:
 
 - `pixi run pre-commit-check`: runs a set of checks against all files
 - `pixi run tests`: runs the unit tests
