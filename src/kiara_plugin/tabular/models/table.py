@@ -18,6 +18,7 @@ from kiara.exceptions import KiaraException
 from kiara.models import KiaraModel
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
+from kiara.utils import log_exception
 from kiara_plugin.tabular.models import TableMetadata
 from kiara_plugin.tabular.utils.tables import extract_column_metadata
 
@@ -34,6 +35,7 @@ class KiaraTable(KiaraModel):
     def create_table(cls, data: Any) -> "KiaraTable":
         """Create a `KiaraTable` instance from an Apache Arrow Table, or dict of lists."""
 
+        import pandas as pd
         import polars as pl
 
         if isinstance(data, KiaraTable):
@@ -50,11 +52,20 @@ class KiaraTable(KiaraModel):
             table_obj = data
         elif isinstance(data, (pl.DataFrame)):
             table_obj = data.to_arrow()
+        elif isinstance(data, (pd.DataFrame)):
+            try:
+                table_obj = pa.table(data)
+            except Exception as e:
+                log_exception(e)
+                raise Exception(f"Can't create table from pandas dataframe: {e}")
         else:
             try:
                 table_obj = pa.table(data)
-            except Exception:
-                pass
+            except Exception as e:
+                log_exception(e)
+                raise Exception(
+                    f"Can't create table, invalid source data type: {type(data)}."
+                )
 
         if table_obj is None:
             if isinstance(data, (str)):

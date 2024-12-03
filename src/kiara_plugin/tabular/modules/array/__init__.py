@@ -163,7 +163,10 @@ class ExtractDateModule(AutoInputsKiaraModule):
 
         series = pl.Series(name="tokens", values=array.arrow_array)
         job_log.add_log(f"start parsing date for {len(array)} items")
-        result = series.apply(parse_date)
+        # result = series.apply(parse_date)
+
+        result = series.map_elements(parse_date, return_dtype=pl.Date)
+
         job_log.add_log(f"finished parsing date for {len(array)} items")
         result_array = result.to_arrow()
 
