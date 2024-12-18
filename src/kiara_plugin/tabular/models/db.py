@@ -134,7 +134,7 @@ class KiaraDatabase(KiaraModel):
     # _file_hash: Optional[str] = PrivateAttr(default=None)
     _file_cid: Union[CID, None] = PrivateAttr(default=None)
     _lock: bool = PrivateAttr(default=True)
-    _immutable: bool = PrivateAttr(default=None)
+    _immutable: bool = PrivateAttr(default=None)  # type: ignore
 
     def _retrieve_id(self) -> str:
         return str(self.file_cid)

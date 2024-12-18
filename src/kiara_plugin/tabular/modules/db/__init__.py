@@ -450,8 +450,8 @@ class RenderDatabaseModuleBase(RenderValueModule):
                 )
 
                 p_offset = input_row_offset - input_number_of_rows
-                if p_offset < 0:
-                    p_offset = 0
+                p_offset = max(p_offset, 0)
+
                 previous = {
                     "row_offset": p_offset,
                     "number_of_rows": input_number_of_rows,
