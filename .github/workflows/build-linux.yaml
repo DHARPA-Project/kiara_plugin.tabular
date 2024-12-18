@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python_version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python_version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: "Set up Python ${{ matrix.python_version }}"
         uses: actions/setup-python@v5
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python_version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python_version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: "Set up Python ${{ matrix.python_version }}"
         uses: actions/setup-python@v5
@@ -164,7 +164,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: install kiara_plugin.develop
-        run: pip install kiara_plugin.develop
+        run: pip install -U git+https://github.com/DHARPA-project/kiara_plugin.develop@develop
       - name: build conda package
         run: kiara build conda pkg --channel dharpa --channel conda-forge --patch-data ci/conda/conda-pkg-patch.yaml --output-folder build-dir .
       - name: upload artifacts
@@ -202,7 +202,7 @@ jobs:
           name: conda-pkgs
           path: build-dir/
       - name: release conda package
-        run: kiara build conda publish --user dharpa --channel dharpa --token ${{ secrets.ANACONDA_PUSH_TOKEN }} build-dir
+        run: kiara build conda publish --user dharpa --channel main --token ${{ secrets.ANACONDA_PUSH_TOKEN }} build-dir
 
   merge_tag_to_main:
     name: merge current tag to main branch

@@ -4,19 +4,14 @@ default_language_version:
 repos:
 
 - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-  rev: 'v9.15.0'
+  rev: 'v9.20.0'
   hooks:
     - id: commitlint
       stages: [commit-msg]
       additional_dependencies: ['@commitlint/config-conventional']
 
-- repo: https://github.com/psf/black
-  rev: 24.3.0
-  hooks:
-    - id: black
-
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: 'v1.9.0'  # Use the sha / tag you want to point at
+  rev: 'v1.13.0'  # Use the sha / tag you want to point at
   hooks:
   - id: mypy
     files: "^src/"
@@ -26,21 +21,15 @@ repos:
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
-  rev: v0.4.1
+  rev: v0.8.3
   hooks:
-    # Run the linter.
     - id: ruff
       args: [ --fix ]
     # Run the formatter.
-    #- id: ruff-format
-
-- repo: https://github.com/Kludex/no-optional
-  rev: 0.4.0
-  hooks:
-    - id: no_optional
+#    - id: ruff-format
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: 'v4.5.0'
+  rev: 'v4.6.0'
   hooks:
   - id: trailing-whitespace
     exclude: 'setup.cfg'
