@@ -7,11 +7,11 @@
 
 # [**kiara**](https://dharpa.org/kiara.documentation) plugin: (tabular)
 
-kiara data-types and modules for working with tables and databases.
+Tabular data types and modules for kiara.
 
  - Documentation: [https://DHARPA-Project.github.io/kiara_plugin.tabular](https://DHARPA-Project.github.io/kiara_plugin.tabular)
  - Code: [https://github.com/DHARPA-Project/kiara_plugin.tabular](https://github.com/DHARPA-Project/kiara_plugin.tabular)
- - `kiara`: [https://dharpa.org/kiara.documentation](https://dharpa.org/kiara.documentation)
+ - `kiara`: [https://docs.dharpa.org](https://docs.dharpa.org)
 
 ## Description
 
@@ -21,68 +21,51 @@ TODO
 
 ### Requirements
 
-- Python (version >= 3.8)
-- pip, virtualenv
+- uv ( https://docs.astral.sh/uv/ )
 - git
 - make (on Linux / Mac OS X -- optional)
 
+### Check out the source code & enter the project directory
+
+```
+git clone https://github.com/DHARPA-Project/kiara_plugin.tabular
+cd kiara_plugin.tabular
+```
 
 ### Prepare development environment
 
-If you only want to work on the modules, and not the core *Kiara* codebase, follow the instructions below. Otherwise, please
-check the notes on how to setup a *Kiara* development environment under (TODO).
+The recommended way to setup a development environment is to use [uv](https://docs.astral.sh/uv/). Check out [their install instructions](https://docs.astral.sh/uv/getting-started/installation/).
 
-#### Using `pixi` (recommended)
-
-The recommended way to setup a development environment is to use [pixi](https://github.com/prefix-dev/pixi). Check out [their install instructions](https://github.com/prefix-dev/pixi#installation).
-
-Once you have `pixi` installed, you need to initialize the environment once:
+Once you have `uv` installed, you can either run `kiara` using the `uv run` command:
 
 ```
-pixi run install-dev-dependencies
+uv run kiara module list
 ```
 
-You also need to do this whenever a depdendency of this plugin is updated (for example the core `kiara` package).
-
-Once that is done, you can enter the environment with:
+or, activate the virtual environment and run `kiara` directly:
 
 ```
-pixi shell
+uv sync  # to make sure the virtualenv exists (and is up to date)
+source .venv/bin/activate
+kiara module list
 ```
 
-This will start a sub-shell with the virtual environment activated, and all dependencies of the plugin package installed. To confirm it works, you can run any `kiara` command:
+### Running pre-defined development-related tasks
 
-```
-kiara --version
-# or
-kiara operation list
-# or
-...
-...
-```
+The included `Makefile` file includes some useful tasks that help with development. This requires `uv` and the `make` tool to be
+installed, which should be the case for Linux & Mac OS X systems.
 
-Once you are finished with your development session, you can exit the sub-shell as you would normally do in such cases:
+- `make test`: runs the unit tests
+- `make mypy`: run mypy checks
+- `make lint`: run the `ruff` linter on the source code
+- `make format`: run the `ruff` formatter on the source code (similar to `black`)
 
-```
-exit
-```
+Alternatively, if you don't have the `make` command available, you can use `uv` directly to run those tasks:
 
-Alternatively, you can also run the `kiara` executable directly, it is located in `.pixi/env/bin/kiara`. So either adapt your `PATH` variable, or do something like:
-
-```
-.pixi/env/bin/kiara operation list
-```
-
-In most cases it's recommended to use a pixi shell though.
-
-
-### Using pre-defined development-related tasks
-
-The included `pyproject.toml` file includes some useful tasks that help with development:
-
-- `pixi run pre-commit-check`: runs a set of checks against all files
-- `pixi run tests`: runs the unit tests
-- `pixi run mypy`: run mypy checks
+- `uv run pytest tests`
+- `uv run mypy src/`
+- `uv run ruff check --fix src/`
+- `uv run ruff format src/`
 
 ## Copyright & license
 

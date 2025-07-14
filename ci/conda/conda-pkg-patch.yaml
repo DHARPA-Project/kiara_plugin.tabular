@@ -3,10 +3,10 @@ channels:
   - conda-forge
 
 host_requirements:
-  - pip
   - python
-  - setuptools
-  - setuptools_scm
+  - pip
+  - hatchling
+  - hatch-vcs
 
 requirements:
   duckdb: "python-duckdb>=0.10.0"

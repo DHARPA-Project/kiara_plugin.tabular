@@ -20,15 +20,12 @@ from _pytest.compat import NotSetType
 
 from kiara.api import JobDesc, KiaraAPI
 from kiara.context import KiaraConfig
+from kiara.interfaces.python_api.base_api import BaseAPI
 from kiara.interfaces.python_api.models.job import JobTest
 from kiara.utils.testing import get_init_job, get_tests_for_job, list_job_descs
 
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-JOBS_FOLDERS = [
-    Path(os.path.join(ROOT_DIR, "tests", "resources", "jobs")),
-    Path(os.path.join(ROOT_DIR, "examples", "jobs")),
-]
-
+JOBS_FOLDERS = [Path(os.path.join(ROOT_DIR, "tests", "resources", "jobs")), Path(os.path.join(ROOT_DIR, "examples", "jobs"))]
 
 def create_temp_dir():
     session_id = str(uuid.uuid4())
@@ -39,7 +36,6 @@ def create_temp_dir():
     )
     return instance_path
 
-
 def get_job_alias(job_desc: JobDesc) -> str:
 
     if isinstance(job_desc, NotSetType):
@@ -47,14 +43,13 @@ def get_job_alias(job_desc: JobDesc) -> str:
 
     return job_desc.job_alias
 
-
 @pytest.fixture
-def kiara_api() -> KiaraAPI:
+def kiara_api() -> BaseAPI:
+
     instance_path = create_temp_dir()
     kc = KiaraConfig.create_in_folder(instance_path)
-    api = KiaraAPI(kc)
+    api = BaseAPI(kc)
     return api
-
 
 @pytest.fixture
 def kiara_api_init_example() -> KiaraAPI:
@@ -82,14 +77,12 @@ def kiara_api_init_example() -> KiaraAPI:
 
     return api
 
-
 @pytest.fixture(params=list_job_descs(JOBS_FOLDERS), ids=get_job_alias)
 def example_job_test(request, kiara_api_init_example) -> JobTest:
 
     job_tests_folder = Path(os.path.join(ROOT_DIR, "tests", "job_tests"))
 
     job_desc = request.param
-
     tests = get_tests_for_job(
         job_alias=job_desc.job_alias, job_tests_folder=job_tests_folder
     )
