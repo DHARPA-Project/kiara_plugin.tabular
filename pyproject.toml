@@ -104,7 +104,7 @@ fallback-version = "0.0.0"
 version-file = "src/kiara_plugin/tabular/version.txt"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/kiara_plugin"]
+packages = ["src/kiara_plugin/tabular"]
 
 [tool.pytest.ini_options]
 pythonpath = [

@@ -9,7 +9,7 @@ host_requirements:
   - hatch-vcs
 
 requirements:
-  duckdb: "python-duckdb>=0.10.0"
+  duckdb: "python-duckdb>=1.10.0"
 
 test:
   imports:
