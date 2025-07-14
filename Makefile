@@ -45,4 +45,3 @@ check: ruff mypy test ## run dev-related checks
 
 pre-commit: ## run pre-commit on all files
 	uv run pre-commit run --all-files
-

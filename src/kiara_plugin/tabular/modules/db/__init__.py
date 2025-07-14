@@ -43,7 +43,6 @@ from kiara_plugin.tabular.utils import (
 
 
 class CreateDatabaseModuleConfig(CreateFromModuleConfig):
-
     ignore_errors: bool = Field(
         description="Whether to ignore convert errors and omit the failed items.",
         default=False,
@@ -62,7 +61,6 @@ class CreateDatabaseModuleConfig(CreateFromModuleConfig):
 
 
 class CreateDatabaseModule(CreateFromModule):
-
     _module_type_name = "create.database"
     _config_cls = CreateDatabaseModuleConfig
 
@@ -186,7 +184,6 @@ class CreateDatabaseModule(CreateFromModule):
         included_files: Dict[str, bool] = {}
         errors: Dict[str, Union[None, str]] = {}
         for rel_path in sorted(bundle.included_files.keys()):
-
             if not rel_path.endswith(".csv"):
                 job_log.add_log(
                     f"Ignoring file (not csv): {rel_path}", log_level=logging.INFO
@@ -234,7 +231,6 @@ class CreateDatabaseModule(CreateFromModule):
     def create_optional_inputs(
         self, source_type: str, target_type
     ) -> Union[Mapping[str, Mapping[str, Any]], None]:
-
         inputs = {}
         if source_type == "file":
             inputs["first_row_is_header"] = {
@@ -244,7 +240,6 @@ class CreateDatabaseModule(CreateFromModule):
             }
 
         if target_type == "database" and source_type == "table":
-
             inputs["table_name"] = {
                 "type": "string",
                 "doc": "The name of the table in the new database.",
@@ -291,7 +286,6 @@ class CreateDatabaseModule(CreateFromModule):
         _table = sqlite_schema.create_table(table_name=table_name, engine=engine)
 
         with engine.connect() as conn:
-
             for batch in arrow_table.to_batches(
                 max_chunksize=DEFAULT_TABULAR_DATA_CHUNK_SIZE
             ):
@@ -303,7 +297,6 @@ class CreateDatabaseModule(CreateFromModule):
 
 
 class LoadDatabaseFromDiskModule(DeserializeValueModule):
-
     _module_type_name = "load.database"
 
     @classmethod
@@ -319,7 +312,6 @@ class LoadDatabaseFromDiskModule(DeserializeValueModule):
         return "copy"
 
     def to__python_object(self, data: SerializedData, **config: Any):
-
         assert "db.sqlite" in data.get_keys() and len(list(data.get_keys())) == 1
 
         chunks = data.get_serialized_data("db.sqlite")
@@ -336,7 +328,6 @@ class LoadDatabaseFromDiskModule(DeserializeValueModule):
 
 
 class QueryDatabaseConfig(KiaraModuleConfig):
-
     query: Union[str, None] = Field(description="The query.", default=None)
 
 
@@ -349,7 +340,6 @@ class QueryDatabaseModule(KiaraModule):
     def create_inputs_schema(
         self,
     ) -> ValueMapSchema:
-
         result: Dict[str, Dict[str, Any]] = {
             "database": {"type": "database", "doc": "The database to query."}
         }
@@ -362,11 +352,9 @@ class QueryDatabaseModule(KiaraModule):
     def create_outputs_schema(
         self,
     ) -> ValueMapSchema:
-
         return {"query_result": {"type": "table", "doc": "The query result."}}
 
     def process(self, inputs: ValueMap, outputs: ValueMap):
-
         import pyarrow as pa
 
         database: KiaraDatabase = inputs.get_value_data("database")
@@ -388,7 +376,6 @@ class QueryDatabaseModule(KiaraModule):
 
 
 class RenderDatabaseModuleBase(RenderValueModule):
-
     _module_type_name: str = None  # type: ignore
 
     def preprocess_database(
@@ -398,7 +385,6 @@ class RenderDatabaseModuleBase(RenderValueModule):
         input_number_of_rows: int,
         input_row_offset: int,
     ):
-
         database: KiaraDatabase = value.data
         table_names = database.table_names
 
@@ -436,7 +422,6 @@ class RenderDatabaseModuleBase(RenderValueModule):
         row_offset = table_num_rows - input_number_of_rows
         related_scenes: Dict[str, Union[RenderScene, None]] = {}
         if row_offset > 0:
-
             if input_row_offset > 0:
                 related_scenes["first"] = RenderScene.model_construct(
                     title="first",
@@ -457,7 +442,12 @@ class RenderDatabaseModuleBase(RenderValueModule):
                     "number_of_rows": input_number_of_rows,
                     "table_name": table_name,
                 }
-                related_scenes["previous"] = RenderScene.model_construct(title="previous", description=f"Display the previous {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=previous)  # type: ignore
+                related_scenes["previous"] = RenderScene.model_construct(
+                    title="previous",
+                    description=f"Display the previous {input_number_of_rows} rows of this table.",
+                    manifest_hash=self.manifest.manifest_hash,
+                    render_config=previous,
+                )  # type: ignore
             else:
                 related_scenes["first"] = None
                 related_scenes["previous"] = None
@@ -469,7 +459,12 @@ class RenderDatabaseModuleBase(RenderValueModule):
                     "number_of_rows": input_number_of_rows,
                     "table_name": table_name,
                 }
-                related_scenes["next"] = RenderScene.model_construct(title="next", description=f"Display the next {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=next)  # type: ignore
+                related_scenes["next"] = RenderScene.model_construct(
+                    title="next",
+                    description=f"Display the next {input_number_of_rows} rows of this table.",
+                    manifest_hash=self.manifest.manifest_hash,
+                    render_config=next,
+                )  # type: ignore
             else:
                 related_scenes["next"] = None
 
@@ -499,7 +494,6 @@ class RenderDatabaseModule(RenderDatabaseModuleBase):
     def render__database__as__string(
         self, value: Value, render_config: Mapping[str, Any]
     ):
-
         input_number_of_rows = render_config.get("number_of_rows", 20)
         input_row_offset = render_config.get("row_offset", 0)
 
@@ -524,7 +518,6 @@ class RenderDatabaseModule(RenderDatabaseModuleBase):
     def render__database__as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
     ):
-
         input_number_of_rows = render_config.get("number_of_rows", 20)
         input_row_offset = render_config.get("row_offset", 0)
 

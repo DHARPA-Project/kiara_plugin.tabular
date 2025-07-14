@@ -48,7 +48,6 @@ EMPTY_COLUMN_NAME_MARKER = "__no_column_name__"
 
 
 class CreateTableModuleConfig(CreateFromModuleConfig):
-
     ignore_errors: bool = Field(
         description="Whether to ignore convert errors and omit the failed items.",
         default=False,
@@ -64,7 +63,6 @@ class CreateTableModule(CreateFromModule):
     def create_optional_inputs(
         self, source_type: str, target_type
     ) -> Union[Mapping[str, Mapping[str, Any]], None]:
-
         if source_type == "file":
             return {
                 "first_row_is_header": {
@@ -233,7 +231,6 @@ class CreateTableModule(CreateFromModule):
         tabular: Dict[str, List[Any]] = {}
         for column in columns:
             for index, rel_path in enumerate(sorted(file_dict.keys())):
-
                 if column == "content":
                     _value: Any = file_dict[rel_path]
                 elif column == "id":
@@ -251,7 +248,6 @@ class CreateTableModule(CreateFromModule):
 
 
 class DeserializeTableModule(DeserializeValueModule):
-
     _module_type_name = "load.table"
 
     @classmethod
@@ -267,22 +263,18 @@ class DeserializeTableModule(DeserializeValueModule):
         return "feather"
 
     def to__python_object(self, data: SerializedData, **config: Any):
-
         import pyarrow as pa
 
         columns = {}
 
         table_schema_chunks = data.get_serialized_data(TABLE_SCHEMA_CHUNKS_NAME)
-        chunks_generator: Generator[
-            "BytesLike", None, None
-        ] = table_schema_chunks.get_chunks(
-            as_files=False
+        chunks_generator: Generator["BytesLike", None, None] = (
+            table_schema_chunks.get_chunks(as_files=False)
         )  # type: ignore
         schema_chunk = next(chunks_generator)
         schema = pa.ipc.read_schema(pa.py_buffer(schema_chunk))
 
         for column_name in data.get_keys():
-
             if column_name == TABLE_SCHEMA_CHUNKS_NAME:
                 continue
 
@@ -330,7 +322,6 @@ class PickColumnModule(KiaraModule):
     def create_inputs_schema(
         self,
     ) -> ValueMapSchema:
-
         inputs: Dict[str, Any] = {"table": {"type": "table", "doc": "A table."}}
         column_name = self.get_config_value("column_name")
         if not column_name:
@@ -344,12 +335,10 @@ class PickColumnModule(KiaraModule):
     def create_outputs_schema(
         self,
     ) -> ValueMapSchema:
-
         outputs: Mapping[str, Any] = {"array": {"type": "array", "doc": "The column."}}
         return outputs
 
     def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
-
         import pyarrow as pa
 
         column_name: Union[str, None] = self.get_config_value("column_name")
@@ -377,7 +366,6 @@ class PickColumnModule(KiaraModule):
 
 
 class ValueSchemaInput(BaseModel):
-
     """
     The schema of a value.
 
@@ -399,7 +387,6 @@ class ValueSchemaInput(BaseModel):
 
 
 class MergeTableConfig(KiaraModuleConfig):
-
     inputs_schema: Dict[str, ValueSchemaInput] = Field(
         description="A dict describing the inputs for this merge process."
     )
@@ -478,7 +465,6 @@ class MergeTableModule(KiaraModule):
 
     @classmethod
     def retrieve_included_operations(cls):
-
         return {
             "table.add_column": {
                 "doc": """Add a column to a table.
@@ -506,7 +492,6 @@ This module takes a table and an array, and adds the array as a new column to th
     def create_inputs_schema(
         self,
     ) -> ValueMapSchema:
-
         input_schema_models = self.get_config_value("inputs_schema")
 
         input_schema_dict = {}
@@ -540,7 +525,6 @@ This module takes a table and an array, and adds the array as a new column to th
     def create_outputs_schema(
         self,
     ) -> ValueMapSchema:
-
         outputs = {
             "table": {
                 "type": "table",
@@ -550,7 +534,6 @@ This module takes a table and an array, and adds the array as a new column to th
         return outputs
 
     def process(self, inputs: ValueMap, outputs: ValueMap, job_log: JobLog) -> None:
-
         import pyarrow as pa
 
         # first we need to assemble the final column map, in case there was user input
@@ -573,7 +556,6 @@ This module takes a table and an array, and adds the array as a new column to th
         column_order = []
 
         for field_name, schema in inputs_schema.items():
-
             if schema.type == "array":
                 kiara_array_data: KiaraArray = inputs.get_value_data(field_name)
                 array_data = kiara_array_data.arrow_array
@@ -631,7 +613,6 @@ This module takes a table and an array, and adds the array as a new column to th
 
 
 class QueryTableSQLModuleConfig(KiaraModuleConfig):
-
     query: Union[str, None] = Field(
         description="The query to execute. If not specified, the user will be able to provide their own.",
         default=None,
@@ -657,7 +638,6 @@ class QueryTableSQL(KiaraModule):
     def create_inputs_schema(
         self,
     ) -> ValueMapSchema:
-
         inputs = {
             "table": {
                 "type": "table",
@@ -681,11 +661,9 @@ class QueryTableSQL(KiaraModule):
     def create_outputs_schema(
         self,
     ) -> ValueMapSchema:
-
         return {"query_result": {"type": "table", "doc": "The query result."}}
 
     def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
-
         import duckdb
 
         if self.get_config_value("query") is None:
@@ -735,13 +713,11 @@ class ExportTableModule(DataExportModule):
 
 
 class RenderTableModuleBase(RenderValueModule):
-
     _module_type_name: str = None  # type: ignore
 
     def preprocess_table(
         self, value: Value, input_number_of_rows: int, input_row_offset: int
     ):
-
         import duckdb
         import pyarrow as pa
 
@@ -756,7 +732,7 @@ class RenderTableModuleBase(RenderValueModule):
 
         columnns = [f'"{x}"' if not x.startswith('"') else x for x in column_names]
 
-        query = f"""SELECT {', '.join(columnns)} FROM data LIMIT {input_number_of_rows} OFFSET {input_row_offset}"""
+        query = f"""SELECT {", ".join(columnns)} FROM data LIMIT {input_number_of_rows} OFFSET {input_row_offset}"""
 
         rel_from_arrow = duckdb.arrow(arrow_table)
         query_result: duckdb.DuckDBPyRelation = rel_from_arrow.query("data", query)
@@ -769,7 +745,6 @@ class RenderTableModuleBase(RenderValueModule):
         row_offset = arrow_table.num_rows - input_number_of_rows
 
         if row_offset > 0:
-
             if input_row_offset > 0:
                 related_scenes["first"] = RenderScene.model_construct(
                     title="first",
@@ -789,7 +764,12 @@ class RenderTableModuleBase(RenderValueModule):
                     "row_offset": p_offset,
                     "number_of_rows": input_number_of_rows,
                 }
-                related_scenes["previous"] = RenderScene.model_construct(title="previous", description=f"Display the previous {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=previous)  # type: ignore
+                related_scenes["previous"] = RenderScene.model_construct(
+                    title="previous",
+                    description=f"Display the previous {input_number_of_rows} rows of this table.",
+                    manifest_hash=self.manifest.manifest_hash,
+                    render_config=previous,
+                )  # type: ignore
             else:
                 related_scenes["first"] = None
                 related_scenes["previous"] = None
@@ -797,7 +777,12 @@ class RenderTableModuleBase(RenderValueModule):
             n_offset = input_row_offset + input_number_of_rows
             if n_offset < arrow_table.num_rows:
                 next = {"row_offset": n_offset, "number_of_rows": input_number_of_rows}
-                related_scenes["next"] = RenderScene.model_construct(title="next", description=f"Display the next {input_number_of_rows} rows of this table.", manifest_hash=self.manifest.manifest_hash, render_config=next)  # type: ignore
+                related_scenes["next"] = RenderScene.model_construct(
+                    title="next",
+                    description=f"Display the next {input_number_of_rows} rows of this table.",
+                    manifest_hash=self.manifest.manifest_hash,
+                    render_config=next,
+                )  # type: ignore
             else:
                 related_scenes["next"] = None
 
@@ -828,7 +813,6 @@ class RenderTableModule(RenderTableModuleBase):
     _module_type_name = "render.table"
 
     def render__table__as__string(self, value: Value, render_config: Mapping[str, Any]):
-
         input_number_of_rows = render_config.get("number_of_rows", 20)
         input_row_offset = render_config.get("row_offset", 0)
 
@@ -850,7 +834,6 @@ class RenderTableModule(RenderTableModuleBase):
     def render__table__as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
     ):
-
         input_number_of_rows = render_config.get("number_of_rows", 20)
         input_row_offset = render_config.get("row_offset", 0)
 

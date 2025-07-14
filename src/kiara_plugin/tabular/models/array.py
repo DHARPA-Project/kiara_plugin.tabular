@@ -37,7 +37,6 @@ class KiaraArray(KiaraModel):
 
     @classmethod
     def create_array(cls, data: Any) -> "KiaraArray":
-
         if isinstance(data, KiaraArray):
             return data
 
@@ -86,7 +85,6 @@ class KiaraArray(KiaraModel):
 
     @property
     def arrow_array(self) -> pa.Array:
-
         if self._array_obj is not None:
             return self._array_obj
 
@@ -123,7 +121,6 @@ class KiaraArray(KiaraModel):
         exclude: Sequence[str],
         **kwargs: Any,
     ) -> Dict[str, str]:
-
         result: Dict[str, str] = super()._repr_mimebundle_(  # type: ignore
             include=include, exclude=exclude, **kwargs
         )
@@ -145,7 +142,6 @@ class KiaraArrayMetadata(ValueMetadata):
 
     @classmethod
     def create_value_metadata(cls, value: "Value") -> "KiaraArrayMetadata":
-
         kiara_array: KiaraArray = value.data
         _type = kiara_array.arrow_array.type
 

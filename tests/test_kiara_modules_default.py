@@ -9,5 +9,4 @@ import kiara_plugin.tabular
 
 
 def test_assert():
-
     assert kiara_plugin.tabular.get_version() is not None

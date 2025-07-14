@@ -49,18 +49,15 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
         return KiaraArray  # type: ignore
 
     def parse_python_obj(self, data: Any) -> KiaraArray:
-
         return KiaraArray.create_array(data)
 
     def _validate(cls, value: Any) -> None:
-
         if not isinstance(value, (KiaraArray)):
             raise Exception(
                 f"Invalid type '{type(value).__name__}', must be an instance of the 'KiaraArray' class."
             )
 
     def serialize(self, data: KiaraArray) -> SerializedData:
-
         import pyarrow as pa
 
         # TODO: make sure temp dir is in the same partition as file store
@@ -104,7 +101,6 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
     def pretty_print_as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
     ) -> Any:
-
         max_rows = render_config.get(
             "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
         )
@@ -138,7 +134,6 @@ class ArrayType(AnyType[KiaraArray, DataTypeConfig]):
     def pretty_print_as__string(
         self, value: Value, render_config: Mapping[str, Any]
     ) -> Any:
-
         max_rows = render_config.get(
             "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
         )

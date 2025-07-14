@@ -25,7 +25,6 @@ class KiaraTables(KiaraModel):
 
     @classmethod
     def create_tables(cls, data: Any) -> Self:
-
         if isinstance(data, KiaraTables):
             return data
 
@@ -63,7 +62,6 @@ class KiaraTables(KiaraModel):
         raise NotImplementedError()
 
     def get_table(self, table_name: str) -> KiaraTable:
-
         if table_name not in self.tables:
             raise KiaraException(
                 f"Table '{table_name}' not found. Available: {', '.join(self.tables.keys())}"
@@ -83,12 +81,10 @@ class KiaraTablesMetadata(ValueMetadata):
 
     @classmethod
     def create_value_metadata(cls, value: "Value") -> "KiaraTablesMetadata":
-
         kiara_tables: KiaraTables = value.data
 
         tables = {}
         for table_name, table in kiara_tables.tables.items():
-
             md = TableMetadata.create_from_table(table)
             tables[table_name] = md
 

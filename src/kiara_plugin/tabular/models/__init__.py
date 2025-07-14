@@ -8,6 +8,7 @@ other type of models -- that is attached to data, as well as *kiara* modules.
 Metadata models must be a sub-class of [kiara.metadata.MetadataModel][kiara.metadata.MetadataModel]. Other models usually
 sub-class a pydantic BaseModel or implement custom base classes.
 """
+
 from typing import TYPE_CHECKING, Any, Dict, List, Union
 
 from pydantic import BaseModel, Field
@@ -46,7 +47,6 @@ class TableMetadata(KiaraModel):
 
     @classmethod
     def create_from_table(cls, table: "KiaraTable") -> "TableMetadata":
-
         arrow_table = table.arrow_table
         table_schema: Dict[str, Any] = {}
 
@@ -93,7 +93,6 @@ class TableMetadata(KiaraModel):
     )
 
     def _retrieve_data_to_hash(self) -> Any:
-
         return {
             "column_schemas": {
                 k: v._retrieve_data_to_hash() for k, v in self.column_schema.items()

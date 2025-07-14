@@ -45,7 +45,6 @@ KDBC = TypeVar("KDBC", bound="KiaraDatabase")
 
 
 class SqliteTableSchema(BaseModel):
-
     columns: Dict[str, SqliteDataType] = Field(
         description="The table columns and their attributes."
     )
@@ -89,7 +88,6 @@ class SqliteTableSchema(BaseModel):
         return meta, table
 
     def create_table(self, table_name: str, engine: Engine) -> Table:
-
         meta, table = self.create_table_metadata(table_name=table_name)
         meta.create_all(engine)
         return table
@@ -104,7 +102,6 @@ class KiaraDatabase(KiaraModel):
         init_statement: Union[None, str, "TextClause"] = None,
         init_data: Union[Mapping[str, Any], None] = None,
     ) -> KDBC:
-
         temp_f = tempfile.mkdtemp()
         db_path = os.path.join(temp_f, "db.sqlite")
 
@@ -145,7 +142,6 @@ class KiaraDatabase(KiaraModel):
     @field_validator("db_file_path")
     @classmethod
     def ensure_absolute_path(cls, path: str):
-
         path = os.path.abspath(path)
         if not os.path.exists(os.path.dirname(path)):
             raise ValueError(f"Parent folder for database file does not exist: {path}")
@@ -157,7 +153,6 @@ class KiaraDatabase(KiaraModel):
 
     @property
     def file_cid(self) -> CID:
-
         if self._file_cid is not None:
             return self._file_cid
 
@@ -165,7 +160,6 @@ class KiaraDatabase(KiaraModel):
         return self._file_cid
 
     def get_sqlalchemy_engine(self) -> "Engine":
-
         if self._cached_engine is not None:
             return self._cached_engine
 
@@ -190,7 +184,6 @@ class KiaraDatabase(KiaraModel):
         self._invalidate()
 
     def create_if_not_exists(self):
-
         from sqlalchemy_utils import create_database, database_exists
 
         if not database_exists(self.db_url):
@@ -247,7 +240,6 @@ class KiaraDatabase(KiaraModel):
         return self._metadata_obj
 
     def copy_database_file(self, target: str):
-
         os.makedirs(os.path.dirname(target))
 
         shutil.copy2(self.db_file_path, target)
@@ -258,7 +250,6 @@ class KiaraDatabase(KiaraModel):
         return new_db
 
     def get_sqlalchemy_inspector(self) -> Inspector:
-
         if self._cached_inspector is not None:
             return self._cached_inspector
 
@@ -288,7 +279,6 @@ class KiaraDatabase(KiaraModel):
         return table
 
     def get_table_as_pandas_df(self, table_name: str) -> "pd.DataFrame":
-
         import pandas as pd
 
         query = text(f'SELECT * FROM "{table_name}"')
@@ -298,13 +288,11 @@ class KiaraDatabase(KiaraModel):
         return df
 
     def create_metadata(self) -> "DatabaseMetadata":
-
         insp = self.get_sqlalchemy_inspector()
 
         mds = {}
 
         for table_name in insp.get_table_names():
-
             with self.get_sqlalchemy_engine().connect() as con:
                 query = f'SELECT count(*) from "{table_name}"'
                 result = con.execute(text(query))
@@ -361,7 +349,6 @@ class DatabaseMetadata(ValueMetadata):
 
     @classmethod
     def create_value_metadata(cls, value: Value) -> "DatabaseMetadata":
-
         database: KiaraDatabase = value.data
         return database.create_metadata()
 

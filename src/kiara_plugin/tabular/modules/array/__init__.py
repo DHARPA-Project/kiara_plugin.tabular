@@ -30,7 +30,6 @@ class DeserializeArrayModule(DeserializeValueModule):
         return "feather"
 
     def to__python_object(self, data: SerializedData, **config: Any):
-
         assert "array.arrow" in data.get_keys() and len(list(data.get_keys())) == 1
 
         chunks = data.get_serialized_data("array.arrow")
@@ -53,7 +52,6 @@ REMOVE_TOKENS_DOC = "A list of tokens/characters to replace with a single white-
 
 
 class ExtractDateConfig(KiaraInputsConfig):
-
     force_non_null: bool = Field(description=FORCE_NON_NULL_DOC, default=True)
     min_index: Union[None, int] = Field(
         description=MIN_INDEX_DOC,
@@ -88,14 +86,12 @@ class ExtractDateModule(AutoInputsKiaraModule):
     def create_inputs_schema(
         self,
     ) -> ValueMapSchema:
-
         inputs = {"array": {"type": "array", "doc": "The input array."}}
         return inputs
 
     def create_outputs_schema(
         self,
     ) -> ValueMapSchema:
-
         return {
             "date_array": {
                 "type": "array",
@@ -104,7 +100,6 @@ class ExtractDateModule(AutoInputsKiaraModule):
         }
 
     def process(self, inputs: ValueMap, outputs: ValueMap, job_log: JobLog):
-
         import polars as pl
         import pyarrow as pa
         from dateutil import parser
@@ -125,7 +120,6 @@ class ExtractDateModule(AutoInputsKiaraModule):
         )
 
         def parse_date(_text: str):
-
             text = _text
             if min_pos:
                 try:

@@ -9,18 +9,14 @@ from kiara_plugin.tabular.models.table import KiaraTable
 
 
 class TableFiltersModule(FilterModule):
-
     _module_type_name = "table.filters"
 
     @classmethod
     def retrieve_supported_type(cls) -> Union[Dict[str, Any], str]:
-
         return "table"
 
     def create_filter_inputs(self, filter_name: str) -> Union[None, ValueMapSchema]:
-
         if filter_name in ["select_columns", "drop_columns"]:
-
             return {
                 "columns": {
                     "type": "list",
@@ -50,7 +46,6 @@ class TableFiltersModule(FilterModule):
         return None
 
     def filter__select_columns(self, value: Value, filter_inputs: Mapping[str, Any]):
-
         import pyarrow as pa
 
         ignore_invalid = filter_inputs["ignore_invalid_column_names"]
@@ -80,7 +75,6 @@ class TableFiltersModule(FilterModule):
         return pa.table(data=_columns, names=_column_names)
 
     def filter__drop_columns(self, value: Value, filter_inputs: Mapping[str, Any]):
-
         import pyarrow as pa
 
         ignore_invalid = filter_inputs["ignore_invalid_column_names"]
@@ -104,7 +98,6 @@ class TableFiltersModule(FilterModule):
         _column_names = []
         _columns = []
         for column_name in arrow_table.column_names:
-
             if column_name in column_names_to_ignore:
                 continue
 
@@ -115,7 +108,6 @@ class TableFiltersModule(FilterModule):
         return pa.table(data=_columns, names=_column_names)
 
     def filter__select_rows(self, value: Value, filter_inputs: Mapping[str, Any]):
-
         match = filter_inputs.get("match", None)
         if not match:
             return value

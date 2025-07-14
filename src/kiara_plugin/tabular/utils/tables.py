@@ -17,7 +17,7 @@ def attach_metadata(
     *,
     table_metadata: Union[Dict[str, "KiaraModel"], None] = None,
     column_metadata: Union[Dict[str, Dict[str, "KiaraModel"]], None] = None,
-    overwrite_existing: bool = True
+    overwrite_existing: bool = True,
 ) -> pa.Table:
     """Attach metadata and column_metadata to a table.
 
@@ -58,7 +58,6 @@ def attach_metadata(
 
 
 def extract_column_metadata(table: pa.Table) -> Dict[str, Dict[str, "KiaraModel"]]:
-
     from kiara.registries.models import ModelRegistry
 
     model_registry = ModelRegistry.instance()
@@ -81,7 +80,6 @@ def extract_column_metadata(table: pa.Table) -> Dict[str, Dict[str, "KiaraModel"
 
 
 def create_database_from_tables(tables: "KiaraTables") -> "KiaraDatabase":
-
     from sqlalchemy import insert
 
     from kiara_plugin.tabular.models.db import KiaraDatabase

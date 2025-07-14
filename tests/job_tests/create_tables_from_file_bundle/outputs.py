@@ -4,7 +4,6 @@ from kiara_plugin.tabular.models.tables import KiaraTables
 
 
 def check_tables_result(tables: Value):
-
     # we can check properties here like we did in the outputs.yaml file
     # for that you need to look up the metadata Python classes, which is something that
     # is not documented yet, not sure how to best do that

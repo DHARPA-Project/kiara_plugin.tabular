@@ -2,7 +2,6 @@
 
 """Top-level package for kiara_plugin.tabular."""
 
-
 import os
 
 from kiara.utils.class_loading import (
@@ -61,7 +60,6 @@ def get_version():
         dist_name = __name__
         __version__ = version(dist_name)
     except PackageNotFoundError:
-
         try:
             version_file = os.path.join(os.path.dirname(__file__), "version.txt")
 
@@ -71,7 +69,7 @@ def get_version():
             else:
                 __version__ = "unknown"
 
-        except (Exception):
+        except Exception:
             pass
 
         if __version__ is None:

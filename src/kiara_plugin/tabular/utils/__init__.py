@@ -40,7 +40,6 @@ def insert_db_table_from_file_bundle(
     included_files: Union[None, Mapping[str, bool]] = None,
     errors: Union[Mapping[str, Union[str, None]], None] = None,
 ):
-
     # TODO: check if table with that name exists
 
     from sqlalchemy import (
@@ -88,7 +87,6 @@ def insert_db_table_from_file_bundle(
         errors = {}
 
     with engine.connect() as con:
-
         # TODO: commit in batches for better performance
 
         for index, rel_path in enumerate(sorted(file_bundle.included_files.keys())):
@@ -122,7 +120,6 @@ def create_table_from_file_bundle(
     included_files: Union[None, Mapping[str, bool]] = None,
     errors: Union[Mapping[str, Union[str, None]], None] = None,
 ):
-
     import pyarrow as pa
 
     if included_files is None:
@@ -176,7 +173,6 @@ def create_table_from_file_bundle(
 
 
 def convert_arrow_type_to_sqlite(data_type: str) -> SqliteDataType:
-
     if data_type.startswith("int") or data_type.startswith("uint"):
         return "INTEGER"
 
@@ -205,7 +201,6 @@ def convert_arrow_type_to_sqlite(data_type: str) -> SqliteDataType:
 def convert_arrow_column_types_to_sqlite(
     table: "pa.Table",
 ) -> Dict[str, SqliteDataType]:
-
     result: Dict[str, SqliteDataType] = {}
     for column_name in table.column_names:
         field = table.field(column_name)
@@ -305,7 +300,6 @@ def create_sqlite_table_from_tabular_file(
     batch_size: int = 100,
     detect_types: bool = True,
 ):
-
     if not table_name:
         table_name = file_item.file_name_without_extension
 
@@ -345,7 +339,6 @@ def create_sqlite_table_from_tabular_file(
             bulk_sql=None,
         )
     except Exception as e:
-
         log_exception(e)
         raise e
     # finally:
@@ -523,7 +516,6 @@ def insert_upsert_implementation_patched(
                 docs, pk=pk, batch_size=batch_size, alter=alter, **extra_kwargs
             )
         except Exception as e:
-
             if (
                 isinstance(e, OperationalError)
                 and e.args

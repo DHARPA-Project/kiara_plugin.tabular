@@ -41,7 +41,6 @@ class SqliteTabularWrap(TabularWrap):
         super().__init__()
 
     def retrieve_number_of_rows(self) -> int:
-
         from sqlalchemy import text
 
         with self._engine.connect() as con:
@@ -51,7 +50,6 @@ class SqliteTabularWrap(TabularWrap):
         return num_rows
 
     def retrieve_column_names(self) -> Iterable[str]:
-
         from sqlalchemy import inspect
 
         engine = self._engine
@@ -61,7 +59,6 @@ class SqliteTabularWrap(TabularWrap):
         return result
 
     def slice(self, offset: int = 0, length: Union[int, None] = None) -> "TabularWrap":
-
         from sqlalchemy import text
 
         query = f'SELECT * FROM "{self._table_name}"'
@@ -95,7 +92,6 @@ class SqliteTabularWrap(TabularWrap):
         return DictTabularWrap(result_dict)
 
     def to_pydict(self) -> Mapping:
-
         from sqlalchemy import text
 
         query = f'SELECT * FROM "{self._table_name}"'
@@ -127,7 +123,6 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
         return result
 
     def parse_python_obj(self, data: Any) -> KiaraDatabase:
-
         if isinstance(data, Path):
             data = data.as_posix()
 
@@ -146,14 +141,12 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
         return data
 
     def _validate(cls, value: Any) -> None:
-
         if not isinstance(value, (KiaraDatabase)):
             raise ValueError(
                 f"Invalid type '{type(value).__name__}', must be an instance of the 'KiaraDatabase' class."
             )
 
     def serialize(self, data: KiaraDatabase) -> SerializedData:
-
         chunks = {
             "db.sqlite": {"type": "file", "codec": "raw", "file": data.db_file_path}
         }
@@ -184,7 +177,6 @@ class DatabaseType(AnyType[KiaraDatabase, DataTypeConfig]):
     def pretty_print_as__terminal_renderable(
         self, value: Value, render_config: Mapping[str, Any]
     ) -> Any:
-
         max_rows = render_config.get(
             "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
         )

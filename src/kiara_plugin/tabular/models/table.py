@@ -123,7 +123,6 @@ class KiaraTable(KiaraModel):
 
     @property
     def column_metadata(self) -> Mapping[str, Mapping[str, KiaraModel]]:
-
         if self._column_metadata is None:
             self._column_metadata = {}
         return self._column_metadata
@@ -141,7 +140,6 @@ class KiaraTable(KiaraModel):
         metadata: KiaraModel,
         overwrite_existing: bool = True,
     ):
-
         if column_name not in self.column_names:
             raise KiaraException(
                 "Can't set column metadata, No column with name: " + column_name
@@ -167,7 +165,6 @@ class KiaraTable(KiaraModel):
     def get_column_metadata_for_key(
         self, column_name: str, metadata_key: str
     ) -> KiaraModel:
-
         if column_name not in self.column_names:
             raise KiaraException("No column with name: " + column_name)
 
@@ -243,7 +240,6 @@ class KiaraTable(KiaraModel):
         exclude: Sequence[str],
         **kwargs: Any,
     ) -> Dict[str, str]:
-
         result: Dict[str, str] = super()._repr_mimebundle_(  # type: ignore
             include=include, exclude=exclude, **kwargs
         )
@@ -253,7 +249,6 @@ class KiaraTable(KiaraModel):
         return result
 
     def create_renderable(self, **render_config: Any) -> "RenderableType":
-
         max_rows = render_config.get(
             "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
         )
@@ -268,13 +263,14 @@ class KiaraTable(KiaraModel):
         if max_rows:
             half_lines = int(max_rows / 2)
         atw = ArrowTabularWrap(self.arrow_table)
-        result = atw.as_terminal_renderable(
+        result: "RenderableType" = atw.as_terminal_renderable(
             rows_head=half_lines,
             rows_tail=half_lines,
             max_row_height=max_row_height,
             max_cell_length=max_cell_length,
         )
         return result
+
 
 class KiaraTableMetadata(ValueMetadata):
     """File stats."""
@@ -287,7 +283,6 @@ class KiaraTableMetadata(ValueMetadata):
 
     @classmethod
     def create_value_metadata(cls, value: "Value") -> "KiaraTableMetadata":
-
         kiara_table: KiaraTable = value.data
 
         md = TableMetadata.create_from_table(kiara_table)

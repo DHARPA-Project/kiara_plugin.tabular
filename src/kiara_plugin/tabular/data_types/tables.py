@@ -39,19 +39,16 @@ class TablesType(AnyType[KiaraTables, DataTypeConfig]):
         return KiaraTables  # type: ignore
 
     def parse_python_obj(self, data: Any) -> KiaraTables:
-
         result: KiaraTables = KiaraTables.create_tables(data)
         return result
 
     def _validate(cls, value: Any) -> None:
-
         if not isinstance(value, KiaraTables):
             raise Exception(
                 f"invalid type '{type(value).__name__}', must be 'KiaraTables'."
             )
 
     def serialize(self, data: Self) -> Union[None, str, "SerializedData"]:
-
         import pyarrow as pa
 
         for table_id, table in data.tables.items():
@@ -119,7 +116,6 @@ class TablesType(AnyType[KiaraTables, DataTypeConfig]):
     def pretty_print_as__terminal_renderable(
         self, value: "Value", render_config: Mapping[str, Any]
     ) -> Any:
-
         max_rows = render_config.get(
             "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
         )

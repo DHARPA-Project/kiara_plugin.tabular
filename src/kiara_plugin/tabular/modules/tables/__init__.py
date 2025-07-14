@@ -27,7 +27,6 @@ from kiara_plugin.tabular.utils import create_table_from_file_bundle
 
 
 class DeserializeTableModule(DeserializeValueModule):
-
     _module_type_name = "load.tables"
 
     @classmethod
@@ -43,13 +42,11 @@ class DeserializeTableModule(DeserializeValueModule):
         return "feather"
 
     def to__python_object(self, data: SerializedData, **config: Any):
-
         import pyarrow as pa
 
         tables: Dict[str, Any] = {}
 
         for column_id in data.get_keys():
-
             if TABLE_COLUMN_SPLIT_MARKER not in column_id:
                 raise KiaraException(
                     f"Invalid serialized 'tables' data, key must contain '{TABLE_COLUMN_SPLIT_MARKER}': {column_id}"
@@ -76,7 +73,6 @@ class DeserializeTableModule(DeserializeValueModule):
 
 
 class CreateTablesModuleConfig(CreateFromModuleConfig):
-
     ignore_errors: bool = Field(
         description="Whether to ignore convert errors and omit the failed items.",
         default=False,
@@ -95,7 +91,6 @@ class CreateTablesModuleConfig(CreateFromModuleConfig):
 
 
 class CreateTablesModule(CreateFromModule):
-
     _module_type_name = "create.tables"
     _config_cls = CreateTablesModuleConfig
 
@@ -126,7 +121,6 @@ class CreateTablesModule(CreateFromModule):
         included_files: Dict[str, bool] = {}
         errors: Dict[str, Union[None, str]] = {}
         for rel_path in sorted(bundle.included_files.keys()):
-
             if not rel_path.endswith(".csv"):
                 job_log.add_log(
                     f"Ignoring file (not csv): {rel_path}", log_level=logging.INFO
@@ -198,7 +192,6 @@ class AssembleTablesModule(KiaraModule):
 
     @functools.cached_property
     def _table_details(self) -> Tuple[int, Union[List[str], None]]:
-
         number_tables: Union[int, None] = self.get_config_value("number_of_tables")
         table_names: Union[None, List[str]] = self.get_config_value("table_names")
 
@@ -230,7 +223,6 @@ class AssembleTablesModule(KiaraModule):
     def create_inputs_schema(
         self,
     ) -> ValueMapSchema:
-
         number_tables = self.number_of_tables
         table_names = self.table_names
 
@@ -270,7 +262,6 @@ class AssembleTablesModule(KiaraModule):
     def create_outputs_schema(
         self,
     ) -> ValueMapSchema:
-
         outputs = {
             "tables": {
                 "type": "tables",
@@ -280,7 +271,6 @@ class AssembleTablesModule(KiaraModule):
         return outputs
 
     def process(self, inputs: ValueMap, outputs: ValueMap, job_log: JobLog) -> None:
-
         number_tables = self.number_of_tables
         table_names = self.table_names
 
@@ -401,13 +391,11 @@ class PickColumnModule(KiaraModule):
 
     @classmethod
     def retrieve_included_operations(cls):
-
         return {"tables.pick.column": {"module_config": {"pick_type": "column"}}}
 
     def create_inputs_schema(
         self,
     ) -> ValueMapSchema:
-
         inputs: Dict[str, Any] = {
             "tables": {"type": "tables", "doc": "A tables instance."}
         }
@@ -433,7 +421,6 @@ class PickColumnModule(KiaraModule):
     def create_outputs_schema(
         self,
     ) -> ValueMapSchema:
-
         pick_type = self.get_config_value("pick_type")
 
         if pick_type == "table":
@@ -449,7 +436,6 @@ class PickColumnModule(KiaraModule):
         return outputs
 
     def process(self, inputs: ValueMap, outputs: ValueMap) -> None:
-
         import pyarrow as pa
 
         pick_type: Literal["table", "column"] = self.get_config_value("pick_type")

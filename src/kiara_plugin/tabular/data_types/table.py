@@ -40,18 +40,15 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
         return result
 
     def parse_python_obj(self, data: Any) -> KiaraTable:
-
         return KiaraTable.create_table(data)
 
     def _validate(cls, value: Any) -> None:
-
         if not isinstance(value, KiaraTable):
             raise Exception(
                 f"invalid type '{type(value).__name__}', must be 'KiaraTable'."
             )
 
     def serialize(self, data: KiaraTable) -> SerializedData:
-
         import pyarrow as pa
 
         chunk_map = {}
@@ -73,7 +70,6 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
             "codec": "raw",
         }
         for column_name in table.column_names:
-
             assert column_name != TABLE_SCHEMA_CHUNKS_NAME
 
             column: pa.Array = table.column(column_name)
@@ -111,7 +107,6 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
     def pretty_print_as__terminal_renderable(
         self, value: "Value", render_config: Mapping[str, Any]
     ) -> Any:
-
         max_rows = render_config.get(
             "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
         )
@@ -138,7 +133,6 @@ class TableType(AnyType[KiaraTable, DataTypeConfig]):
     def pretty_print_as__string(
         self, value: "Value", render_config: Mapping[str, Any]
     ) -> Any:
-
         max_rows = render_config.get(
             "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
         )
