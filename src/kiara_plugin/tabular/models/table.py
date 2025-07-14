@@ -14,18 +14,20 @@ from typing import (
 import pyarrow as pa
 from pydantic import Field, PrivateAttr
 
+from kiara.defaults import DEFAULT_PRETTY_PRINT_CONFIG
 from kiara.exceptions import KiaraException
 from kiara.models import KiaraModel
 from kiara.models.values.value import Value
 from kiara.models.values.value_metadata import ValueMetadata
 from kiara.utils import log_exception
+from kiara.utils.output import ArrowTabularWrap
 from kiara_plugin.tabular.models import TableMetadata
 from kiara_plugin.tabular.utils.tables import extract_column_metadata
 
 if TYPE_CHECKING:
     import pandas as pd
     import polars as pl
-    from rich.console import ConsoleRenderable
+    from rich.console import ConsoleRenderable, RenderableType
 
 
 class KiaraTable(KiaraModel):
@@ -250,6 +252,29 @@ class KiaraTable(KiaraModel):
 
         return result
 
+    def create_renderable(self, **render_config: Any) -> "RenderableType":
+
+        max_rows = render_config.get(
+            "max_no_rows", DEFAULT_PRETTY_PRINT_CONFIG["max_no_rows"]
+        )
+        max_row_height = render_config.get(
+            "max_row_height", DEFAULT_PRETTY_PRINT_CONFIG["max_row_height"]
+        )
+        max_cell_length = render_config.get(
+            "max_cell_length", DEFAULT_PRETTY_PRINT_CONFIG["max_cell_length"]
+        )
+
+        half_lines: Union[int, None] = None
+        if max_rows:
+            half_lines = int(max_rows / 2)
+        atw = ArrowTabularWrap(self.arrow_table)
+        result = atw.as_terminal_renderable(
+            rows_head=half_lines,
+            rows_tail=half_lines,
+            max_row_height=max_row_height,
+            max_cell_length=max_cell_length,
+        )
+        return result
 
 class KiaraTableMetadata(ValueMetadata):
     """File stats."""
